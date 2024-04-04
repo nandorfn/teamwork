@@ -18,7 +18,12 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@assets/*": ["./app/assets/*"],
+      "@components/*": ["./app/components/*"],
+      "@styles/*": ["./app/styles/*"],
+      "@atoms/*": ["./app/utils/types/components/atoms/*"],
+      "@molecules/*": ["./app/utils/types/components/molecules/*"],
+      "@organisms/*": ["./app/utils/types/components/organisms/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
