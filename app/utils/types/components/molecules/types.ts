@@ -6,3 +6,9 @@ export type IconTypes = {
   width: number,
   height: number
 }
+
+export type menus = {
+  id: string,
+  label: string,
+  icon: StaticImageData,
+}
