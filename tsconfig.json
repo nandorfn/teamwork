@@ -21,11 +21,13 @@
       "@assets/*": ["./app/assets/*"],
       "@components/*": ["./app/components/*"],
       "@styles/*": ["./app/styles/*"],
-      "@atoms/*": ["./app/utils/types/components/atoms/*"],
-      "@molecules/*": ["./app/utils/types/components/molecules/*"],
-      "@organisms/*": ["./app/utils/types/components/organisms/*"]
+      "@atoms/types": ["./app/utils/types/components//atoms/index.ts"],
+      "@molecules/types": ["./app/utils/types/components/molecules/index.ts"],
+      "@organisms/types": ["./app/utils/types/components/organisms/index.ts"],
+      "@defaultValues": ["./app/utils/defaultValues/index.ts"],
+      "@func": ["./app/utils/func/index.ts"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "tailwind.config.js"],
   "exclude": ["node_modules"]
 }

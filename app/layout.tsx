@@ -3,8 +3,10 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import Layout from "@components/templates/Layout";
+import { cn } from "./utils/func";
+import { ThemeProvider } from "./providers/ThemeProvider";
 
-const outfit = Outfit({ subsets: ['latin']})
+const outfit = Outfit({ subsets: ['latin'] })
 const ogImg = 'https://ucarecdn.com/a742a730-c718-46cb-b148-e19418c46429/-/preview/1000x525/'
 export const metadata: Metadata = {
   title: 'teamwork',
@@ -40,10 +42,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={outfit.className}>
-        <Layout>
-          {children}
-        </Layout>
+      <body className={cn(
+        'min-h-screen',
+        outfit.className
+      )}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Layout>
+            {children}
+          </Layout>
+        </ThemeProvider>
       </body>
     </html>
   );

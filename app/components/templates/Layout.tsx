@@ -1,3 +1,5 @@
+'use client';
+import { useSelectedLayoutSegments } from "next/navigation";
 import { Aside, Navbar } from "../molecules";
 
 const Layout = ({
@@ -5,6 +7,12 @@ const Layout = ({
 }: {
   children: React.ReactNode
 }) => {
+  const segments = useSelectedLayoutSegments();
+  
+  if (segments[1] === 'login') {
+    return (children)
+  }
+  
   return (
     <div className="flex flex-col w-full">
       <Navbar />
