@@ -32,7 +32,7 @@ const Aside: React.FC = () => {
     }
   ]
   return (
-    <ul className="flex flex-col border-r border-dark-grey px-14 py-7 gap-8 h-screen">
+    <ul className="flex flex-col border-r border-dark-grey px-14 py-7 gap-8 h-full">
       {
         menus?.map((item: menus) => (
           <Link href={item?.href}>
@@ -43,7 +43,7 @@ const Aside: React.FC = () => {
                 width={20}
                 height={20}
               />
-              <p className=" text-[#A1A1A1]  hover:text-black dark:hover:text-white">{item?.label}</p>
+              <p className=" text-nowrap text-[#A1A1A1]  hover:text-black dark:hover:text-white">{item?.label}</p>
             </li>
           </Link>
         ))

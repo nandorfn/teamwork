@@ -1,8 +1,8 @@
-import { Content } from "@components/orgasims";
-
 const page: React.FC = () => {
     return (
-        <Content />
+        <p>
+          Forgot Password
+        </p>
     );
 };
 

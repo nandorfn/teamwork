@@ -1,4 +1,4 @@
-import { LoginPage } from "@components/orgasims";
+import { LoginPage } from "@components/pages";
 
 const page: React.FC = () => {
   return (
