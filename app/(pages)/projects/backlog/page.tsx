@@ -2,7 +2,7 @@
 const page: React.FC = () => {
     return (
         <>
-        <p>Activity</p>
+        <p>Backlog</p>
         </>
     );
 };

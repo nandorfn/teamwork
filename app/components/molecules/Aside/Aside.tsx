@@ -1,5 +1,5 @@
 "use client";
-import { kanbanIcon, lightningIcon, settingIcon, taskIcon } from "@assets/index";
+import { chatIcon, kanbanIcon, settingIcon, taskIcon } from "@assets/svg";
 import { Icon } from "@components/atoms";
 import { menus } from "@molecules/types";
 import Link from "next/link";
@@ -13,10 +13,10 @@ const Aside: React.FC = () => {
       icon: taskIcon,
     },
     {
-      id: 'activity',
-      label: 'Activity',
-      href: '/activity',
-      icon: lightningIcon,
+      id: 'chats',
+      label: 'Chats',
+      href: '/chats',
+      icon: chatIcon,
     },
     {
       id: 'settings',
@@ -35,8 +35,8 @@ const Aside: React.FC = () => {
     <ul className="flex flex-col border-r border-dark-grey px-14 py-7 gap-8 h-full">
       {
         menus?.map((item: menus) => (
-          <Link href={item?.href}>
-            <li className="flex gap-3 cursor-pointer " key={item?.id}>
+          <Link key={item?.id} href={item?.href}>
+            <li className="flex gap-3 cursor-pointer">
               <Icon
                 src={item?.icon}
                 alt={item?.label}

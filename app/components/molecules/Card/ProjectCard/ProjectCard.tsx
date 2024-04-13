@@ -13,8 +13,8 @@ const ProjectCard: React.FC = () => {
       <div>
         <h2 className="px-2 text-blue-500">QUICK LINKS</h2>
         <div className="flex flex-col text-sm">
-          <Link className=" hover:bg-[#A1A1A1] rounded-sm px-2" href={'/test'}>My Open Issues</Link>
-          <Link className=" hover:bg-[#A1A1A1] rounded-sm px-2" href={'/'}>Done Issues</Link>
+          <p className=" hover:bg-[#A1A1A1] rounded-sm px-2">My Open Issues</p>
+          <p className=" hover:bg-[#A1A1A1] rounded-sm px-2">Done Issues</p>
         </div>
       </div>
     </Link>

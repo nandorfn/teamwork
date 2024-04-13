@@ -1,4 +1,6 @@
 import { IssueCard, ProjectCard } from "@components/molecules";
+import { mockIssue } from "../../../utils/mock/mockIssueCard";
+import React from "react";
 
 const MyTask: React.FC = () => {
   return (
@@ -11,11 +13,12 @@ const MyTask: React.FC = () => {
       </div>
       <h1 className=" text-2xl">Assigned to me</h1>
       <div>
-        <IssueCard />
-        <IssueCard />
-        <IssueCard />
-        <IssueCard />
-        <IssueCard />
+        {mockIssue?.map((item, index) => (
+          <React.Fragment key={index}>
+            <IssueCard issue={item} />
+          </React.Fragment>
+        ))
+      }
       </div>
     </div>
   );

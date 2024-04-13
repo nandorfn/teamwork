@@ -75,6 +75,41 @@
     }
   }
   
+  .text-dark-grey {
+    color: #101315;
+  }
+  .bg-dark-grey {
+    background-color: #101315;
+  }
   .text-base-100 {
     color: #A1A1A1;
+  }
+  .text-base-green {
+    color: #58EA81;
+  }
+  .bg-base-green {
+    background-color: #58EA81;
+  }
+  .text-base-grey {
+    color: #727578;
+  }
+  .bg-base-grey {
+    background-color: #727578;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #727578;
+    border-radius: 12px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6E6E6E;
   }

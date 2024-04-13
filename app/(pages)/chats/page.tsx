@@ -1,6 +1,9 @@
+
 const page: React.FC = () => {
     return (
-        <></>
+        <>
+        <p>Chats</p>
+        </>
     );
 };
 

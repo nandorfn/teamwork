@@ -17,7 +17,7 @@ const Layout = ({
   return (
     <div className="flex flex-col w-full">
       <Navbar />
-      <div className="flex flex-row h-[calc(100vh-5.29rem)] overflow-y-auto">
+      <div className="flex flex-row h-[calc(100vh-5.29rem)]">
         <Aside />
         {children}
       </div>
