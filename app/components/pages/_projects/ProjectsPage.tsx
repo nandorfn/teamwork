@@ -8,7 +8,7 @@ const ProjectsPage = ({
 }) => {
   const submenus = ["timeline", "backlog", "board"]
   return (
-    <div className="flex flex-col px-8 pt-8 gap-10 w-full">
+    <div className="flex flex-col px-8 pt-8 gap-10 w-[calc(100vw-192.5px)]">
       <Link href={'/projects'}>Projects</Link>
       <h2 className="text-5xl font-light">Project 2</h2>
 
@@ -24,7 +24,7 @@ const ProjectsPage = ({
         ))
         }
       </div>
-      <div className=" overflow-y-auto w-full">
+      <div className=" overflow-auto w-full">
         {children}
       </div>
     </div>
