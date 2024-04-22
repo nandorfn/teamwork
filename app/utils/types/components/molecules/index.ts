@@ -13,6 +13,7 @@ export type menus = {
   id: string,
   label: string,
   icon: StaticImageData,
+  iconFill: StaticImageData,
   href: string
 }
 

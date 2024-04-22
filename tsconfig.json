@@ -24,6 +24,7 @@
       "@atoms/types": ["./app/utils/types/components//atoms/index.ts"],
       "@molecules/types": ["./app/utils/types/components/molecules/index.ts"],
       "@organisms/types": ["./app/utils/types/components/organisms/index.ts"],
+      "@pages/types": ["./app/utils/types/components/pages/index.ts"],
       "@defaultValues": ["./app/utils/defaultValues/index.ts"],
       "@func": ["./app/utils/func/index.ts"]
     }
