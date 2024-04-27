@@ -1,3 +1,4 @@
+import { BacklogCard } from "./BacklogCard";
 import { IssueCard } from "./IssueCard";
 import { IssueContainerCard } from "./IssueContainerCard";
 import { ProjectCard } from "./ProjectCard";
@@ -7,5 +8,6 @@ export {
   ProjectCard,
   IssueCard,
   IssueContainerCard,
-  TodoCard
+  TodoCard,
+  BacklogCard
 };

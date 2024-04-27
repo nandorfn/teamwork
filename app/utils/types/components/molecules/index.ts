@@ -14,6 +14,7 @@ export type menus = {
   label: string,
   icon: StaticImageData,
   iconFill: StaticImageData,
+  iconDark: StaticImageData,
   href: string
 }
 
@@ -28,7 +29,10 @@ export type TTodoCard = {
 }
 
 export type TIssueContainer = {
+  length: number,
   title: string;
   children: React.ReactNode,
-  droppabledId: string
+  droppabledId: string,
+  containerClass?: string,
+  containerChildClass?: string
 }

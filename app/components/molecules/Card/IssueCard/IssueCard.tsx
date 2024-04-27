@@ -6,7 +6,7 @@ const IssueCard = ({
   issue
 }: { issue: TMockIssue }) => {
   return (
-    <Link href="/" className="flex flex-row justify-between items-center p-2 hover:bg-zinc-800 rounded-md">
+    <Link href="/" className="flex flex-row justify-between items-center p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md">
       <div>
         <h3>{issue?.name}</h3>
         <div className="flex items-center flex-row text-xs text-base-100 gap-1">
