@@ -1,30 +1,42 @@
-import { Separator } from "@components/ui/separator";
-import Link from "next/link";
-import { TMockIssue } from "../../../../utils/mock/mockIssueCard";
 import { TTodoCard } from "@molecules/types";
-import { Avatar } from "@components/atoms";
+import { Avatar, Badge, Icon } from "@components/atoms";
 import dummyAvatar from "@assets/dummy/avatar.svg"
+import { bugIcon, epicIcon, storyIcon, taskIcon2 } from "@assets/svg";
 
 const BacklogCard = ({
   data,
   provided,
   snap
 }: TTodoCard) => {
+  const iconIssue = (type: string) => {
+    switch(type) {
+      case "task":
+        return taskIcon2
+      case "epic":
+        return epicIcon;
+      case "bug":
+        return bugIcon;
+      case "story":
+        return storyIcon;
+    }
+  }
+
   return (
     <div ref={provided.innerRef}
       {...provided.dragHandleProps}
       {...provided.draggableProps}
-      className="flex flex-row justify-between items-center dark:bg-[#101315] bg-white p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800  border">
-      <div>
+      className="flex flex-row justify-between items-center dark:bg-zinc-900 bg-white p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800">
+      <div className="flex flex-row gap-3">
+        <Icon 
+          src={iconIssue(data?.type)} 
+          alt="" 
+          width={16} 
+          height={16}
+        />
         <h3>{data?.text}</h3>
-        <div className="flex items-center flex-row text-xs text-base-100 gap-1">
-          <p>{'TT-1'}</p>
-          <Separator className="w-1" />
-          <p>{'Project 2'}</p>
-        </div>
       </div>
 
-      <p className="text-xs text-base-100">{'In Progress'}</p>
+      <Badge variant={data?.parent?.color} size={"backlog"} className=" font-medium" text={data?.parent?.name} />
       <Avatar src={dummyAvatar} className="z-[1]" />
     </div>
   );

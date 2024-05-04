@@ -43,22 +43,38 @@ const BoardPage: React.FC = () => {
         {
           id: "123",
           type: "a",
-          text: "123-text"
+          text: "123-text",
+          parent: {
+            name: "Feature 1",
+            color: "yellow",
+          }
         },
         {
           id: "345",
           type: "b",
-          text: "345-text"
+          text: "345-text",
+          parent: {
+            name: "Feature 1",
+            color: "yellow",
+          }
         },
         {
           id: "567",
           type: "a",
-          text: "567-text"
+          text: "567-text",
+          parent: {
+            name: "Feature 1",
+            color: "yellow",
+          }
         },
         {
           id: "789",
           type: "b",
-          text: "789-text"
+          text: "789-text",
+          parent: {
+            name: "Feature 1",
+            color: "yellow",
+          }
         }
       ]
     },
@@ -69,22 +85,38 @@ const BoardPage: React.FC = () => {
         {
           id: "111",
           type: "a",
-          text: "123-text"
+          text: "123-text",
+          parent: {
+            name: "Feature 1",
+            color: "yellow",
+          }
         },
         {
           id: "222",
           type: "b",
-          text: "345-text"
+          text: "345-text",
+          parent: {
+            name: "Feature 1",
+            color: "yellow",
+          }
         },
         {
           id: "333",
           type: "a",
-          text: "567-text"
+          text: "567-text",
+          parent: {
+            name: "Feature 1",
+            color: "yellow",
+          }
         },
         {
           id: "444",
           type: "b",
-          text: "789-text"
+          text: "789-text",
+          parent: {
+            name: "Feature 1",
+            color: "yellow",
+          }
         }
       ]
     },

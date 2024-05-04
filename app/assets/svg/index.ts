@@ -11,12 +11,22 @@ import kanbanFill from './kanban-fill.svg';
 import chatFill from './chat-fill.svg';
 import settingFill from './setting-fill.svg';
 import taskFill from './task-fill.svg';
+import caretDownDark from './caret-down-dark.svg';
+import caretDown from './caret-down.svg';
+import caretRightDark from './caret-right-dark.svg';
+import caretRight from './caret-right.svg';
+import calendar from './calendar.svg';
 
 // fill dark
 import taskDark from './task-fill-dark.svg';
 import chatDark from './chat-fill-dark.svg';
 import kanbanDark from './kanban-fill-dark.svg';
 import settingDark from './setting-fill-dark.svg';
+import plusDark from './plus-dark.svg';
+import storyIcon from './story.svg';
+import bugIcon from './bug.svg';
+import epicIcon from './epic.svg';
+import taskIcon2 from './task-icon.svg';
 
 export {
   kanbanIcon,
@@ -32,5 +42,15 @@ export {
   kanbanDark,
   settingDark,
   taskDark,
-  plusIcon
+  plusIcon,
+  plusDark,
+  caretDown,
+  caretDownDark,
+  caretRight,
+  caretRightDark,
+  calendar,
+  storyIcon,
+  bugIcon,
+  epicIcon,
+  taskIcon2
 }

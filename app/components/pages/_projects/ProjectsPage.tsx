@@ -6,6 +6,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import dummyAvatar from "@assets/dummy/avatar.svg"
+import { Modal } from "@components/molecules";
+import CreateIssueForm from "@components/orgasims/Form/CreateIssueForm/CreateIssueForm";
 
 
 const ProjectsPage = ({
@@ -23,8 +25,6 @@ const ProjectsPage = ({
       router.replace('/projects/timeline')
     }
   }, [currentPath]);
-
-
 
   return (
     <div className="flex flex-col pt-8 gap-8 w-[calc(100vw-192.5px)]">
@@ -66,9 +66,19 @@ const ProjectsPage = ({
           ))
           }
         </div>
-        <Button variant={'primary'}>
-          Add Task
-        </Button>
+        <Modal 
+          title="Create Issue" 
+          childrenTrigger={
+            <p className="px-6 bg-[#586AEA] rounded-md py-1">Add Task</p>
+          }
+          childrenContent={
+            <CreateIssueForm />
+          }
+          childrenFooter={
+            <Button variant={'default'}>Create Issue</Button>
+          }
+          />
+        
       </div>
       <div className="overflow-auto w-full px-8">
         {children}

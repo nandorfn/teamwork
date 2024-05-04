@@ -34,5 +34,13 @@ export type TIssueContainer = {
   children: React.ReactNode,
   droppabledId: string,
   containerClass?: string,
-  containerChildClass?: string
+  containerChildClass?: string,
+  isBacklog?: boolean
+}
+
+export type TModal = {
+  title: string;
+  childrenContent: React.ReactNode;
+  childrenFooter: React.ReactNode;
+  childrenTrigger: React.ReactNode;
 }

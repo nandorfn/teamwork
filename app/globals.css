@@ -75,6 +75,12 @@
     }
   }
   
+  .bg-white-100 {
+    background-color: #f7f8f9;
+  }
+  .bg-white-200 {
+    background-color: #dcdfe4;
+  }
   .text-dark-grey {
     color: #101315;
   }

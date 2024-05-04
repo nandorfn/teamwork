@@ -42,23 +42,39 @@ const BacklogPage: React.FC = () => {
       data: [
         {
           id: "123",
-          type: "a",
-          text: "123-text"
+          type: "epic",
+          text: "123-text",
+          parent: {
+            name: "Feature 1",
+            color: "blue",
+          }
         },
         {
           id: "345",
-          type: "b",
-          text: "345-text"
+          type: "story",
+          text: "345-text",
+          parent: {
+            name: "Feature 1",
+            color: "yellow",
+          }
         },
         {
           id: "567",
-          type: "a",
-          text: "567-text"
+          type: "bug",
+          text: "567-text",
+          parent: {
+            name: "Feature 1",
+            color: "blue",
+          }
         },
         {
           id: "789",
-          type: "b",
-          text: "789-text"
+          type: "task",
+          text: "789-text",
+          parent: {
+            name: "Feature 1",
+            color: "purple",
+          }
         }
       ]
     },
@@ -68,23 +84,39 @@ const BacklogPage: React.FC = () => {
       data: [
         {
           id: "111",
-          type: "a",
-          text: "123-text"
+          type: "task",
+          text: "123-text",
+          parent: {
+            name: "Feature 1",
+            color: "blue",
+          }
         },
         {
           id: "222",
-          type: "b",
-          text: "345-text"
+          type: "task",
+          text: "345-text",
+          parent: {
+            name: "Feature 1",
+            color: "blue",
+          }
         },
         {
           id: "333",
-          type: "a",
-          text: "567-text"
+          type: "epic",
+          text: "567-text",
+          parent: {
+            name: "Feature 1",
+            color: "blue",
+          }
         },
         {
           id: "444",
-          type: "b",
-          text: "789-text"
+          type: "story",
+          text: "789-text",
+          parent: {
+            name: "Feature 1",
+            color: "blue",
+          }
         }
       ]
     },
@@ -145,13 +177,14 @@ const BacklogPage: React.FC = () => {
   
   return (
     <>
-      <section className="flex flex-col gap-8">
+      <section className="flex flex-col gap-4">
         <DragDropContext onDragEnd={onDragEnd}>
           {schema?.map((item) => (
             <Fragment key={item?.id}>
               <IssueContainerCard 
                 length={item?.data?.length}
                 title={item?.title} 
+                isBacklog
                 droppabledId={item?.id}>
                 {item?.data?.map((it, i) => (
                   <Draggable

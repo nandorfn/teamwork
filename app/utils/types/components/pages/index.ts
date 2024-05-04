@@ -7,6 +7,10 @@ export type TIssueItem = {
   id: string;
   type: string;
   text: string;
+  parent: {
+    name: string;
+    color: string;
+  }
 }
 
 export type TMoveDroppableResult = {
@@ -14,6 +18,10 @@ export type TMoveDroppableResult = {
     id: string;
     type: string;
     text: string;
+    parent: {
+      name: string;
+      color: string;
+    }
   }[];
 }
 

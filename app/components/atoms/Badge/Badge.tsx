@@ -1,9 +1,51 @@
-const Badge = ({ text }: { text: string }) => {
+import { cn } from "@func";
+import { cva, type VariantProps } from "class-variance-authority"
+import React from "react";
+
+const badgeVariants = cva(
+  "rounded-sm flex items-center",
+  {
+    variants: {
+      variant: {
+        default: "text-white",
+        blue: "text-blue-700 bg-blue-400",
+        yellow: "text-yellow-700 bg-yellow-400",
+        purple: "text-purple-700 bg-purple-400",
+        green: "text-green-700 bg-green-400",
+        red: "text-red-700 bg-red-400",
+      },
+      size: {
+        default: "",
+        backlog: "px-4"
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default"
+    }
+  }
+)
+
+export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof badgeVariants> {
+  text: string | number;
+}
+
+const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(({ 
+  text,
+  className,
+  variant,
+  size,
+  ...props
+}, ref) => {
   return (
-    <div className="px-6 py-1 bg-[#2325264F] rounded-md">
+    <div className={cn(badgeVariants({ variant, className, size }))}
+      ref={ref}
+      {...props}
+    >
       {text}
     </div>
   );
-};
+})
 
-export default Badge;
+Badge.displayName = "Badge"
+export { Badge, badgeVariants };
