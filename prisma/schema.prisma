@@ -1,0 +1,112 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id         Int       @id @default(autoincrement())
+  userId     String    @unique
+  name       String
+  email      String    @unique
+  password   String
+  salt       String
+  avatar     String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  memberships Membership[]
+  comments   Comment[]
+}
+
+model Membership {
+  id         Int       @id @default(autoincrement())
+  userId     Int
+  projectId  Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  users      User      @relation(fields: [userId], references: [id])
+  projects   Project   @relation(fields: [projectId], references: [id])
+}
+
+model Project {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  icon        String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  workflows   Workflow[]
+  sprints     Sprint[]
+  issues      Issue[]
+  memberships Membership[]
+}
+
+model Workflow {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  projectId   Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  project     Project   @relation(fields: [projectId], references: [id])
+  workflowStatus WorkflowStatus[]
+}
+
+model WorkflowStatus {
+  id          Int       @id @default(autoincrement())
+  name        String
+  workflowId  Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  workflow    Workflow  @relation(fields: [workflowId], references: [id])
+  issues      Issue[]
+}
+
+model Issue {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  statusId    Int
+  assigneeId  Int
+  reporterId  Int
+  projectId   Int
+  issueType   String?
+  color       String?
+  sprintId    Int?
+  parentId    Int?
+  workflowStatus WorkflowStatus  @relation(fields: [statusId], references: [id])
+  project     Project          @relation(fields: [projectId], references: [id])
+  comments    Comment[]
+}
+
+model Comment {
+  id         Int       @id @default(autoincrement())
+  text       String
+  userId     Int
+  issueId    Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  issue      Issue     @relation(fields: [issueId], references: [id])
+  user       User      @relation(fields: [userId], references: [id])
+}
+
+model Sprint {
+  id         Int       @id @default(autoincrement())
+  name       String
+  startDate  DateTime?
+  endDate    DateTime?
+  projectId  Int
+  status     String?
+  project    Project   @relation(fields: [projectId], references: [id])
+}
+

@@ -1,5 +1,15 @@
 "use client";
-import { chatDark, chatFill, chatIcon, kanbanDark, kanbanFill, kanbanIcon, settingFill, settingIcon, taskDark, taskFill, taskIcon } from "@assets/svg";
+import { 
+  chatDark,
+  chatFill,
+  chatIcon,
+  kanbanDark,
+  kanbanFill,
+  kanbanIcon,
+  taskDark,
+  taskFill,
+  taskIcon
+} from "@assets/svg";
 import { Icon } from "@components/atoms";
 import { cn } from "@func";
 import { menus } from "@molecules/types";
@@ -53,11 +63,11 @@ const Aside: React.FC = () => {
                 <li className="flex gap-3 cursor-pointer">
                   <Icon
                     src={
-                      item?.id !== active
-                        ? item?.icon
-                        : theme === 'dark'
-                          ? item?.iconFill
-                          : item?.iconDark
+                      item?.id === active
+                        ? theme === 'light'
+                          ? item?.iconDark
+                          : item?.iconFill
+                        : item?.icon
                     }
                     alt={item?.label}
                     width={20}
