@@ -30,13 +30,14 @@ const LoginPage: React.FC = () => {
       .catch(error => {
         console.log(error);
         if (error.response) {
-          const errors = error.response.data.errors;
-          if (errors.email) {
+          const errors = error?.response?.data?.errors;
+          console.log(errors);
+          if (errors?.email) {
             setError("email", {
               type: "server",
               message: errors.email,
             });
-          } else if (errors.password) {
+          } else if (errors?.password) {
             setError("password", {
               type: "server",
               message: errors.password,
