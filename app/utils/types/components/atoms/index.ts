@@ -1,4 +1,4 @@
-import { Control, FieldValues } from "react-hook-form";
+import { Control, UseFormWatch } from "react-hook-form";
 
 export type TInput = {
   name: string;
@@ -7,4 +7,15 @@ export type TInput = {
   control: Control<any>;
   required: boolean;
   className?: string;
+}
+
+export type TSelect = TInput & {
+  datas: any;
+  watch?: UseFormWatch<any>;
+}
+
+export type TOptionSelect = {
+  label: string;
+  value: string;
+  class: string;
 }

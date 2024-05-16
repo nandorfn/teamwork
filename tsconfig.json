@@ -29,7 +29,11 @@
       "@schemas/*": ["./app/utils/schemas/*"],
       "@defaultValues": ["./app/utils/defaultValues/index.ts"],
       "@func": ["./app/utils/func/index.ts"],
-      "@lib/*": ["./app/lib/*"]
+      "@auth": ["./app/utils/auth/index.ts"],
+      "@http": ["./app/utils/http/index.ts"],
+      "@lib/*": ["./app/lib/*"],
+      "@serverActions": ["./app/utils/serverActions/index.ts"],
+      "@mocks/*": ["./app/utils/mock/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "tailwind.config.js"],

@@ -7,6 +7,7 @@ import { hashPass } from "@func";
 import { TRegister } from "@organisms/types";
 import { AuthForm } from "@components/orgasims";
 import { registerSchema } from "@schemas/authSchemas";
+import { useState } from "react";
 
 const RegisterPage: React.FC = () => {
   const {
@@ -19,8 +20,10 @@ const RegisterPage: React.FC = () => {
     resolver: zodResolver(registerSchema)
   });
 
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const onSubmit: SubmitHandler<TRegister> = async (formData) => {
+    setLoading(true);
     const { salt, hashedPassword: password } = hashPass(formData.password);
     const newData = {
       name: formData.name,
@@ -59,11 +62,12 @@ const RegisterPage: React.FC = () => {
         }
       })
       .finally(() => {
-        reset();
+        setLoading(false);
       });
 }
 return (
   <AuthForm 
+    isLoading={loading}
     disabled={!isValid || isLoading}
     errors={errors}
     isRegister={true}

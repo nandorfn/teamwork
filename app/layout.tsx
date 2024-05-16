@@ -5,6 +5,7 @@ import "./globals.css";
 import Layout from "@components/templates/Layout";
 import { cn } from "./utils/func";
 import { ThemeProvider } from "./providers/ThemeProvider";
+import { TanstackQueryProvider } from "./providers/TanstackQueryProvider";
 
 const outfit = Outfit({ subsets: ['latin'] })
 const ogImg = 'https://ucarecdn.com/a742a730-c718-46cb-b148-e19418c46429/-/preview/1000x525/'
@@ -41,22 +42,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={cn(
-        'min-h-screen',
-        outfit.className
-      )}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Layout>
-            {children}
-          </Layout>
-        </ThemeProvider>
-      </body>
-    </html>
+    <TanstackQueryProvider>
+      <html lang="en">
+        <body className={cn(
+          'min-h-screen',
+          outfit.className
+        )}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Layout>
+              {children}
+            </Layout>
+          </ThemeProvider>
+        </body>
+      </html>
+    </TanstackQueryProvider>
   );
 }

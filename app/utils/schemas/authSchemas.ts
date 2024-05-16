@@ -32,6 +32,7 @@ export type TLogin = z.infer<typeof registerSchema>;
 export const tokenSchema = z.object({
   username: z.string(),
   userId: z.string(),
+  id: z.number(),
   iat: z.number(),
   exp: z.number(),
 })

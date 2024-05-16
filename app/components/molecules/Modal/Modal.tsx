@@ -10,7 +10,7 @@ const Modal = ({
 }: TModal) => {
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         {childrenTrigger}
       </DialogTrigger>
       <DialogContent>

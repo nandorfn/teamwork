@@ -69,7 +69,7 @@ const ProjectsPage = ({
         <Modal 
           title="Create Issue" 
           childrenTrigger={
-            <p className="px-6 bg-[#586AEA] rounded-md py-1">Add Task</p>
+            <Button variant={'primary'}>Add Task</Button>
           }
           childrenContent={
             <CreateIssueForm />

@@ -9,7 +9,7 @@ export type IconTypes = {
   height: number
 }
 
-export type menus = {
+export type TMenu = {
   id: string,
   label: string,
   icon: StaticImageData,
@@ -43,4 +43,8 @@ export type TModal = {
   childrenContent: React.ReactNode;
   childrenFooter: React.ReactNode;
   childrenTrigger: React.ReactNode;
+}
+
+export type TBacklogForm = {
+  backlogStatus: string;
 }

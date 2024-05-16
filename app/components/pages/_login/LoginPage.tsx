@@ -6,6 +6,7 @@ import { TLogin } from "@organisms/types";
 import { loginSchema } from "@schemas/authSchemas";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 const LoginPage: React.FC = () => {
@@ -14,13 +15,15 @@ const LoginPage: React.FC = () => {
     control,
     reset,
     setError,
-    formState: { isLoading, errors, isValid }
+    formState: { errors }
   } = useForm<TLogin>({
     resolver: zodResolver(loginSchema)
   })
 
   const router = useRouter();
-  const onSubmit: SubmitHandler<TLogin> = (formData: TLogin) => {
+  const [loading, setLoading] = useState(false);
+  const onSubmit: SubmitHandler<TLogin> = (formData: TLogin) => { 
+    setLoading(true);
     axios.post('/api/login', formData)
       .then(response => {
         if (response.data.status === 200) {
@@ -28,10 +31,8 @@ const LoginPage: React.FC = () => {
         }
       })
       .catch(error => {
-        console.log(error);
         if (error.response) {
-          const errors = error?.response?.data?.errors;
-          console.log(errors);
+          const { errors } = error?.response?.data;
           if (errors?.email) {
             setError("email", {
               type: "server",
@@ -43,17 +44,21 @@ const LoginPage: React.FC = () => {
               message: errors.password,
             });
           } else {
-            alert("Something went wrong");
+            setError("password", {
+              type: "server",
+              message: 'something went wrong',
+            });          
           }
         }
       })
       .finally(() => {
-        reset();
+        setLoading(false);
       })
   };
-
+  
   return (
     <AuthForm
+      isLoading={loading}
       disabled={false}
       errors={errors}
       isRegister={false}

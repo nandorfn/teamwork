@@ -12,6 +12,7 @@ export type TRegister = TLogin & {
 }
 
 export type TAuthForm = {
+  isLoading: boolean;
   disabled: boolean;
   errors: FieldErrors<TRegister>;
   isRegister: boolean;

@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { Button } from "@components/ui/button";
-import { InputLabel } from "@components/molecules";
+import { InputLabel, Loader } from "@components/molecules";
 import { TAuthForm } from "@organisms/types";
 
 const AuthForm = ({
+  isLoading,
   disabled,
   errors,
   isRegister,
@@ -13,6 +14,9 @@ const AuthForm = ({
   return (
     <>
       <div className="flex items-center h-screen w-screen shadow-lg">
+        {isLoading &&
+          <Loader />
+        }
         <form
           className="flex flex-col bg-gray-900 w-96 p-8 rounded-lg gap-3 mx-auto my-auto"
           onSubmit={handleSubmit}

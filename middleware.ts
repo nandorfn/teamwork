@@ -4,8 +4,7 @@ import { verifyAuth } from "./app/utils/auth";
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get('token')?.value;
   const verifiedToken = token && (await verifyAuth(token))
-  console.log(verifiedToken)
-  const protectedPaths = ['/my-task', '/chats', '/projects'];
+  const protectedPaths = ['/my-task', '/chats', '/projects/timeline', '/projects/backlog', '/projects/board'];
 
   if (!verifiedToken) {
     if (protectedPaths.some(path => req.nextUrl.pathname.startsWith(path))) {
@@ -22,7 +21,7 @@ export const config = {
   matcher: [
     '/chats',
     '/my-task',
-    '/projects',
+    '/projects/(.*)',
     '/login',
   ]
 }

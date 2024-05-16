@@ -1,13 +1,24 @@
-import { TTodoCard } from "@molecules/types";
-import { Avatar, Badge, Icon } from "@components/atoms";
+'use client'
+import { TBacklogForm, TTodoCard } from "@molecules/types";
+import { Avatar, Badge, Icon, InputSelect } from "@components/atoms";
 import dummyAvatar from "@assets/dummy/avatar.svg"
 import { bugIcon, epicIcon, storyIcon, taskIcon2 } from "@assets/svg";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 
 const BacklogCard = ({
   data,
   provided,
   snap
 }: TTodoCard) => {
+  const {
+    control,
+    watch
+  } = useForm<TBacklogForm>({
+    defaultValues: {
+      [data?.id]: 'todo',
+    },
+  })
   const iconIssue = (type: string) => {
     switch(type) {
       case "task":
@@ -20,6 +31,31 @@ const BacklogCard = ({
         return storyIcon;
     }
   }
+  const dropdown = [
+    {
+      label: 'Todo',
+      value: 'todo',
+      class: 'bg-zinc-800 text-white'
+    },
+    {
+      label: 'In Progress',
+      value: 'in-progress',
+      class: 'bg-blue-400 text-blue-700'
+    },
+    {
+      label: 'Ready SIT',
+      value: 'ready-sit',
+      class: 'bg-blue-400 text-blue-700'
+    },
+  ]
+  
+  const [color, setColor] = useState('');
+  useEffect(() => {
+    const selectedColor = dropdown.find(item => item.value === watch(data?.id));
+    if (selectedColor) {
+      setColor(selectedColor.class)
+    }
+  }, [watch(data?.id)]);
 
   return (
     <div ref={provided.innerRef}
@@ -35,9 +71,25 @@ const BacklogCard = ({
         />
         <h3>{data?.text}</h3>
       </div>
-
-      <Badge variant={data?.parent?.color} size={"backlog"} className=" font-medium" text={data?.parent?.name} />
-      <Avatar src={dummyAvatar} className="z-[1]" />
+      
+      <div className="flex flex-row gap-8">
+        <Badge 
+          variant={data?.parent?.color} 
+          size={"backlog"} 
+          className=" font-medium" 
+          text={data?.parent?.name}
+        />
+        <InputSelect
+          type={""}
+          name={data?.id}
+          control={control}
+          required={false}
+          className={`w-32 border-none font-semibold ${color}`}
+          placeholder={'Todo'}
+          datas={dropdown}
+        />
+        <Avatar src={dummyAvatar} className="z-[1]" />
+      </div>
     </div>
   );
 };
