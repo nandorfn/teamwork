@@ -41,8 +41,9 @@ model Membership {
 model Project {
   id          Int       @id @default(autoincrement())
   name        String
-  description String?
-  icon        String?
+  key         String
+  description String?   @default("")
+  icon        String?   @default("")
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   workflows   Workflow[]

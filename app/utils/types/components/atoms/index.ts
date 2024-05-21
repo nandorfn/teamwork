@@ -19,3 +19,9 @@ export type TOptionSelect = {
   value: string;
   class: string;
 }
+
+export type TSvg = {
+  fill: string;
+  width?: string;
+  height?: string;
+}

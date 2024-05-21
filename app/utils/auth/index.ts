@@ -28,7 +28,8 @@ export const checkUserLogin = async () => {
   return user;
 }
 
-export const verifyCookie = async (cookie: string) => {
+export const verifyCookie = async (req: Request) => {
+  const cookie = req.headers.get('cookie');
   if (cookie) {
     const cookies = cookie?.split(';')
     const tokenString = cookies?.find(str => str.startsWith('token='));

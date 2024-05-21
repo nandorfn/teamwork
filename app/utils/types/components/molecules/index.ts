@@ -41,10 +41,22 @@ export type TIssueContainer = {
 export type TModal = {
   title: string;
   childrenContent: React.ReactNode;
-  childrenFooter: React.ReactNode;
+  childrenFooter?: React.ReactNode;
   childrenTrigger: React.ReactNode;
+  open?: boolean;
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export type TBacklogForm = {
   backlogStatus: string;
+}
+
+export type TProjectList = {
+  id: number;
+  name: string;
+  key: string;
+  description?: null | string;
+  icon?: null | string,
+  createdAt: string;
+  updatedAt: string;
 }

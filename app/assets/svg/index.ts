@@ -5,6 +5,7 @@ import settingIcon from './setting.svg';
 import taskIcon from './task.svg';
 import chatIcon from './chat.svg';
 import plusIcon from './plus.svg';
+import chevronUpDown from './chevron-up-down.svg';
 
 // fill
 import kanbanFill from './kanban-fill.svg';
@@ -52,5 +53,6 @@ export {
   storyIcon,
   bugIcon,
   epicIcon,
-  taskIcon2
+  taskIcon2,
+  chevronUpDown
 }

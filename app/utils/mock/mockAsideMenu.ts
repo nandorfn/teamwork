@@ -3,9 +3,6 @@ import {
   chatDark,
   chatFill,
   chatIcon,
-  kanbanDark,
-  kanbanFill,
-  kanbanIcon,
   taskDark,
   taskFill,
   taskIcon
@@ -28,12 +25,4 @@ export const menus: TMenu[] = [
     iconFill: chatFill,
     iconDark: chatDark,
   },
-  {
-    id: 'project',
-    label: 'Project',
-    href: '/projects',
-    icon: kanbanIcon,
-    iconFill: kanbanFill,
-    iconDark: kanbanDark
-  }
 ];
