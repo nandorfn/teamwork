@@ -78,7 +78,7 @@ const Aside = () => {
               <Link
                 key={item?.id}
                 href={item?.href}
-                onClick={() => setActive(item.id)}
+                onClick={() => setActive(item?.id)}
               >
                 <li className="flex justify-between cursor-pointer items-center">
                   <div className={cn("flex items-center gap-3", collapsed && 'mx-auto')}>

@@ -9,7 +9,12 @@ export type TInput = {
   className?: string;
 }
 
-export type TSelect = TInput & {
+export type TSelect = {
+  name: string;
+  placeholder: string;
+  control: Control<any>;
+  required: boolean;
+  className?: string;
   datas: any;
   watch?: UseFormWatch<any>;
 }
