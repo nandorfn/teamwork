@@ -15,6 +15,7 @@ const InputLabel = ({
         {label}
       </label>
       <Input
+        className="border-zinc-800"
         name={name}
         control={control}
         required={required}

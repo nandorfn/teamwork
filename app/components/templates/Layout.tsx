@@ -1,6 +1,6 @@
 'use client';
 import { useSelectedLayoutSegments } from "next/navigation";
-import { Aside, Navbar } from "../molecules";
+import { Aside } from "../molecules";
 
 const Layout = ({
   children

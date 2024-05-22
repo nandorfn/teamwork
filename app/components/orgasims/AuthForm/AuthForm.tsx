@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { Button } from "@components/ui/button";
-import { InputLabel } from "@components/molecules";
+import { InputLabel, Loader } from "@components/molecules";
 import { TAuthForm } from "@organisms/types";
 
 const AuthForm = ({
+  isLoading,
+  disabled,
+  errors,
   isRegister,
   control,
   handleSubmit
@@ -11,29 +14,73 @@ const AuthForm = ({
   return (
     <>
       <div className="flex items-center h-screen w-screen shadow-lg">
+        {isLoading &&
+          <Loader />
+        }
         <form
           className="flex flex-col bg-gray-900 w-96 p-8 rounded-lg gap-3 mx-auto my-auto"
           onSubmit={handleSubmit}
         >
           <h1 className="text-3xl">{isRegister ? 'Welcome!' : 'Welcome again!'}</h1>
-          <InputLabel
-            name="email"
-            type="text"
-            label="Email Address"
-            control={control}
-            required
-            placeholder="Your email address"
-          />
-          <InputLabel
-            name="password"
-            type="password"
-            label="Password"
-            control={control}
-            required
-            placeholder="Your password"
-          />
+          {isRegister &&
+            <>
+              <InputLabel
+                name="name"
+                type="text"
+                label="Name"
+                control={control}
+                required
+                placeholder="Your name"
+              />
+              <p className=" text-red-500">{errors?.name?.message}</p>
+            </>
+          }
 
-          <Button type="submit">{isRegister ? 'Register' : 'Login'}</Button>
+          <div>
+            <InputLabel
+              name="email"
+              type="text"
+              label="Email Address"
+              control={control}
+              required
+              placeholder="Your email address"
+            />
+            <p className=" text-red-500">{errors?.email?.message}</p>
+          </div>
+
+          <div>
+            <InputLabel
+              name="password"
+              type="password"
+              label="Password"
+              control={control}
+              required
+              placeholder="Your password"
+            />
+            <p className=" text-red-500">{errors?.password?.message}</p>
+          </div>
+          {isRegister &&
+            <>
+              <InputLabel
+                name="confirmPassword"
+                type="password"
+                label="Confirm Password"
+                control={control}
+                required
+                placeholder="Confirm password"
+              />
+              <p className=" text-red-500">{errors?.confirmPassword?.message}</p>
+            </>
+          }
+
+          <Button
+            disabled={disabled}
+            type="submit"
+          >{isRegister
+            ? 'Register'
+            : 'Login'
+            }
+          </Button>
 
           {isRegister ? (
             <div className="flex gap-2">

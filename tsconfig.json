@@ -25,8 +25,15 @@
       "@molecules/types": ["./app/utils/types/components/molecules/index.ts"],
       "@organisms/types": ["./app/utils/types/components/organisms/index.ts"],
       "@pages/types": ["./app/utils/types/components/pages/index.ts"],
+      "@server/types": ["./app/utils/types/server/index.ts"],
+      "@schemas/*": ["./app/utils/schemas/*"],
       "@defaultValues": ["./app/utils/defaultValues/index.ts"],
-      "@func": ["./app/utils/func/index.ts"]
+      "@func": ["./app/utils/func/index.ts"],
+      "@auth": ["./app/utils/auth/index.ts"],
+      "@http": ["./app/utils/http/index.ts"],
+      "@lib/*": ["./app/lib/*"],
+      "@serverActions": ["./app/utils/serverActions/index.ts"],
+      "@mocks/*": ["./app/utils/mock/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "tailwind.config.js"],

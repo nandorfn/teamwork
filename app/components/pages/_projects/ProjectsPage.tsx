@@ -16,18 +16,13 @@ const ProjectsPage = ({
   children: React.ReactNode
 }) => {
   const path = usePathname();
-  const router = useRouter();
-  const currentPath = path.split("/")[2];
+  const currentPath = path.split("/")[3];
   const submenus = ["timeline", "backlog", "board"];
 
-  useEffect(() => {
-    if (!currentPath) {
-      router.replace('/projects/timeline')
-    }
-  }, [currentPath]);
+  if (!path?.split('/')[2]) return null;
 
   return (
-    <div className="flex flex-col pt-8 gap-8 w-[calc(100vw-192.5px)]">
+    <div className="flex flex-col pt-8 gap-8 w-full">
       <div className="px-8 flex flex-row justify-between items-center">
         <div>
           <Link href={'/projects'}>Projects</Link>
@@ -40,13 +35,13 @@ const ProjectsPage = ({
             </Link>
           }
         </div>
-        
+
         <div className="flex flex-row gap-3">
-        <div className="flex flex-row relative">
-        <Avatar src={dummyAvatar} className="z-[1]" />
-        <Avatar src={dummyAvatar} className="z-[2] -ml-1" />
-        <Avatar src={dummyAvatar} className="z-[3] -ml-2" />
-      </div>
+          <div className="flex flex-row relative">
+            <Avatar src={dummyAvatar} className="z-[1]" />
+            <Avatar src={dummyAvatar} className="z-[2] -ml-1" />
+            <Avatar src={dummyAvatar} className="z-[3] -ml-2" />
+          </div>
           <Button variant={'secondary'} size={'xs'}>Invite</Button>
         </div>
       </div>
@@ -57,7 +52,7 @@ const ProjectsPage = ({
           {submenus?.map((item, index) => (
             <Link
               key={index}
-              href={`/projects/${item}`}
+              href={`/projects/${path?.split('/')[2]}/${item}`}
               className={cn("capitalize text-base-100 pb-4 pt-2", {
                 "border-b border-green-500 transition-colors duration-300 animate-in dark:text-white text-black": currentPath === item
               })}            >
@@ -66,10 +61,10 @@ const ProjectsPage = ({
           ))
           }
         </div>
-        <Modal 
-          title="Create Issue" 
+        <Modal
+          title="Create Issue"
           childrenTrigger={
-            <p className="px-6 bg-[#586AEA] rounded-md py-1">Add Task</p>
+            <Button variant={'primary'}>Add Task</Button>
           }
           childrenContent={
             <CreateIssueForm />
@@ -77,8 +72,8 @@ const ProjectsPage = ({
           childrenFooter={
             <Button variant={'default'}>Create Issue</Button>
           }
-          />
-        
+        />
+
       </div>
       <div className="overflow-auto w-full px-8">
         {children}

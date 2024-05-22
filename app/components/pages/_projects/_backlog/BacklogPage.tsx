@@ -35,93 +35,93 @@ const move = ({
 };
 
 const BacklogPage: React.FC = () => {
-  const [schema, setSchema] = useState([
-    {
-      id: 'todo1',
-      title: 'To-dos',
-      data: [
-        {
-          id: "123",
-          type: "epic",
-          text: "123-text",
-          parent: {
-            name: "Feature 1",
-            color: "blue",
+    const [schema, setSchema] = useState([
+      {
+        id: 'sprint1',
+        title: 'Sprint',
+        data: [
+          {
+            id: "123",
+            type: "epic",
+            text: "123-text",
+            parent: {
+              name: "Feature 1",
+              color: "blue",
+            }
+          },
+          {
+            id: "345",
+            type: "story",
+            text: "345-text",
+            parent: {
+              name: "Feature 1",
+              color: "yellow",
+            }
+          },
+          {
+            id: "567",
+            type: "bug",
+            text: "567-text",
+            parent: {
+              name: "Feature 1",
+              color: "blue",
+            }
+          },
+          {
+            id: "789",
+            type: "task",
+            text: "789-text",
+            parent: {
+              name: "Feature 1",
+              color: "purple",
+            }
           }
-        },
-        {
-          id: "345",
-          type: "story",
-          text: "345-text",
-          parent: {
-            name: "Feature 1",
-            color: "yellow",
+        ]
+      },
+      {
+        id: 'sprint2',
+        title: 'Sprint2',
+        data: [
+          {
+            id: "111",
+            type: "task",
+            text: "123-text",
+            parent: {
+              name: "Feature 1",
+              color: "blue",
+            }
+          },
+          {
+            id: "222",
+            type: "task",
+            text: "345-text",
+            parent: {
+              name: "Feature 1",
+              color: "blue",
+            }
+          },
+          {
+            id: "333",
+            type: "epic",
+            text: "567-text",
+            parent: {
+              name: "Feature 1",
+              color: "blue",
+            }
+          },
+          {
+            id: "444",
+            type: "story",
+            text: "789-text",
+            parent: {
+              name: "Feature 1",
+              color: "blue",
+            }
           }
-        },
-        {
-          id: "567",
-          type: "bug",
-          text: "567-text",
-          parent: {
-            name: "Feature 1",
-            color: "blue",
-          }
-        },
-        {
-          id: "789",
-          type: "task",
-          text: "789-text",
-          parent: {
-            name: "Feature 1",
-            color: "purple",
-          }
-        }
-      ]
-    },
-    {
-      id: 'onprogress',
-      title: 'On Progress',
-      data: [
-        {
-          id: "111",
-          type: "task",
-          text: "123-text",
-          parent: {
-            name: "Feature 1",
-            color: "blue",
-          }
-        },
-        {
-          id: "222",
-          type: "task",
-          text: "345-text",
-          parent: {
-            name: "Feature 1",
-            color: "blue",
-          }
-        },
-        {
-          id: "333",
-          type: "epic",
-          text: "567-text",
-          parent: {
-            name: "Feature 1",
-            color: "blue",
-          }
-        },
-        {
-          id: "444",
-          type: "story",
-          text: "789-text",
-          parent: {
-            name: "Feature 1",
-            color: "blue",
-          }
-        }
-      ]
-    },
-  ]
-  );
+        ]
+      },
+    ]
+    );
 
   const handleSameListDrop = (
     listId: string,

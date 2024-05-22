@@ -1,4 +1,3 @@
-import { Button } from "@components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@components/ui/dialog";
 import { TModal } from "@molecules/types";
 
@@ -7,10 +6,12 @@ const Modal = ({
   childrenTrigger,
   childrenFooter,
   childrenContent,
+  setOpen,
+  open
 }: TModal) => {
   return (
-    <Dialog>
-      <DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
         {childrenTrigger}
       </DialogTrigger>
       <DialogContent>

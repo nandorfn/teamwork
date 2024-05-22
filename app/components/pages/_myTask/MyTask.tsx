@@ -1,8 +1,17 @@
+'use client';
 import { IssueCard, ProjectCard } from "@components/molecules";
 import { mockIssue } from "../../../utils/mock/mockIssueCard";
-import React from "react";
+import React, { useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
 const MyTask: React.FC = () => {
+  const router = useRouter();
+  const path = usePathname();
+  
+  useEffect(() => {
+    if(path === '/') router.replace('/my-task');
+  }, [path]);
+  
   return (
     <div className="flex flex-col p-4">
       <h1 className=" text-2xl">Recent Projects</h1>

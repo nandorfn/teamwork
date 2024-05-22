@@ -5,3 +5,5 @@ export * from "./InputLabel";
 export * from "./Card";
 export * from "./Modal";
 export * from "./DatePickerRange";
+export * from "./Loader";
+export * from "./LogoutToggle";
