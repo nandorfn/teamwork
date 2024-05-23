@@ -4,10 +4,11 @@ import { Button } from "@components/ui/button";
 import { cn } from "@func";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import dummyAvatar from "@assets/dummy/avatar.svg"
 import { Modal } from "@components/molecules";
 import CreateIssueForm from "@components/orgasims/Form/CreateIssueForm/CreateIssueForm";
+import { DialogClose } from '@components/ui/dialog';
 
 
 const ProjectsPage = ({
@@ -18,8 +19,11 @@ const ProjectsPage = ({
   const path = usePathname();
   const currentPath = path.split("/")[3];
   const submenus = ["timeline", "backlog", "board"];
+  const [disabled, setDisabled] = useState(false);
 
   if (!path?.split('/')[2]) return null;
+
+  const refForm = useRef<HTMLFormElement>(null);
 
   return (
     <div className="flex flex-col pt-8 gap-8 w-full">
@@ -67,10 +71,17 @@ const ProjectsPage = ({
             <Button variant={'primary'}>Add Task</Button>
           }
           childrenContent={
-            <CreateIssueForm />
+            <CreateIssueForm setDisabled={setDisabled} refForm={refForm} />
           }
           childrenFooter={
-            <Button variant={'default'}>Create Issue</Button>
+            <DialogClose asChild>
+              <Button
+                disabled={disabled}
+                onClick={() => refForm?.current?.requestSubmit()}
+                variant={'default'}>
+                Create Issue
+              </Button>
+            </DialogClose>
           }
         />
 

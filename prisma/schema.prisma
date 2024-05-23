@@ -75,13 +75,13 @@ model WorkflowStatus {
 
 model Issue {
   id          Int       @id @default(autoincrement())
-  title       String
+  summary     String
   description String?
   statusId    Int
   assigneeId  Int
   reporterId  Int
   projectId   Int
-  issueType   String?
+  type        String?
   color       String?
   sprintId    Int?
   parentId    Int?

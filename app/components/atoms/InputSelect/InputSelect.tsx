@@ -15,6 +15,7 @@ const InputSelect = ({
   placeholder,
   className,
   datas,
+  defaultValue
 }: TSelect) => {
   return (
     <Controller
@@ -23,10 +24,11 @@ const InputSelect = ({
       rules={{
         required: required,
       }}
+      defaultValue={defaultValue}
       render={({ field }) =>
         <Select onValueChange={field.onChange}>
           <SelectTrigger className={className}>
-            <SelectValue placeholder={placeholder} />
+            <SelectValue placeholder={defaultValue} />
           </SelectTrigger>
           <SelectContent>
             {datas?.map((item: TOptionSelect, index: number) => (

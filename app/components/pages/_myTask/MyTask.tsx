@@ -13,9 +13,9 @@ const MyTask: React.FC = () => {
   }, [path]);
   
   return (
-    <div className="flex flex-col p-4">
+    <div className="flex flex-col px-6 py-4 w-full">
       <h1 className=" text-2xl">Recent Projects</h1>
-      <div className="flex flex-row gap-3 overflow-x-auto w-[calc(100vw-230px)]">
+      <div className="flex flex-row gap-3 overflow-x-auto">
         <ProjectCard />
         <ProjectCard />
         <ProjectCard />

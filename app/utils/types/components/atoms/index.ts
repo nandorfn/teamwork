@@ -16,6 +16,7 @@ export type TSelect = {
   required: boolean;
   className?: string;
   datas: any;
+  defaultValue?: string | null;
   watch?: UseFormWatch<any>;
 }
 
@@ -29,4 +30,20 @@ export type TSvg = {
   fill: string;
   width?: string;
   height?: string;
+}
+
+export type TTextarea = {
+  name: string;
+  placeholder: string;
+  control: Control<any>;
+  required: boolean;
+  className?: string;
+}
+
+export type TSelectLabel = TSelect & {
+  label: string;
+}
+
+export type TTextareaLabel = TTextarea & {
+  label: string;
 }

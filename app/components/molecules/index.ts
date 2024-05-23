@@ -6,4 +6,6 @@ export * from "./Card";
 export * from "./Modal";
 export * from "./DatePickerRange";
 export * from "./Loader";
+export * from "./TextareaLabel";
 export * from "./LogoutToggle";
+export * from "./SelectLabel";
