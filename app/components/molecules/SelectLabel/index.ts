@@ -1,3 +1,3 @@
-import SelectLabel from './SelectLabel';
+import SelectLabel from "./SelectLabel";
 
-export { SelectLabel }
+export { SelectLabel };

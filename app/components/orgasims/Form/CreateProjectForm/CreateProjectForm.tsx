@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState } from "react";
 import { InputLabel, Loader } from "@components/molecules";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -21,8 +21,8 @@ const CreateProjectForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetState
   } = useForm<TProjectForm>({
     resolver: zodResolver(projectSchema),
     defaultValues: {
-      name: '',
-      key: '',
+      name: "",
+      key: "",
     }
   });
 
@@ -30,11 +30,11 @@ const CreateProjectForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetState
   
   const onSubmit: SubmitHandler<TProjectForm> = async (formData: TProjectForm) => {
     setLoading(true);
-    axios.post('/api/memberships', formData)
+    axios.post("/api/memberships", formData)
       .then(response => {
         if (response?.status === 201) {
           setOpen(false);
-          queryClient.invalidateQueries({ queryKey: ['projectMember'] })
+          queryClient.invalidateQueries({ queryKey: ["projectMember"] });
         }
       })
       .catch(error => {
@@ -53,15 +53,15 @@ const CreateProjectForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetState
           } else {
             setError("key", {
               type: "server",
-              message: 'Something went wrong',
+              message: "Something went wrong",
             });
           }
         }
       })
       .finally(() => {
         setLoading(false);
-      })
-  }
+      });
+  };
 
   return (
     <div>
@@ -101,7 +101,7 @@ const CreateProjectForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetState
             onClick={handleSubmit(onSubmit)}
             disabled={!isValid || loading}
             type="submit"
-            variant={'primary'}
+            variant={"primary"}
             className="w-20">
             Create
           </Button>

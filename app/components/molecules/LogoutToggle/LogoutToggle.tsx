@@ -11,19 +11,18 @@ const LogoutToggle: React.FC = () => {
   const router = useRouter();
   const handleLogout = async () => {
     setLoading(true);
-    await axios.get('/api/logout')
+    await axios.get("/api/logout")
       .then((res) => {
-        console.log(res)
         if (res.status === 200) {
-          router.refresh()
+          router.refresh();
         }
       }
     )
     .catch((err) => console.error(err))
     .finally(() => {
         setLoading(false);
-      })
-  }
+      });
+  };
   return (
     <>
       {loading &&
@@ -32,7 +31,7 @@ const LogoutToggle: React.FC = () => {
       <Modal
         title="Logout"
         childrenTrigger={
-          <Button className="w-full" variant={'outline'}>Logout</Button>
+          <Button className="w-full" variant={"outline"}>Logout</Button>
         }
         childrenContent={
           <p>Are you sure you want to log out?</p>
@@ -45,7 +44,7 @@ const LogoutToggle: React.FC = () => {
             <Button
               disabled={loading}
               onClick={handleLogout}
-              variant={'primary'}
+              variant={"primary"}
               className="w-20">
               Yes
             </Button>

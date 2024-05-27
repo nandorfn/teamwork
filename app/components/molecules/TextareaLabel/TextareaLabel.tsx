@@ -1,5 +1,5 @@
-import { TTextareaLabel } from '@atoms/types';
-import { Textarea } from '@components/atoms';
+import { TTextareaLabel } from "@atoms/types";
+import { Textarea } from "@components/atoms";
 
 const TextareaLabel = ({
   label,

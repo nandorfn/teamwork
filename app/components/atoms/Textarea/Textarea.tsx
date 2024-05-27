@@ -1,6 +1,6 @@
-import { TTextarea } from '@atoms/types';
-import { cn } from '@func';
-import { Controller } from 'react-hook-form';
+import { cn } from "@func";
+import { TTextarea } from "@atoms/types";
+import { Controller } from "react-hook-form";
 
 const Textarea = ({ 
   className,
@@ -19,7 +19,7 @@ const Textarea = ({
         render={({ field }) =>
           <textarea
             {...field}
-            className={cn('bg-transparent border rounded-md p-2', className)}
+            className={cn("bg-transparent border rounded-md p-2", className)}
             placeholder={placeholder}
           />
         }

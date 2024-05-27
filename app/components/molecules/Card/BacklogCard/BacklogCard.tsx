@@ -1,7 +1,7 @@
-'use client'
+"use client";
 import { TBacklogForm, TTodoCard } from "@molecules/types";
 import { Avatar, Badge, Icon, InputSelect } from "@components/atoms";
-import dummyAvatar from "@assets/dummy/avatar.svg"
+import dummyAvatar from "@assets/dummy/avatar.svg";
 import { bugIcon, epicIcon, storyIcon, taskIcon2 } from "@assets/svg";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
@@ -20,13 +20,13 @@ const BacklogCard = ({
     watch
   } = useForm<TBacklogForm>({
     defaultValues: {
-      [data?.id]: 'todo',
+      [data?.id]: "todo",
     },
-  })
+  });
   const iconIssue = (type: string) => {
     switch(type?.toLowerCase()) {
       case "task":
-        return taskIcon2
+        return taskIcon2;
       case "epic":
         return epicIcon;
       case "bug":
@@ -36,9 +36,9 @@ const BacklogCard = ({
       default: 
         return taskIcon2;
     }
-  }
-  const path = usePathname()?.split('/')
-  const currentProjectId = path[2]
+  };
+  const path = usePathname()?.split("/");
+  const currentProjectId = path[2];
   const {
     data: workflowDrop,
     isLoading: workflowLoading
@@ -47,13 +47,13 @@ const BacklogCard = ({
     queryFn: () => fetchData(`/api/workflows/${currentProjectId}`)
   });
     
-  const [color, setColor] = useState('');
+  const [color, setColor] = useState("");
   useEffect(() => {
     const selectedColor = workflowDrop?.find((item: TOptionSelect) => item.value === watch(data?.id));
     if (selectedColor) {
-      setColor(selectedColor.class)
+      setColor(selectedColor.class);
     }
-  }, [watch(data?.id)]);
+  }, [watch, data?.id, workflowDrop]);
 
   return (
     <div ref={provided.innerRef}

@@ -29,9 +29,9 @@ import { kanbanDark, kanbanFill, kanbanIcon } from "@assets/svg";
 const Aside = () => {
   const path = usePathname();
   const { theme } = useTheme();
-  const currentProject = path?.split('/')[2];
+  const currentProject = path?.split("/")[2];
   
-  const [active, setActive] = useState<string>('task');
+  const [active, setActive] = useState<string>("task");
   const [activeProject, setActiveProject] = useState<number | null>(null);
   const [collapsed, setCollapsed] = useState<boolean>(false);
 
@@ -39,22 +39,22 @@ const Aside = () => {
     data: projects,
     isLoading: isProjectLoading,
   } = useQuery({
-    queryKey: ['projectMember'],
-    queryFn: () => fetchData('/api/memberships'),
+    queryKey: ["projectMember"],
+    queryFn: () => fetchData("/api/memberships"),
   });
 
   return (
     <div className={cn("border-r relative border-dark-grey h-screen flex flex-col justify-between",
       collapsed
-        ? 'py-6 px-2'
-        : ' min-w-64 p-6'
+        ? "py-6 px-2"
+        : " min-w-64 p-6"
     )}
     >
       <Button
         className="absolute -right-4"
         onClick={() => setCollapsed(!collapsed)}
-        variant={'outline'}
-        size={'iconXs'}
+        variant={"outline"}
+        size={"iconXs"}
       >
         {collapsed
           ? (
@@ -65,7 +65,7 @@ const Aside = () => {
         }
       </Button>
 
-      <div className={cn("flex flex-col gap-8", collapsed && 'mx-auto')}>
+      <div className={cn("flex flex-col gap-8", collapsed && "mx-auto")}>
         {collapsed ? (
           <TeamworkIcon />
         ) : (
@@ -81,11 +81,11 @@ const Aside = () => {
                 onClick={() => setActive(item?.id)}
               >
                 <li className="flex justify-between cursor-pointer items-center">
-                  <div className={cn("flex items-center gap-3", collapsed && 'mx-auto')}>
+                  <div className={cn("flex items-center gap-3", collapsed && "mx-auto")}>
                     <Icon
                       src={
                         item?.id === active
-                          ? theme === 'light'
+                          ? theme === "light"
                             ? item?.iconDark
                             : item?.iconFill
                           : item?.icon
@@ -97,8 +97,8 @@ const Aside = () => {
                     {!collapsed &&
                       <p className={cn("text-nowrap text-[#A1A1A1]  hover:text-black dark:hover:text-white",
                         item?.id === active
-                          ? 'dark:text-white text-black font-medium'
-                          : ''
+                          ? "dark:text-white text-black font-medium"
+                          : ""
                       )}
                       >
                         {item?.label}
@@ -112,20 +112,20 @@ const Aside = () => {
         </ul>
 
         <Link
-          onClick={() => setActive('project')}
-          href={currentProject ? `/projects/${currentProject}` : '/projects'}
+          onClick={() => setActive("project")}
+          href={currentProject ? `/projects/${currentProject}` : "/projects"}
         >
           <Collapsible className="flex flex-col gap-2 cursor-pointer ">
-            <div className={cn("flex items-center  gap-1", collapsed && 'mx-auto')}>
+            <div className={cn("flex items-center  gap-1", collapsed && "mx-auto")}>
               <Icon
                 src={
-                  active === 'project'
-                    ? theme === 'light'
+                  active === "project"
+                    ? theme === "light"
                       ? kanbanDark
                       : kanbanFill
                     : kanbanIcon
                 }
-                alt={''}
+                alt={""}
                 width={collapsed ? 30 : 20}
                 height={collapsed ? 30 : 20}
               />
@@ -134,18 +134,18 @@ const Aside = () => {
                 <div className="flex flex-row w-full justify-between items-center">
                   <CollapsibleTrigger asChild>
                     <Button
-                      size={'xs'}
+                      size={"xs"}
                       className="px-2"
-                      variant={'ghost'}
+                      variant={"ghost"}
                     >
                       <p className={cn("text-nowrap text-[#A1A1A1] mr-2 text-base hover:text-black dark:hover:text-white",
-                        active === 'project'
-                          ? 'dark:text-white text-black font-medium'
-                          : ''
+                        active === "project"
+                          ? "dark:text-white text-black font-medium"
+                          : ""
                       )}>
-                        {'Projects'}
+                        {"Projects"}
                       </p>
-                      <ChevronUpDown fill={'fill-dark dark:fill-white'} />
+                      <ChevronUpDown fill={"fill-dark dark:fill-white"} />
                     </Button>
                   </CollapsibleTrigger>
                   <ModalCreateProject />
@@ -169,14 +169,14 @@ const Aside = () => {
                         <SquareIcon
                           fill={cn("fill-blue-400",
                             item?.id === activeProject
-                            && 'bg-blue-400 rounded-xl'
+                            && "bg-blue-400 rounded-xl"
                           )}
                         />
                         <p
                           className={cn("",
                             item?.id === activeProject
-                              ? 'text-dark dark:text-white'
-                              : 'text-[#A1A1A1]'
+                              ? "text-dark dark:text-white"
+                              : "text-[#A1A1A1]"
                           )}
                         >
                           {item?.name}

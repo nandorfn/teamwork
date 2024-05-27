@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { useSelectedLayoutSegments } from "next/navigation";
 import { Aside } from "../molecules";
 
@@ -8,10 +8,10 @@ const Layout = ({
   children: React.ReactNode
 }) => {
   const segments = useSelectedLayoutSegments();
-  const withoutLayout = ["login", "forgot-password", "register"]
+  const withoutLayout = ["login", "forgot-password", "register"];
   
   if (withoutLayout.includes(segments[1])) {
-    return (children)
+    return (children);
   }
   
   return (

@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import { TLogin } from "@organisms/types";
 import { useRouter } from "next/navigation";
-import { api, httpMetaMessages } from "@http";
+import { api, getHttpMetaMessage } from "@http";
 import { AuthForm } from "@components/orgasims";
 import { loginSchema } from "@schemas/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,6 +21,7 @@ const LoginPage: React.FC = () => {
 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const message = getHttpMetaMessage(500, "");
   const onSubmit: SubmitHandler<TLogin> = (formData: TLogin) => { 
     setLoading(true);
     axios.post(api.login, formData)
@@ -46,7 +47,7 @@ const LoginPage: React.FC = () => {
           } else {
             setError("password", {
               type: "server",
-              message: httpMetaMessages[500],
+              message,
             });          
           }
         }

@@ -1,5 +1,5 @@
 import { cn } from "@func";
-import { cva, type VariantProps } from "class-variance-authority"
+import { cva, type VariantProps } from "class-variance-authority";
 import React from "react";
 
 const badgeVariants = cva(
@@ -24,7 +24,7 @@ const badgeVariants = cva(
       size: "default"
     }
   }
-)
+);
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof badgeVariants> {
   text: string | number;
@@ -45,7 +45,7 @@ const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(({
       {text}
     </div>
   );
-})
+});
 
-Badge.displayName = "Badge"
+Badge.displayName = "Badge";
 export { Badge, badgeVariants };

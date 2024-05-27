@@ -1,17 +1,17 @@
 import { Avatar, Badge } from "@components/atoms";
-import dummyAvatar from "@assets/dummy/avatar.svg"
+import dummyAvatar from "@assets/dummy/avatar.svg";
 import React from "react";
 import { DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
 import { TTodoCard } from "@molecules/types";
 import { cn } from "@func";
 
 const TodoCard = ({ data, provided, snap }: TTodoCard) => {
-  const badges = ["Slicing", "UI/UX"]
+  const badges = ["Slicing", "UI/UX"];
   return (
     <div ref={provided.innerRef}
       {...provided.dragHandleProps}
       {...provided.draggableProps}
-      className={cn("border rounded-lg p-3 gap-3 flex flex-col bg-dark-grey", snap.isDragging ? 'border-white' : '')}
+      className={cn("border rounded-lg p-3 gap-3 flex flex-col bg-dark-grey", snap.isDragging ? "border-white" : "")}
       style={{
         ...provided.draggableProps.style 
       }}

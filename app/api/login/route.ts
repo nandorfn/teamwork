@@ -2,11 +2,14 @@ import {
   resKey,
   responseOK,
   responseError,
+  getHttpMetaMessage,
+  ResponseErrorJSON,
 } from "@http";
 import prisma from "@lib/prisma";
 let bcrypt = require("bcryptjs");
 import { applyJWT } from "@auth";
 import { loginSchema } from "@schemas/authSchemas";
+import { NextResponse } from "next/server";
 
 export const POST = async (req: Request) => {
   const body: unknown = await req.json();
@@ -20,9 +23,15 @@ export const POST = async (req: Request) => {
         [issue.path[0]]: issue.message
       };
     });
-    return responseError(400);
+    const message = getHttpMetaMessage(400, "");
+    return NextResponse.json(
+      ResponseErrorJSON(
+        zodErrors,
+        400,
+        message
+      ), { status: 400 }
+    );
   }
-
   const user = await prisma.user.findUnique({
     where: {
       email: result.data.email,

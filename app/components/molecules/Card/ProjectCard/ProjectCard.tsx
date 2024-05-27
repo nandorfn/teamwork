@@ -3,7 +3,7 @@ import Link from "next/link";
 const ProjectCard: React.FC = () => {
   return (
     <Link 
-      href={'/'} 
+      href={"/"} 
       className="flex flex-col gap-2 min-w-80 border dark:hover:border-blue-500 hover:shadow-md dark:hover:shadow-blue-900 dark:bg-zinc-800 rounded-md px-4 py-4 mb-4">
       <div>
         <h2 className="px-2 text-xl font-medium">Project 2</h2>

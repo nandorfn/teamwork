@@ -1,9 +1,11 @@
-import { ProjectsPage } from "@components/pages"
+import { ProjectsPage } from "@components/pages";
 
 export default function ProjectsLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return <ProjectsPage>{children}</ProjectsPage>
+  return (
+    <ProjectsPage>{children}</ProjectsPage>
+  );
 }

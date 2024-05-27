@@ -21,7 +21,7 @@ const AuthForm = ({
           className="flex flex-col bg-gray-900 w-96 p-8 rounded-lg gap-3 mx-auto my-auto"
           onSubmit={handleSubmit}
         >
-          <h1 className="text-3xl">{isRegister ? 'Welcome!' : 'Welcome again!'}</h1>
+          <h1 className="text-3xl">{isRegister ? "Welcome!" : "Welcome again!"}</h1>
           {isRegister &&
             <>
               <InputLabel
@@ -77,24 +77,24 @@ const AuthForm = ({
             disabled={disabled}
             type="submit"
           >{isRegister
-            ? 'Register'
-            : 'Login'
+            ? "Register"
+            : "Login"
             }
           </Button>
 
           {isRegister ? (
             <div className="flex gap-2">
               <p className="text-base">Already have an account?</p>
-              <Link className="hover:font-medium" href={'/login'}>
+              <Link className="hover:font-medium" href={"/login"}>
                 Login here
               </Link>
             </div>
           ) : (
             <div className=" flex justify-between text">
-              <Link className={'text-base hover:text-black dark:hover:text-white'} href={'/forgot-password'}>
+              <Link className={"text-base hover:text-black dark:hover:text-white"} href={"/forgot-password"}>
                 Can&apos;t login?
               </Link>
-              <Link className={'text-base hover:text-black dark:hover:text-white'} href={'/register'}>
+              <Link className={"text-base hover:text-black dark:hover:text-white"} href={"/register"}>
                 Create an account
               </Link>
             </div>

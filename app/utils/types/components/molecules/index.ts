@@ -1,6 +1,6 @@
-import { TInput } from "@atoms/types"
-import { DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd"
-import { StaticImageData } from "next/image"
+import { TInput } from "@atoms/types";
+import { DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
+import { StaticImageData } from "next/image";
 
 export type IconTypes = {
   src: StaticImageData,

@@ -1,3 +1,3 @@
 import ModalCreateProject from "./ModalCreateProject";
 
-export { ModalCreateProject }
+export { ModalCreateProject };

@@ -1,3 +1,3 @@
-import TextareaLabel from './TextareaLabel';
+import TextareaLabel from "./TextareaLabel";
 
-export { TextareaLabel }
+export { TextareaLabel };

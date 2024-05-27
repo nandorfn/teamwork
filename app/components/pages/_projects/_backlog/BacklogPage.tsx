@@ -1,11 +1,11 @@
-'use client'
+"use client";
 import { BacklogCard, IssueContainerCard } from "@components/molecules";
 import { DragDropContext, Draggable, DropResult } from "@hello-pangea/dnd";
-import { fetchData } from '@http';
+import { fetchData } from "@http";
 import { TDroppable, TIssueItem, TMoveDroppableResult, TMoveFunc } from "@pages/types";
 import { SprintMapValue } from "@server/types";
-import { useQuery } from '@tanstack/react-query';
-import { usePathname } from 'next/navigation';
+import { useQuery } from "@tanstack/react-query";
+import { usePathname } from "next/navigation";
 import React, { Fragment, useState } from "react";
 
 const reorder = (
@@ -41,13 +41,13 @@ const move = ({
 const BacklogPage: React.FC = () => {
   
   const path = usePathname();
-  const projectId = path?.split('/')[2]
+  const projectId = path?.split("/")[2];
   
   const {
     data: issues,
     isLoading: isIssueLoading,
   } = useQuery({
-    queryKey: ['issues'],
+    queryKey: ["issues"],
     queryFn: () => fetchData(`/api/issues/${projectId}`),
   });
   

@@ -1,16 +1,16 @@
-'use client';
-import { IssueCard, ProjectCard } from "@components/molecules";
-import { mockIssue } from "../../../utils/mock/mockIssueCard";
+"use client";
 import React, { useEffect } from "react";
+import { mockIssue } from "@mocks/mockIssueCard";
 import { usePathname, useRouter } from "next/navigation";
+import { IssueCard, ProjectCard } from "@components/molecules";
 
 const MyTask: React.FC = () => {
   const router = useRouter();
   const path = usePathname();
   
   useEffect(() => {
-    if(path === '/') router.replace('/my-task');
-  }, [path]);
+    if(path === "/") router.replace("/my-task");
+  }, [path, router]);
   
   return (
     <div className="flex flex-col px-6 py-4 w-full">

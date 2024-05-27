@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import { Droppable, DroppableProvided, DroppableStateSnapshot } from "@hello-pangea/dnd";
 import { TIssueContainer } from "@molecules/types";
@@ -34,13 +34,13 @@ const IssueContainerCard = ({
             <div className="flex flex-row items-center gap-5">
               <Button
                 onClick={() => setIsCollapsed(!isCollapsed)}
-                variant={'ghost'}
+                variant={"ghost"}
                 className="p-0 m-0 hover:bg-black">
                 <Icon
                   src={
                     isCollapsed
-                      ? (theme === 'dark' ? caretDown : caretDownDark)
-                      : (theme === 'dark' ? caretRight : caretRightDark)
+                      ? (theme === "dark" ? caretDown : caretDownDark)
+                      : (theme === "dark" ? caretRight : caretRightDark)
                   }
                   width={20}
                   height={20}
@@ -63,13 +63,13 @@ const IssueContainerCard = ({
                     <Badge className="px-3 bg-blue-600" text="1" />
                     <Badge className="px-3 bg-emerald-600" text="2" />
                   </div>
-                  <Button className="font-semibold" variant={'secondary'} size={'xs'}>
+                  <Button className="font-semibold" variant={"secondary"} size={"xs"}>
                     Create sprint
                   </Button>
                 </div>
               }
-              <Button variant={'secondary'} size={'iconXs'}>
-                <Icon src={theme === 'dark' ? plusIcon : plusDark} alt="plus" width={16} height={16} />
+              <Button variant={"secondary"} size={"iconXs"}>
+                <Icon src={theme === "dark" ? plusIcon : plusDark} alt="plus" width={16} height={16} />
               </Button>
             </div>
           </div>

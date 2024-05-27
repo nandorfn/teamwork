@@ -1,3 +1,3 @@
 import LogoutToggle from "./LogoutToggle";
 
-export { LogoutToggle }
+export { LogoutToggle };

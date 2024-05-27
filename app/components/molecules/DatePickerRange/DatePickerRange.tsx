@@ -1,19 +1,19 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { addDays, format } from "date-fns"
-import { DateRange } from "react-day-picker"
+import * as React from "react";
+import { addDays, format } from "date-fns";
+import { DateRange } from "react-day-picker";
 
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@components/ui/popover"
-import { cn } from "@func"
-import { Button } from "@components/ui/button"
-import { Calendar } from "@components/ui/calendar"
-import { Icon } from "@components/atoms"
-import { calendar } from "@assets/svg"
+} from "@components/ui/popover";
+import { cn } from "@func";
+import { Button } from "@components/ui/button";
+import { Calendar } from "@components/ui/calendar";
+import { Icon } from "@components/atoms";
+import { calendar } from "@assets/svg";
 
 const DatePickerRange = ({
   className,
@@ -21,7 +21,7 @@ const DatePickerRange = ({
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: new Date(2022, 0, 20),
     to: addDays(new Date(2022, 0, 20), 20),
-  })
+  });
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -68,7 +68,7 @@ const DatePickerRange = ({
         </PopoverContent>
       </Popover>
     </div>
-  )
-}
+  );
+};
 
 export default DatePickerRange;

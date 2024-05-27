@@ -16,7 +16,7 @@ export const getWorkflowsDB = async (userId: string, projectId: string | number)
       id: true,
       name: true
     }
-  })
+  });
   
   const formatted = res?.map((item) => ({
     value: String(item?.id),
@@ -24,4 +24,4 @@ export const getWorkflowsDB = async (userId: string, projectId: string | number)
   }));
   
   return formatted;
-}
+};

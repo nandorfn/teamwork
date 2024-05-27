@@ -1,5 +1,5 @@
-import { TSelectLabel } from '@atoms/types';
-import { InputSelect } from '@components/atoms';
+import { TSelectLabel } from "@atoms/types";
+import { InputSelect } from "@components/atoms";
 
 const SelectLabel = ({
   label,

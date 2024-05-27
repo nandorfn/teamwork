@@ -14,7 +14,7 @@ const loaderVariants = cva(
             size: "base",
         }
     }
-)
+);
 
 export interface LoaderProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof loaderVariants> {}
 
@@ -36,8 +36,8 @@ const Loader = forwardRef<HTMLDivElement, LoaderProps>(({
         </div>
     );
 }
-)
+);
 
-Loader.displayName = "Loader"
+Loader.displayName = "Loader";
 
 export { Loader, loaderVariants };
