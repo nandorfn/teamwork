@@ -1,46 +1,34 @@
-import { NextResponse } from "next/server";
-import { createProjectDB, getAllProjects } from "../../db/memberships";
-import { verifyCookie } from "../../utils/auth";
-import { ResponseErrorJSON, ResponseJSON, httpMetaMessages } from "../../utils/http";
-import { TProjectForm, projectSchema } from "@schemas/projectSchemas";
+import {
+  resKey,
+  responseError,
+  responseOK,
+} from "@http";
+import {
+  getAllProjects,
+  createProjectDB,
+} from "@db/memberships";
 import { ZodIssue } from "zod";
+import { verifyCookie } from "@auth";
+import { TProjectForm, projectSchema } from "@schemas/projectSchemas";
 
 export const GET = async (req: Request) => {
   const verifiedToken = await verifyCookie(req);
-  if (!verifiedToken) {
-    return NextResponse.json({ errors: httpMetaMessages[401].denied }, { status: 401 });
-  }
+  if (!verifiedToken) return responseError(401, resKey.denied);
 
-  const result = await getAllProjects(verifiedToken?.id);
-  return NextResponse.json(
-    ResponseJSON(
-      result,
-      200,
-      httpMetaMessages[200].found
-    ), { status: 200 }
-  );
+  try {
+    const result = await getAllProjects(verifiedToken?.id);
+    return responseOK(result, 200, resKey.found);
+  } catch (error) {
+    return responseError(500);
+  }
 };
 
-export const POST = async (req: Request, res: Response) => {
+export const POST = async (req: Request) => {
   const verifiedToken = await verifyCookie(req);
-
-  if (!verifiedToken) {
-    return NextResponse.json(ResponseErrorJSON(
-      httpMetaMessages[401].denied,
-      401,
-      httpMetaMessages[401].denied
-    ), { status: 401 });
-  }
+  if (!verifiedToken) return responseError(401, resKey.denied);
 
   const body: TProjectForm = await req.json();
-  if (!body) {
-    return NextResponse.json(
-      ResponseErrorJSON(
-        httpMetaMessages[400],
-        400,
-        httpMetaMessages[400]
-      ), { status: 400 });
-  }
+  if (!body) return responseError(400);
 
   const result = projectSchema.safeParse(body);
   if (!result.success) {
@@ -52,27 +40,13 @@ export const POST = async (req: Request, res: Response) => {
       };
     });
 
-    return NextResponse.json(ResponseErrorJSON(
-      zodErrors,
-      400,
-      httpMetaMessages[400]
-    ), { status: 400 });
+    return responseError(400);
   }
 
   try {
     const data = await createProjectDB(body, verifiedToken);
-    return NextResponse.json(
-      ResponseJSON(
-        data,
-        201,
-        httpMetaMessages[201]
-      ), { status: 201 });
+    return responseOK(data, 201);
   } catch (error) {
-    return NextResponse.json(
-      ResponseErrorJSON(
-        [],
-        500,
-        httpMetaMessages[500]
-      ), { status: 500 });
+    return responseError(500);
   }
 };

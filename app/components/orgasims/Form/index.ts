@@ -1,7 +1,7 @@
-import CreateIssueForm from "./CreateIssueForm/CreateIssueForm";
-import CreateProjectForm from "./CreateProjectForm/CreateProjectForm";
+import { CreateIssueForm } from "./CreateIssueForm";
+import { CreateProjectForm } from "./CreateProjectForm";
 
 export {
   CreateIssueForm,
   CreateProjectForm
-}
+};

@@ -1,7 +1,10 @@
+import {
+  resKey,
+  responseOK,
+  responseError,
+} from "@http";
 import { verifyCookie } from "@auth";
-import { NextResponse } from "next/server";
-import { getIssueByProjectId } from "../../../db/issues";
-import { ResponseJSON, httpMetaMessages } from "@http";
+import { getIssueByProjectId } from "@db/issues";
 
 export const GET = async (req: Request, { params }: {
   params: {
@@ -9,18 +12,12 @@ export const GET = async (req: Request, { params }: {
   }
 }) => {
   const verifiedToken = await verifyCookie(req);
-  if (!verifiedToken) {
-    return NextResponse.json({
-      errors: httpMetaMessages[401].denied
-    }, { status: 401 });
+  if (!verifiedToken) return responseError(401, resKey.denied);
+
+  try {
+    const issue = await getIssueByProjectId(Number(params?.id));
+    return responseOK(issue, 200, resKey.found);
+  } catch (error) {
+    return responseError(500);
   }
-
-  const issue = await getIssueByProjectId(Number(params?.id));
-
-  return NextResponse.json(
-    ResponseJSON(
-      issue,
-      200,
-      httpMetaMessages[200].found
-    ), { status: 200 });
 };

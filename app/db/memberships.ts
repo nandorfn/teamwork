@@ -13,7 +13,7 @@ export const getAllProjects = async (userId: number) => {
   });
   
   return projects;
-}
+};
 
 export const createProjectDB = async (body: any, verifiedToken: JwtSchema) => {
     return await prisma.$transaction(async (prisma) => {
@@ -34,19 +34,19 @@ export const createProjectDB = async (body: any, verifiedToken: JwtSchema) => {
       await prisma.workflow.createMany({
         data: [
           {
-            name: 'Todo',
+            name: "Todo",
             projectId: newProject?.id
           },
           {
-            name: 'In Progress',
+            name: "In Progress",
             projectId: newProject?.id
           },
           {
-            name: 'Done',
+            name: "Done",
             projectId: newProject?.id
           },
         ]
-      })
+      });
       
       return newMember;
     });

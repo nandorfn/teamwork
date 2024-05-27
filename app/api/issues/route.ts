@@ -1,23 +1,18 @@
-import { verifyCookie } from "@auth";
-import { issueServer } from "@schemas/issueSchemas";
-import { NextResponse } from "next/server";
-import { createIssue } from "../../db/issues";
+import {
+  resKey,
+  responseOK,
+  responseError,
+} from "@http";
 import { ZodIssue } from "zod";
-import { ResponseJSON, httpMetaMessages } from "@http";
+import { verifyCookie } from "@auth";
+import { createIssue } from "@db/issues";
+import { issueServer } from "@schemas/issueSchemas";
 
-export const POST = async (req: Request, { params }: {
-  params: {
-    id: number
-  }
-}) => {
+export const POST = async (req: Request) => {
   const verifiedToken = await verifyCookie(req);
-  if (!verifiedToken) {
-    return NextResponse.json({
-      errors: httpMetaMessages[401].denied
-    }, { status: 401 });
-  }
+  if (!verifiedToken) return responseError(401, resKey.denied);
 
-  const body: any = await req.json();
+  const body: unknown = await req.json();
   const result = issueServer.safeParse(body);
   const { data, success, error } = result;
   let zodErrors = {};
@@ -29,27 +24,14 @@ export const POST = async (req: Request, { params }: {
         [issue.path[0]]: issue.message
       };
     });
-
-    return NextResponse.json({ errors: zodErrors }, { status: 400 });
+    return responseError(400);
   }
 
-  if (!data) {
-    return NextResponse.json({ errors: httpMetaMessages[400] }, { status: 400 });
-  }
-
+  if (!data) return responseError(400);
   try {
     const res = await createIssue(data);
-    return NextResponse.json(
-      ResponseJSON(
-        res,
-        200,
-        httpMetaMessages[201]
-      ), { status: 201 }
-    );
+    return responseOK(res, 201);
   } catch (error) {
-    return NextResponse.json({
-      errors: httpMetaMessages[500]
-    }, { status: 500 }
-    );
+    return responseError(500);
   }
 };

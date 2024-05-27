@@ -1,6 +1,5 @@
-import { NextResponse } from "next/server";
-import { getSprintDropdown } from "../../../db/sprint";
-import { ResponseErrorJSON, ResponseJSON, httpMetaMessages } from "@http";
+import { getSprintDropdown } from "@db/sprint";
+import { resKey, responseError, responseOK } from "@http";
 
 export const GET = async (req: Request, { params }: {
   params: {
@@ -9,17 +8,8 @@ export const GET = async (req: Request, { params }: {
 }) => {
   try {
     const sprints = await getSprintDropdown(Number(params?.id));
-
-    return NextResponse.json(ResponseJSON(
-      sprints,
-      200,
-      httpMetaMessages[200].found
-    ), { status: 200 }
-    );
+    return responseOK(sprints, 200, resKey.found);
   } catch (error) {
-    return NextResponse.json(ResponseErrorJSON(
-      { server: httpMetaMessages[404].notExist }, 404, httpMetaMessages[404].notExist),
-      { status: 404 }
-    );
+    return responseError(404, resKey.notExist);
   }
 };

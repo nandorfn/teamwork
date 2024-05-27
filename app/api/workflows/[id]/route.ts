@@ -1,7 +1,6 @@
 import { verifyCookie } from "@auth";
-import { NextResponse } from "next/server";
-import { getWorkflowsDB } from "../../../db/workflows";
-import { ResponseErrorJSON, ResponseJSON, httpMetaMessages } from "@http";
+import { getWorkflowsDB } from "@db/workflows";
+import { resKey, responseError, responseOK } from "@http";
 
 export const GET = async (req: Request, { params }: {
   params: {
@@ -9,22 +8,12 @@ export const GET = async (req: Request, { params }: {
   }
 }) => {
   const verifiedToken = await verifyCookie(req);
-
-  if (!verifiedToken) {
-    return NextResponse.json(ResponseErrorJSON(
-      { server: httpMetaMessages[401].denied },
-      401,
-      httpMetaMessages[401].denied
-    ), { status: 401 }
-    );
+  if (!verifiedToken) return responseError(401, resKey.denied);
+  
+  try {
+    const res = await getWorkflowsDB(verifiedToken?.userId, params?.id);
+    return responseOK(res, 200, resKey.found);
+  } catch (error) { 
+    return responseError(500);
   }
-
-  const res = await getWorkflowsDB(verifiedToken?.userId, params?.id);
-
-  return NextResponse.json(ResponseJSON(
-    res,
-    200,
-    httpMetaMessages[200].found
-  ), { status: 200 }
-  );
 };

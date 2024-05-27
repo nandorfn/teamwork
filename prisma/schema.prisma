@@ -73,7 +73,7 @@ model Issue {
   projectId       Int
   type            String?
   color           String?
-  rows            Int
+  row             Int
   sprintId        Int?
   parentId        Int?
   createdAt       DateTime  @default(now())

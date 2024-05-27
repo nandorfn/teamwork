@@ -1,19 +1,19 @@
-'use client';
+"use client";
 import axios from "axios";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { api, httpMetaMessages } from "@http";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { hashPass } from "@func";
 import { TRegister } from "@organisms/types";
 import { AuthForm } from "@components/orgasims";
 import { registerSchema } from "@schemas/authSchemas";
-import { useState } from "react";
 
 const RegisterPage: React.FC = () => {
   const {
     handleSubmit,
     control,
-    reset,
     setError,
     formState: { isLoading, errors, isValid }
   } = useForm<TRegister>({
@@ -24,23 +24,30 @@ const RegisterPage: React.FC = () => {
   const router = useRouter();
   const onSubmit: SubmitHandler<TRegister> = async (formData) => {
     setLoading(true);
-    const { salt, hashedPassword: password } = hashPass(formData.password);
+    const { 
+      salt, 
+      hashedPassword: password
+    } = hashPass(formData.password);
     const newData = {
       name: formData.name,
       email: formData.email,
       salt,
       password
-    }
-    axios.post('/api/register', newData)
+    };
+    axios.post(api.register, newData)
       .then(response => {
-        if (response.status === 200) {
-          router.push('/login')
+        console.log(response.status);
+        if (response.status === 201) {
+          router.push("/login");
         } else {
-          throw new Error('Submitting form failed');
+          setError("password", {
+            type: "server",
+            message: httpMetaMessages[500],
+          });;
         }
       })
       .catch(error => {
-        let { errors } = error?.response?.data
+        let { errors } = error?.response?.data;
         if (errors?.name) {
           setError("name", {
             type: "server",
@@ -58,13 +65,16 @@ const RegisterPage: React.FC = () => {
             message: errors?.password,
           });
         } else {
-          alert("Something went wrong");
+          setError("password", {
+            type: "server",
+            message: httpMetaMessages[500],
+          });
         }
       })
       .finally(() => {
         setLoading(false);
       });
-}
+};
 return (
   <AuthForm 
     isLoading={loading}

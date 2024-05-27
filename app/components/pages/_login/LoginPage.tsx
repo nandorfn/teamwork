@@ -1,36 +1,36 @@
-'use client'
-import { AuthForm } from "@components/orgasims";
-import { DFLogin } from "@defaultValues";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { TLogin } from "@organisms/types";
-import { loginSchema } from "@schemas/authSchemas";
+"use client";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { TLogin } from "@organisms/types";
+import { useRouter } from "next/navigation";
+import { api, httpMetaMessages } from "@http";
+import { AuthForm } from "@components/orgasims";
+import { loginSchema } from "@schemas/authSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 const LoginPage: React.FC = () => {
   const {
     handleSubmit,
     control,
-    reset,
     setError,
     formState: { errors }
   } = useForm<TLogin>({
     resolver: zodResolver(loginSchema)
-  })
+  });
 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const onSubmit: SubmitHandler<TLogin> = (formData: TLogin) => { 
     setLoading(true);
-    axios.post('/api/login', formData)
+    axios.post(api.login, formData)
       .then(response => {
-        if (response.data.status === 200) {
-          router.refresh()
+        if (response?.status === 200) {
+          router.refresh();
         }
       })
       .catch(error => {
+        console.log(error);
         if (error.response) {
           const { errors } = error?.response?.data;
           if (errors?.email) {
@@ -46,14 +46,14 @@ const LoginPage: React.FC = () => {
           } else {
             setError("password", {
               type: "server",
-              message: 'something went wrong',
+              message: httpMetaMessages[500],
             });          
           }
         }
       })
       .finally(() => {
         setLoading(false);
-      })
+      });
   };
   
   return (

@@ -1,12 +1,18 @@
-import { ResponseErrorJSON, ResponseJSON, httpMetaMessages } from "@http";
-import prisma from "@lib/prisma";
-import { TRegisterServer } from "@schemas/authSchemas";
-import { NextResponse } from "next/server";
-import { v4 as uuidv4 } from "uuid";
+import {
+  resKey,
+  responseOK,
+  responseError,
+  ResponseErrorJSON,
+  getHttpMetaMessage,
+} from "@http";
 import { ZodIssue } from "zod";
+import prisma from "@lib/prisma";
+import { v4 as uuidv4 } from "uuid";
+import { NextResponse } from "next/server";
+import { TRegisterServer } from "@schemas/authSchemas";
 
 export const POST = async (req: Request) => {
-  const body: any = await req.json();
+  const body: unknown = await req.json();
   const result = TRegisterServer.safeParse(body);
   const id = uuidv4();
 
@@ -16,11 +22,12 @@ export const POST = async (req: Request) => {
       zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };
     });
 
+    const message = getHttpMetaMessage(400, "");
     return NextResponse.json(
       ResponseErrorJSON(
         zodErrors,
         400,
-        httpMetaMessages[400]
+        message
       ), { status: 400 }
     );
   };
@@ -30,14 +37,8 @@ export const POST = async (req: Request) => {
       email: result.data.email
     }
   });
-
-  if (existingEmail) {
-    return NextResponse.json(ResponseErrorJSON(
-      { email: "Email is already registered!" }, 400, httpMetaMessages[400]),
-      { status: 400 }
-    );
-  }
-
+  if (existingEmail) return responseError(409, resKey.email);
+  
   try {
     await prisma.user.create({
       data: {
@@ -49,15 +50,8 @@ export const POST = async (req: Request) => {
         password: result.data.password,
       }
     });
-
-    return NextResponse.json(
-      ResponseJSON([], 201, httpMetaMessages[201]),
-      { status: 201 }
-    );
+    return responseOK([], 201);
   } catch (error) {
-    return NextResponse.json(ResponseErrorJSON(
-      { server: httpMetaMessages[500] }, 500, httpMetaMessages[500]),
-      { status: 500 }
-    );
+    return responseError(500);
   }
 };

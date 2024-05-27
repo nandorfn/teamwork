@@ -1,14 +1,11 @@
-import { ResponseJSON, httpMetaMessages } from "@http";
 import prisma from "@lib/prisma";
-import { NextResponse } from "next/server";
+import { resKey, responseError, responseOK } from "@http";
 
 export const GET = async () => {
-  const projects = await prisma.project.findMany();
-  return NextResponse.json(
-    ResponseJSON(
-      projects,
-      200,
-      httpMetaMessages[200].found
-    ), { status: 200 }
-  );
+  try {
+    const projects = await prisma.project.findMany();
+    return responseOK(projects, 200, resKey.found);
+  } catch (error) {
+    return responseError(500);
+  }
 };

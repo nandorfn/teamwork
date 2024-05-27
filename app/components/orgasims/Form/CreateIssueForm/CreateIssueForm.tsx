@@ -1,14 +1,14 @@
-import axios from 'axios';
-import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import axios from "axios";
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { DFIssue } from '@defaultValues';
-import { TCreateIssue } from '@organisms/types';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { TIssueForm, issueSchema } from '@schemas/issueSchemas';
+import { DFIssue } from "@defaultValues";
+import { TCreateIssue } from "@organisms/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { TIssueForm, issueSchema } from "@schemas/issueSchemas";
 import { InputLabel, SelectLabel, TextareaLabel } from "@components/molecules";
-import { useQuery } from '@tanstack/react-query';
-import { fetchData } from '@http';
+import { useQuery } from "@tanstack/react-query";
+import { fetchData } from "@http";
 
 const CreateIssueForm =  ({
   refForm,
@@ -41,7 +41,7 @@ const CreateIssueForm =  ({
       label: "Bug",
       value: "Bug",
     }
-  ]
+  ];
   const parentDropdown = [
     {
       label: "Parent1",
@@ -60,7 +60,7 @@ const CreateIssueForm =  ({
       value: "Parent4",
     },
 
-  ]
+  ];
   const assigneeDropdown = [
     {
       label: "Unassigned",
@@ -78,11 +78,11 @@ const CreateIssueForm =  ({
       label: "User 3",
       value: "User 4",
     }
-  ]
+  ];
   
   useEffect(() => {
-    setDisabled(!isValid)
-  }, [isValid]);
+    setDisabled(!isValid);
+  }, [isValid, setDisabled]);
   
   const path = usePathname();
   const currentProjectId = path.split("/")[2];
@@ -101,18 +101,18 @@ const CreateIssueForm =  ({
     queryKey: ["sprintDrop"],
     queryFn: () => fetchData(`/api/sprints/${currentProjectId}`)
   });
-  console.log(workflowDrop)
-  console.log(watch('status'))
+  console.log(workflowDrop);
+  console.log(watch("status"));
 
   const onSubmit: SubmitHandler<TIssueForm> = (data: TIssueForm) => {
     const newData = {
       ...data,
       projectId: currentProjectId,
-    }
+    };
 
-    console.log(newData)
-    axios.post('/api/issues', newData)
-  }
+    console.log(newData);
+    axios.post("/api/issues", newData);
+  };
   return (
     <form 
       ref={refForm}
@@ -135,7 +135,7 @@ const CreateIssueForm =  ({
         required
         className={" border-zinc-800 h-[42px]"}
         datas={issueTypeDropdown}
-        defaultValue={watch('issueType')}
+        defaultValue={watch("issueType")}
       />
       
       <SelectLabel
@@ -146,7 +146,7 @@ const CreateIssueForm =  ({
         isLoading={workflowLoading}
         className={" border-zinc-800 h-[42px]"}
         datas={workflowDrop}
-        defaultValue={watch('status')}
+        defaultValue={watch("status")}
       />
       
       <TextareaLabel 
@@ -164,7 +164,7 @@ const CreateIssueForm =  ({
         required
         className={" border-zinc-800 h-[42px]"}
         datas={assigneeDropdown}
-        defaultValue={watch('assigneeIssue')}
+        defaultValue={watch("assigneeIssue")}
       />
       <SelectLabel
         label='Parent'
@@ -173,7 +173,7 @@ const CreateIssueForm =  ({
         required
         className={" border-zinc-800 h-[42px]"}
         datas={parentDropdown}
-        defaultValue={watch('parent')}
+        defaultValue={watch("parent")}
       />
       <SelectLabel
         label='Sprint'
@@ -182,7 +182,7 @@ const CreateIssueForm =  ({
         required
         className={" border-zinc-800 h-[42px]"}
         datas={sprintDrop?.data}
-        defaultValue={watch('sprint')}
+        defaultValue={watch("sprint")}
       />
       <SelectLabel
         label='Reporter'
@@ -191,7 +191,7 @@ const CreateIssueForm =  ({
         required
         className={" border-zinc-800 h-[42px]"}
         datas={parentDropdown}
-        defaultValue={watch('reporter')}
+        defaultValue={watch("reporter")}
       />
     </form>
   );

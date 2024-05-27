@@ -1,14 +1,14 @@
-'use client'
+"use client";
 import { Avatar } from "@components/atoms";
 import { Button } from "@components/ui/button";
 import { cn } from "@func";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
-import dummyAvatar from "@assets/dummy/avatar.svg"
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import dummyAvatar from "@assets/dummy/avatar.svg";
 import { Modal } from "@components/molecules";
-import CreateIssueForm from "@components/orgasims/Form/CreateIssueForm/CreateIssueForm";
-import { DialogClose } from '@components/ui/dialog';
+import { DialogClose } from "@components/ui/dialog";
+import { CreateIssueForm } from "@components/orgasims";
 
 
 const ProjectsPage = ({
@@ -16,27 +16,27 @@ const ProjectsPage = ({
 }: {
   children: React.ReactNode
 }) => {
-  const path = usePathname()?.split('/');
+  const path = usePathname()?.split("/");
   const router = useRouter();
   
-  if (!path[2]) return null;
   const currentPath = path[3];
-  const currentProject = path[2]
+  const currentProject = path[2];
   const refForm = useRef<HTMLFormElement>(null);
   const [disabled, setDisabled] = useState(false);
-
-  const submenus = ["timeline", "backlog", "board"];
+  
+  const submenus = useMemo(() => ["timeline", "backlog", "board"], []);
   useEffect(() => {
     if (!currentPath) {
-      router.push(`/projects/${path[2]}/timeline`)
+      router.push(`/projects/${path[2]}/${submenus[0]}`);
     }
-  }, [currentPath]);
+  }, [currentPath, path, router, submenus]);
+  if (!path[2]) return null;
 
   return (
     <div className="flex flex-col pt-8 gap-8 w-full">
       <div className="px-8 flex flex-row justify-between items-center">
         <div>
-          <Link href={'/projects'}>Projects</Link>
+          <Link href={"/projects"}>Projects</Link>
           {currentPath &&
             <>
               <Link
@@ -61,7 +61,7 @@ const ProjectsPage = ({
             <Avatar src={dummyAvatar} className="z-[2] -ml-1" />
             <Avatar src={dummyAvatar} className="z-[3] -ml-2" />
           </div>
-          <Button variant={'secondary'} size={'xs'}>Invite</Button>
+          <Button variant={"secondary"} size={"xs"}>Invite</Button>
         </div>
       </div>
       <h2 className="text-5xl font-light px-8">Project 2</h2>
@@ -83,7 +83,7 @@ const ProjectsPage = ({
         <Modal
           title="Create Issue"
           childrenTrigger={
-            <Button variant={'primary'}>Add Task</Button>
+            <Button variant={"primary"}>Add Task</Button>
           }
           childrenContent={
             <CreateIssueForm setDisabled={setDisabled} refForm={refForm} />
@@ -93,7 +93,7 @@ const ProjectsPage = ({
               <Button
                 disabled={disabled}
                 onClick={() => refForm?.current?.requestSubmit()}
-                variant={'default'}>
+                variant={"default"}>
                 Create Issue
               </Button>
             </DialogClose>
