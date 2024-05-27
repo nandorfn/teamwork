@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TIssueForm, issueSchema } from "@schemas/issueSchemas";
 import { InputLabel, SelectLabel, TextareaLabel } from "@components/molecules";
 import { useQuery } from "@tanstack/react-query";
-import { fetchData } from "@http";
+import { api, fetchData } from "@http";
 
 const CreateIssueForm =  ({
   refForm,
@@ -92,14 +92,14 @@ const CreateIssueForm =  ({
     isLoading: workflowLoading
   } = useQuery({
     queryKey: ["workflowDrop"],
-    queryFn: () => fetchData(`/api/workflows/${currentProjectId}`)
+    queryFn: () => fetchData(`${api.workflows}/${currentProjectId}`)
   });
   const {
     data: sprintDrop,
     isLoading: sprintLoading
   } = useQuery({
     queryKey: ["sprintDrop"],
-    queryFn: () => fetchData(`/api/sprints/${currentProjectId}`)
+    queryFn: () => fetchData(`${api.sprints}/${currentProjectId}`)
   });
   console.log(workflowDrop);
   console.log(watch("status"));
@@ -111,7 +111,7 @@ const CreateIssueForm =  ({
     };
 
     console.log(newData);
-    axios.post("/api/issues", newData);
+    axios.post(api.issues, newData);
   };
   return (
     <form 

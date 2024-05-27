@@ -6,7 +6,7 @@ import { bugIcon, epicIcon, storyIcon, taskIcon2 } from "@assets/svg";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchData } from "@http";
+import { api, fetchData } from "@http";
 import { usePathname } from "next/navigation";
 import { TOptionSelect } from "@atoms/types";
 
@@ -44,7 +44,7 @@ const BacklogCard = ({
     isLoading: workflowLoading
   } = useQuery({
     queryKey: ["workflowDrop"],
-    queryFn: () => fetchData(`/api/workflows/${currentProjectId}`)
+    queryFn: () => fetchData(`${api.workflows}/${currentProjectId}`)
   });
     
   const [color, setColor] = useState("");

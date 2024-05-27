@@ -5,13 +5,14 @@ import axios from "axios";
 import { Loader } from "../Loader";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { api } from "@http";
 
 const LogoutToggle: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const handleLogout = async () => {
     setLoading(true);
-    await axios.get("/api/logout")
+    await axios.get(api.logout)
       .then((res) => {
         if (res.status === 200) {
           router.refresh();

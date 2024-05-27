@@ -1,7 +1,7 @@
 "use client";
 import { BacklogCard, IssueContainerCard } from "@components/molecules";
 import { DragDropContext, Draggable, DropResult } from "@hello-pangea/dnd";
-import { fetchData } from "@http";
+import { api, fetchData } from "@http";
 import { TDroppable, TIssueItem, TMoveDroppableResult, TMoveFunc } from "@pages/types";
 import { SprintMapValue } from "@server/types";
 import { useQuery } from "@tanstack/react-query";
@@ -48,7 +48,7 @@ const BacklogPage: React.FC = () => {
     isLoading: isIssueLoading,
   } = useQuery({
     queryKey: ["issues"],
-    queryFn: () => fetchData(`/api/issues/${projectId}`),
+    queryFn: () => fetchData(`${api.issues}/${projectId}`),
   });
   
   

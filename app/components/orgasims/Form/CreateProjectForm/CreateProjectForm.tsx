@@ -8,6 +8,7 @@ import { TProjectForm, projectSchema } from "@schemas/projectSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useQueryClient } from "@tanstack/react-query";
+import { api } from "@http";
 
 const CreateProjectForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const [loading, setLoading] = useState(false);
@@ -30,7 +31,7 @@ const CreateProjectForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetState
   
   const onSubmit: SubmitHandler<TProjectForm> = async (formData: TProjectForm) => {
     setLoading(true);
-    axios.post("/api/memberships", formData)
+    axios.post(api.memberships, formData)
       .then(response => {
         if (response?.status === 201) {
           setOpen(false);

@@ -46,6 +46,11 @@ export const httpMetaMessages: Record<HttpStatusCodes, HttpMetaMessage | string>
 export const api = {
   register: "/api/register",
   login: "/api/login",
+  memberships: "/api/memberships",
+  workflows: "/api/workflows",
+  logout: "/api/logout",
+  sprints: "/api/sprints",
+  issues: "/api/issues",
 };
 
 export const ResponseJSON = (data: any, code: number, msg: string) => {

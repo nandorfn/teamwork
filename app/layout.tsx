@@ -8,15 +8,15 @@ import { ThemeProvider } from "./providers/ThemeProvider";
 import { TanstackQueryProvider } from "./providers/TanstackQueryProvider";
 
 const outfit = Outfit({ subsets: ["latin"] });
-const ogImg = "https://ucarecdn.com/a742a730-c718-46cb-b148-e19418c46429/-/preview/1000x525/";
+const ogImg = process.env.OG_IMG ?? "";
 export const metadata: Metadata = {
   title: "teamwork",
   description: "Project Management",
-  metadataBase: new URL("https://riotgear.vercel.app"),
+  metadataBase: new URL(process.env.NEXT_BASE_URL ?? ""),
   openGraph: {
     title: "teamwork",
     description: "Agile Project Management",
-    url: "https://riotgear.vercel.app",
+    url: process.env.BASE_URL,
     siteName: "teamwork",
     images: [
       {

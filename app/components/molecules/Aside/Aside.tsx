@@ -2,7 +2,7 @@
 import { cn } from "@func";
 import Link from "next/link";
 import { useState } from "react";
-import { fetchData } from "@http";
+import { api, fetchData } from "@http";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
@@ -40,7 +40,7 @@ const Aside = () => {
     isLoading: isProjectLoading,
   } = useQuery({
     queryKey: ["projectMember"],
-    queryFn: () => fetchData("/api/memberships"),
+    queryFn: () => fetchData(api.memberships),
   });
 
   return (
