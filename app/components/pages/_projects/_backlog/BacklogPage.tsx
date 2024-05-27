@@ -3,6 +3,7 @@ import { BacklogCard, IssueContainerCard } from "@components/molecules";
 import { DragDropContext, Draggable, DropResult } from "@hello-pangea/dnd";
 import { fetchData } from '@http';
 import { TDroppable, TIssueItem, TMoveDroppableResult, TMoveFunc } from "@pages/types";
+import { SprintMapValue } from "@server/types";
 import { useQuery } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
 import React, { Fragment, useState } from "react";
@@ -38,111 +39,26 @@ const move = ({
 };
 
 const BacklogPage: React.FC = () => {
-    const [schema, setSchema] = useState([
-      {
-        id: 'sprint1',
-        title: 'Sprint',
-        data: [
-          {
-            id: "123",
-            type: "epic",
-            text: "123-text",
-            parent: {
-              name: "Feature 1",
-              color: "blue",
-            }
-          },
-          {
-            id: "345",
-            type: "story",
-            text: "345-text",
-            parent: {
-              name: "Feature 1",
-              color: "yellow",
-            }
-          },
-          {
-            id: "567",
-            type: "bug",
-            text: "567-text",
-            parent: {
-              name: "Feature 1",
-              color: "blue",
-            }
-          },
-          {
-            id: "789",
-            type: "task",
-            text: "789-text",
-            parent: {
-              name: "Feature 1",
-              color: "purple",
-            }
-          }
-        ]
-      },
-      {
-        id: 'sprint2',
-        title: 'Sprint2',
-        data: [
-          {
-            id: "111",
-            type: "task",
-            text: "123-text",
-            parent: {
-              name: "Feature 1",
-              color: "blue",
-            }
-          },
-          {
-            id: "222",
-            type: "task",
-            text: "345-text",
-            parent: {
-              name: "Feature 1",
-              color: "blue",
-            }
-          },
-          {
-            id: "333",
-            type: "epic",
-            text: "567-text",
-            parent: {
-              name: "Feature 1",
-              color: "blue",
-            }
-          },
-          {
-            id: "444",
-            type: "story",
-            text: "789-text",
-            parent: {
-              name: "Feature 1",
-              color: "blue",
-            }
-          }
-        ]
-      },
-    ]
-    );
-    
-    const path = usePathname();
-    const projectId = path?.split('/')[2]
-    
-    const {
-      data: issues,
-      isLoading: isIssueLoading,
-    } = useQuery({
-      queryKey: ['issues'],
-      queryFn: () => fetchData(`/api/issues/${projectId}`),
-    });
-    
+  
+  const path = usePathname();
+  const projectId = path?.split('/')[2]
+  
+  const {
+    data: issues,
+    isLoading: isIssueLoading,
+  } = useQuery({
+    queryKey: ['issues'],
+    queryFn: () => fetchData(`/api/issues/${projectId}`),
+  });
+  
+  
+  const [schema, setSchema] = useState(issues?.data);    
   const handleSameListDrop = (
     listId: string,
     startIndex: number,
     endIndex: number
   ) => {
-    const listIndex = schema.findIndex(item => item.id === listId);
+    const listIndex = schema.findIndex((item: SprintMapValue) => item.id === listId);
     const items = reorder(schema[listIndex].data, startIndex, endIndex);
     const newSchema = [...schema];
     newSchema[listIndex].data = items;
@@ -155,8 +71,8 @@ const BacklogPage: React.FC = () => {
     source: TDroppable,
     destination: TDroppable
   ) => {
-    const sourceIndex = schema.findIndex(item => item.id === sourceId);
-    const destIndex = schema.findIndex(item => item.id === destId);
+    const sourceIndex = schema.findIndex((item: SprintMapValue) => item.id === sourceId);
+    const destIndex = schema.findIndex((item: SprintMapValue) => item.id === destId);
     const result = move({
       source: schema[sourceIndex].data,
       destination: schema[destIndex].data,
@@ -193,7 +109,7 @@ const BacklogPage: React.FC = () => {
     <>
       <section className="flex flex-col gap-4">
         <DragDropContext onDragEnd={onDragEnd}>
-          {schema?.map((item) => (
+          {schema?.map((item: SprintMapValue) => (
             <Fragment key={item?.id}>
               <IssueContainerCard 
                 length={item?.data?.length}

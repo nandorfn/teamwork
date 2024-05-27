@@ -12,3 +12,7 @@ export const hashPass = (unHashPass: string) => {
   const hashedPassword = bcrypt.hashSync(unHashPass, salt)
   return { salt, hashedPassword }
 }
+
+export const parseNumber = (value: any): number | null => {
+  return value ? Number(value) : null;
+}

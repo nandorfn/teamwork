@@ -5,6 +5,10 @@ import dummyAvatar from "@assets/dummy/avatar.svg"
 import { bugIcon, epicIcon, storyIcon, taskIcon2 } from "@assets/svg";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchData } from "@http";
+import { usePathname } from "next/navigation";
+import { TOptionSelect } from "@atoms/types";
 
 const BacklogCard = ({
   data,
@@ -20,7 +24,7 @@ const BacklogCard = ({
     },
   })
   const iconIssue = (type: string) => {
-    switch(type) {
+    switch(type?.toLowerCase()) {
       case "task":
         return taskIcon2
       case "epic":
@@ -29,29 +33,23 @@ const BacklogCard = ({
         return bugIcon;
       case "story":
         return storyIcon;
+      default: 
+        return taskIcon2;
     }
   }
-  const dropdown = [
-    {
-      label: 'Todo',
-      value: 'todo',
-      class: 'bg-zinc-800 text-white'
-    },
-    {
-      label: 'In Progress',
-      value: 'in-progress',
-      class: 'bg-blue-400 text-blue-700'
-    },
-    {
-      label: 'Ready SIT',
-      value: 'ready-sit',
-      class: 'bg-blue-400 text-blue-700'
-    },
-  ]
-  
+  const path = usePathname()?.split('/')
+  const currentProjectId = path[2]
+  const {
+    data: workflowDrop,
+    isLoading: workflowLoading
+  } = useQuery({
+    queryKey: ["workflowDrop"],
+    queryFn: () => fetchData(`/api/workflows/${currentProjectId}`)
+  });
+    
   const [color, setColor] = useState('');
   useEffect(() => {
-    const selectedColor = dropdown.find(item => item.value === watch(data?.id));
+    const selectedColor = workflowDrop?.find((item: TOptionSelect) => item.value === watch(data?.id));
     if (selectedColor) {
       setColor(selectedColor.class)
     }
@@ -80,13 +78,12 @@ const BacklogCard = ({
           text={data?.parent?.name}
         />
         <InputSelect
-          type={""}
           name={data?.id}
           control={control}
           required={false}
-          className={`w-32 border-none font-semibold ${color}`}
-          placeholder={'Todo'}
-          datas={dropdown}
+          className={`w-32 border-none font-semibold capitalize ${color}`}
+          datas={workflowDrop}
+          defaultValue={watch(data?.id)}
         />
         <Avatar src={dummyAvatar} className="z-[1]" />
       </div>

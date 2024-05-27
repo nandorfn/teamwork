@@ -31,6 +31,23 @@ export const createProjectDB = async (body: any, verifiedToken: JwtSchema) => {
         }
       });
       
+      await prisma.workflow.createMany({
+        data: [
+          {
+            name: 'Todo',
+            projectId: newProject?.id
+          },
+          {
+            name: 'In Progress',
+            projectId: newProject?.id
+          },
+          {
+            name: 'Done',
+            projectId: newProject?.id
+          },
+        ]
+      })
+      
       return newMember;
     });
 };

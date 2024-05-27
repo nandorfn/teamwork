@@ -60,36 +60,29 @@ model Workflow {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   project     Project   @relation(fields: [projectId], references: [id])
-  workflowStatus WorkflowStatus[]
-}
-
-model WorkflowStatus {
-  id          Int       @id @default(autoincrement())
-  name        String
-  workflowId  Int
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  workflow    Workflow  @relation(fields: [workflowId], references: [id])
   issues      Issue[]
 }
 
 model Issue {
-  id          Int       @id @default(autoincrement())
-  summary     String
-  description String?
-  statusId    Int
-  assigneeId  Int
-  reporterId  Int
-  projectId   Int
-  type        String?
-  color       String?
-  sprintId    Int?
-  parentId    Int?
-  workflowStatus WorkflowStatus  @relation(fields: [statusId], references: [id])
-  project     Project          @relation(fields: [projectId], references: [id])
-  comments    Comment[]
+  id              Int       @id @default(autoincrement())
+  summary         String
+  description     String?
+  statusId        Int
+  assigneeId      Int?
+  reporterId      Int?
+  projectId       Int
+  type            String?
+  color           String?
+  rows            Int
+  sprintId        Int?
+  parentId        Int?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  workflowStatus  Workflow  @relation(fields: [statusId], references: [id])
+  project         Project   @relation(fields: [projectId], references: [id])
+  comments        Comment[]
+  sprint          Sprint?   @relation(fields: [sprintId], references: [id])
 }
-
 model Comment {
   id         Int       @id @default(autoincrement())
   text       String
@@ -108,6 +101,9 @@ model Sprint {
   endDate    DateTime?
   projectId  Int
   status     String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  issues     Issue[] 
   project    Project   @relation(fields: [projectId], references: [id])
 }
 

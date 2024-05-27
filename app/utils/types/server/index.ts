@@ -8,3 +8,19 @@ export type TUser = {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface SprintDataItem {
+  id: string;
+  type: string | null;
+  text: string | null;
+  parent: {
+      name: string;
+      color: string;
+  };
+}
+
+export interface SprintMapValue {
+  id: string;
+  title: string;
+  data: SprintDataItem[];
+}

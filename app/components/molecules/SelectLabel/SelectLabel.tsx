@@ -4,13 +4,13 @@ import { InputSelect } from '@components/atoms';
 const SelectLabel = ({
   label,
   name,
-  placeholder,
   control,
   required,
   className,
   datas,
   watch,
-  defaultValue
+  defaultValue,
+  isLoading,
 }: TSelectLabel) => {
     return (
         <div className='flex flex-col gap-1'>
@@ -18,12 +18,12 @@ const SelectLabel = ({
           <InputSelect 
             name={name}
             defaultValue={defaultValue}
-            placeholder={placeholder}
             control={control}
             required={required}
             className={className}
             datas={datas}
             watch={watch}
+            isLoading={isLoading}
           />
         </div>
     );

@@ -16,14 +16,21 @@ const ProjectsPage = ({
 }: {
   children: React.ReactNode
 }) => {
-  const path = usePathname();
-  const currentPath = path.split("/")[3];
-  const submenus = ["timeline", "backlog", "board"];
+  const path = usePathname()?.split('/');
+  const router = useRouter();
+  
+  if (!path[2]) return null;
+  const currentPath = path[3];
+  const currentProject = path[2]
+  const refForm = useRef<HTMLFormElement>(null);
   const [disabled, setDisabled] = useState(false);
 
-  if (!path?.split('/')[2]) return null;
-
-  const refForm = useRef<HTMLFormElement>(null);
+  const submenus = ["timeline", "backlog", "board"];
+  useEffect(() => {
+    if (!currentPath) {
+      router.push(`/projects/${path[2]}/timeline`)
+    }
+  }, [currentPath]);
 
   return (
     <div className="flex flex-col pt-8 gap-8 w-full">
@@ -31,12 +38,20 @@ const ProjectsPage = ({
         <div>
           <Link href={'/projects'}>Projects</Link>
           {currentPath &&
-            <Link
-              className="capitalize"
-              href={`/projects/${currentPath}`}
-            >
-              {` / ${currentPath}`}
-            </Link>
+            <>
+              <Link
+                className="capitalize"
+                href={`/projects/${currentProject}`}
+              >
+                {` / ${currentProject}`}
+              </Link>
+              <Link
+                className="capitalize"
+                href={`/projects/${currentProject}/${currentPath}`}
+              >
+                {` / ${currentPath}`}
+              </Link>
+            </>
           }
         </div>
 
@@ -56,7 +71,7 @@ const ProjectsPage = ({
           {submenus?.map((item, index) => (
             <Link
               key={index}
-              href={`/projects/${path?.split('/')[2]}/${item}`}
+              href={`/projects/${path[2]}/${item}`}
               className={cn("capitalize text-base-100 pb-4 pt-2", {
                 "border-b border-green-500 transition-colors duration-300 animate-in dark:text-white text-black": currentPath === item
               })}            >

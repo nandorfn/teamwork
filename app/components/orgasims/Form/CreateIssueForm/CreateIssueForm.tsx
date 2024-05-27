@@ -7,8 +7,10 @@ import { TCreateIssue } from '@organisms/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TIssueForm, issueSchema } from '@schemas/issueSchemas';
 import { InputLabel, SelectLabel, TextareaLabel } from "@components/molecules";
+import { useQuery } from '@tanstack/react-query';
+import { fetchData } from '@http';
 
-const CreateIssueForm = ({
+const CreateIssueForm =  ({
   refForm,
   setDisabled
 }: TCreateIssue) => {
@@ -16,13 +18,11 @@ const CreateIssueForm = ({
     control,
     handleSubmit,
     watch,
-    formState: { isValid, defaultValues: defolt }
+    formState: { isValid }
   } = useForm<TIssueForm>({
     defaultValues: DFIssue,
     resolver: zodResolver(issueSchema)
   });
-  console.log(watch('issueType'))
-  console.log(defolt)
   
   const issueTypeDropdown = [
     {
@@ -61,24 +61,6 @@ const CreateIssueForm = ({
     },
 
   ]
-  const statusDropdown = [
-    {
-      label: "Todo",
-      value: "Todo",
-    },
-    {
-      label: "In Progress",
-      value: "In Progress",
-    },
-    {
-      label: "Bug Fixing",
-      value: "Bug Fixing",
-    },
-    {
-      label: "Ready To SIT",
-      value: "Ready To SIT",
-    }
-  ]
   const assigneeDropdown = [
     {
       label: "Unassigned",
@@ -104,13 +86,31 @@ const CreateIssueForm = ({
   
   const path = usePathname();
   const currentProjectId = path.split("/")[2];
+  
+  const {
+    data: workflowDrop,
+    isLoading: workflowLoading
+  } = useQuery({
+    queryKey: ["workflowDrop"],
+    queryFn: () => fetchData(`/api/workflows/${currentProjectId}`)
+  });
+  const {
+    data: sprintDrop,
+    isLoading: sprintLoading
+  } = useQuery({
+    queryKey: ["sprintDrop"],
+    queryFn: () => fetchData(`/api/sprints/${currentProjectId}`)
+  });
+  console.log(workflowDrop)
+  console.log(watch('status'))
 
   const onSubmit: SubmitHandler<TIssueForm> = (data: TIssueForm) => {
     const newData = {
       ...data,
       projectId: currentProjectId,
     }
-    
+
+    console.log(newData)
     axios.post('/api/issues', newData)
   }
   return (
@@ -133,7 +133,6 @@ const CreateIssueForm = ({
         name={"issueType"}
         control={control}
         required
-        placeholder={""}
         className={" border-zinc-800 h-[42px]"}
         datas={issueTypeDropdown}
         defaultValue={watch('issueType')}
@@ -144,9 +143,9 @@ const CreateIssueForm = ({
         name={"status"}
         control={control}
         required
-        placeholder={""}
+        isLoading={workflowLoading}
         className={" border-zinc-800 h-[42px]"}
-        datas={statusDropdown}
+        datas={workflowDrop}
         defaultValue={watch('status')}
       />
       
@@ -163,7 +162,6 @@ const CreateIssueForm = ({
         name={"assigneeIssue"}
         control={control}
         required
-        placeholder={""}
         className={" border-zinc-800 h-[42px]"}
         datas={assigneeDropdown}
         defaultValue={watch('assigneeIssue')}
@@ -173,7 +171,6 @@ const CreateIssueForm = ({
         name={"parent"}
         control={control}
         required
-        placeholder={""}
         className={" border-zinc-800 h-[42px]"}
         datas={parentDropdown}
         defaultValue={watch('parent')}
@@ -183,9 +180,8 @@ const CreateIssueForm = ({
         name={"sprint"}
         control={control}
         required
-        placeholder={""}
         className={" border-zinc-800 h-[42px]"}
-        datas={parentDropdown}
+        datas={sprintDrop?.data}
         defaultValue={watch('sprint')}
       />
       <SelectLabel
@@ -193,7 +189,6 @@ const CreateIssueForm = ({
         name={"reporter"}
         control={control}
         required
-        placeholder={""}
         className={" border-zinc-800 h-[42px]"}
         datas={parentDropdown}
         defaultValue={watch('reporter')}

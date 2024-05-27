@@ -1,3 +1,3 @@
-import Loader from "./Loader";
+import { loaderVariants, Loader } from "./Loader";
 
-export { Loader };
+export { Loader, loaderVariants };

@@ -10,7 +10,7 @@ export const DFRegister = {
 export const DFIssue = {
   summary: '',
   issueType: 'Task',
-  status: 'Todo',
+  status: '',
   description: '',
   assigneeIssue: '',
   parent: '',

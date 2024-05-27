@@ -7,15 +7,16 @@ import {
   SelectValue,
 } from "@components/ui/select";
 import { TOptionSelect, TSelect } from "@atoms/types";
+import { Loader } from "@components/molecules";
 
-const InputSelect = ({ 
+const InputSelect = ({
   name,
   control,
   required,
-  placeholder,
   className,
   datas,
-  defaultValue
+  defaultValue,
+  isLoading,
 }: TSelect) => {
   return (
     <Controller
@@ -31,13 +32,19 @@ const InputSelect = ({
             <SelectValue placeholder={defaultValue} />
           </SelectTrigger>
           <SelectContent>
-            {datas?.map((item: TOptionSelect, index: number) => (
-              <SelectItem 
-                key={index} 
-                value={item?.value}>
-                {item?.label}
-              </SelectItem>
-            ))
+            {isLoading ? (
+              <div className="flex py-4">
+                <div className="loader-sm mx-auto"></div>
+              </div>
+            ) : (
+              datas?.map((item: TOptionSelect, index: number) => (
+                <SelectItem
+                  key={index}
+                  value={item?.value}>
+                  {item?.label}
+                </SelectItem>
+              ))
+            )
             }
           </SelectContent>
         </Select>

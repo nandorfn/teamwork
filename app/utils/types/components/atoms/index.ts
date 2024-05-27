@@ -11,19 +11,19 @@ export type TInput = {
 
 export type TSelect = {
   name: string;
-  placeholder: string;
   control: Control<any>;
   required: boolean;
   className?: string;
   datas: any;
   defaultValue?: string | null;
+  isLoading?: boolean;
   watch?: UseFormWatch<any>;
 }
 
 export type TOptionSelect = {
   label: string;
   value: string;
-  class: string;
+  class?: string;
 }
 
 export type TSvg = {
