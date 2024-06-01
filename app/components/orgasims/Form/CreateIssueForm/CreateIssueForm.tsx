@@ -7,18 +7,31 @@ import { TCreateIssue } from "@organisms/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TIssueForm, issueSchema } from "@schemas/issueSchemas";
 import { InputLabel, SelectLabel, TextareaLabel } from "@components/molecules";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, fetchData } from "@http";
+import { TOptionSelect } from "@atoms/types";
 
 const CreateIssueForm =  ({
   refForm,
   setDisabled
 }: TCreateIssue) => {
+  const path = usePathname();
+  const currentProjectId = path.split("/")[2];
+  
+  const {
+    data: workflowDrop,
+    isLoading: workflowLoading
+  } = useQuery({
+    queryKey: ["workflowDrop"],
+    queryFn: () => fetchData(`${api.workflows}/${currentProjectId}`)
+  });
+  const getTodoWorkflow = workflowDrop?.data?.find((item: TOptionSelect) => item?.label?.toLowerCase() === "todo");
+  
   const {
     control,
     handleSubmit,
     watch,
-    formState: { isValid }
+    formState: { isValid, defaultValues: test }
   } = useForm<TIssueForm>({
     defaultValues: DFIssue,
     resolver: zodResolver(issueSchema)
@@ -61,38 +74,18 @@ const CreateIssueForm =  ({
     },
 
   ];
-  const assigneeDropdown = [
-    {
-      label: "Unassigned",
-      value: "Unassigned",
-    },
-    {
-      label: "User 1",
-      value: "user1",
-    },
-    {
-      label: "User 2",
-      value: "User 2",
-    },
-    {
-      label: "User 3",
-      value: "User 4",
-    }
-  ];
   
   useEffect(() => {
     setDisabled(!isValid);
-  }, [isValid, setDisabled]);
+  }, [isValid, setDisabled, test]);
   
-  const path = usePathname();
-  const currentProjectId = path.split("/")[2];
-  
+
   const {
-    data: workflowDrop,
-    isLoading: workflowLoading
+    data: issueParent,
+    isLoading: issueParentLoading
   } = useQuery({
-    queryKey: ["workflowDrop"],
-    queryFn: () => fetchData(`${api.workflows}/${currentProjectId}`)
+    queryKey: ["issueParent"],
+    queryFn: () => fetchData(`${api.issues}/${currentProjectId}/Epic`)
   });
   const {
     data: sprintDrop,
@@ -101,18 +94,35 @@ const CreateIssueForm =  ({
     queryKey: ["sprintDrop"],
     queryFn: () => fetchData(`${api.sprints}/${currentProjectId}`)
   });
-  console.log(workflowDrop);
-  console.log(watch("status"));
+  const {
+    data: assigneDrop,
+    isLoading: assigneeLoading
+  } = useQuery({
+    queryKey: ["assigneeDrop"],
+    queryFn: () => fetchData(`${api.usersDrop}/${currentProjectId}`)
+  });
+  console.log(assigneDrop);
+  
+  const queryClient = useQueryClient();
+  
+  const mutation = useMutation({
+    mutationFn: (newIssue: any) => {
+      return axios.post(api.issues, newIssue);
+    },
+    onSuccess: async () => {
+      return await queryClient.invalidateQueries({queryKey: ["issues", `${currentProjectId}`]});
+    }
+  });
 
   const onSubmit: SubmitHandler<TIssueForm> = (data: TIssueForm) => {
     const newData = {
       ...data,
       projectId: currentProjectId,
     };
-
-    console.log(newData);
-    axios.post(api.issues, newData);
+    
+    mutation.mutate(newData);
   };
+  
   return (
     <form 
       ref={refForm}
@@ -145,7 +155,7 @@ const CreateIssueForm =  ({
         required
         isLoading={workflowLoading}
         className={" border-zinc-800 h-[42px]"}
-        datas={workflowDrop}
+        datas={workflowDrop?.data}
         defaultValue={watch("status")}
       />
       
@@ -163,7 +173,7 @@ const CreateIssueForm =  ({
         control={control}
         required
         className={" border-zinc-800 h-[42px]"}
-        datas={assigneeDropdown}
+        datas={assigneDrop?.data}
         defaultValue={watch("assigneeIssue")}
       />
       <SelectLabel
@@ -172,7 +182,7 @@ const CreateIssueForm =  ({
         control={control}
         required
         className={" border-zinc-800 h-[42px]"}
-        datas={parentDropdown}
+        datas={issueParent?.data}
         defaultValue={watch("parent")}
       />
       <SelectLabel

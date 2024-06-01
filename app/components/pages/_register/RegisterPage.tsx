@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { api, httpMetaMessages } from "@http";
+import { api, getHttpMetaMessage, httpMetaMessages } from "@http";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { hashPass } from "@func";
@@ -34,15 +34,15 @@ const RegisterPage: React.FC = () => {
       salt,
       password
     };
+    const message = getHttpMetaMessage(500, "");
     axios.post(api.register, newData)
       .then(response => {
-        console.log(response.status);
         if (response.status === 201) {
           router.push("/login");
         } else {
           setError("password", {
             type: "server",
-            message: httpMetaMessages[500],
+            message,
           });;
         }
       })
@@ -67,7 +67,7 @@ const RegisterPage: React.FC = () => {
         } else {
           setError("password", {
             type: "server",
-            message: httpMetaMessages[500],
+            message,
           });
         }
       })

@@ -49,7 +49,7 @@ const BacklogCard = ({
     
   const [color, setColor] = useState("");
   useEffect(() => {
-    const selectedColor = workflowDrop?.find((item: TOptionSelect) => item.value === watch(data?.id));
+    const selectedColor = workflowDrop?.data?.find((item: TOptionSelect) => item.value === watch(data?.id));
     if (selectedColor) {
       setColor(selectedColor.class);
     }
@@ -82,7 +82,7 @@ const BacklogCard = ({
           control={control}
           required={false}
           className={`w-32 border-none font-semibold capitalize ${color}`}
-          datas={workflowDrop}
+          datas={workflowDrop?.data}
           defaultValue={watch(data?.id)}
         />
         <Avatar src={dummyAvatar} className="z-[1]" />

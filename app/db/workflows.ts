@@ -1,12 +1,12 @@
 import prisma from "@lib/prisma";
 
-export const getWorkflowsDB = async (userId: string, projectId: string | number) => {
+export const getWorkflowsDB = async (userId: number, projectId: string | number) => {
   const res = await prisma.workflow.findMany({
     where: {
       project: {
         memberships: {
           some: {
-            userId: Number(userId)
+            userId: userId
           }
         }
       },
@@ -17,7 +17,7 @@ export const getWorkflowsDB = async (userId: string, projectId: string | number)
       name: true
     }
   });
-  
+    
   const formatted = res?.map((item) => ({
     value: String(item?.id),
     label: item.name

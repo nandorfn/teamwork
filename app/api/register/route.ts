@@ -39,10 +39,18 @@ export const POST = async (req: Request) => {
   });
   if (existingEmail) return responseError(409, resKey.email);
   
+  const randomColors = ["red", "green", "blue", "yellow", "slate", "orange", "amber", "lime", "emerald", "cyan", "sky", "indigo", "purple", "rose"];
+
+  const getRandomColor = () => {
+    const randomIndex = Math.floor(Math.random() * randomColors.length);
+    return `bg-${randomColors[randomIndex]}-400`;
+  };
+  
   try {
     await prisma.user.create({
       data: {
         userId: id,
+        color: getRandomColor(),
         name: result.data.name,
         avatar: "",
         email: result.data.email,

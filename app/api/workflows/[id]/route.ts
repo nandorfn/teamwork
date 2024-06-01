@@ -11,9 +11,10 @@ export const GET = async (req: Request, { params }: {
   if (!verifiedToken) return responseError(401, resKey.denied);
   
   try {
-    const res = await getWorkflowsDB(verifiedToken?.userId, params?.id);
+    const res = await getWorkflowsDB(verifiedToken?.id, params?.id);
     return responseOK(res, 200, resKey.found);
   } catch (error) { 
+    console.log(error);
     return responseError(500);
   }
 };

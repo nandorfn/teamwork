@@ -1,21 +1,19 @@
-import {
-  resKey,
-  responseOK,
-  responseError,
-} from "@http";
 import { verifyCookie } from "@auth";
-import { getIssueByProjectId } from "@db/issues";
+import { getProjectByID } from "@db/projects";
+import { resKey, responseError, responseOK } from "@http";
 
 export const GET = async (req: Request, { params }: {
   params: {
-    id: number,
+    id: number
   }
 }) => {
   const verifiedToken = await verifyCookie(req);
   if (!verifiedToken) return responseError(401, resKey.denied);
+
   try {
-    const issue = await getIssueByProjectId(Number(params?.id));
-    return responseOK(issue, 200, resKey.found);
+    const res = await getProjectByID(verifiedToken.id, Number(params.id));
+
+    return responseOK(res, 200);
   } catch (error) {
     return responseError(500);
   }

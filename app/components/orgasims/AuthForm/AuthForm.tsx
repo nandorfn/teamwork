@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Button } from "@components/ui/button";
-import { InputLabel, Loader } from "@components/molecules";
+import { InputLabel } from "@components/molecules";
 import { TAuthForm } from "@organisms/types";
-
+import { Loader } from "@components/molecules";
 const AuthForm = ({
   isLoading,
   disabled,

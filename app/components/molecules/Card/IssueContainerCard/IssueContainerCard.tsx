@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Droppable, DroppableProvided, DroppableStateSnapshot } from "@hello-pangea/dnd";
 import { TIssueContainer } from "@molecules/types";
 import { cn } from "@func";
@@ -8,6 +8,9 @@ import { Badge, Icon } from "@components/atoms";
 import { caretDown, caretDownDark, caretRight, caretRightDark, plusDark, plusIcon } from "@assets/svg";
 import { useTheme } from "next-themes";
 import { DatePickerRange } from "@components/molecules/DatePickerRange";
+import { Modal } from "@components/molecules/Modal";
+import { CreateIssueForm } from "@components/orgasims";
+import { DialogClose } from "@components/ui/dialog";
 
 const IssueContainerCard = ({
   children,
@@ -19,6 +22,8 @@ const IssueContainerCard = ({
   isBacklog = false,
 }: TIssueContainer) => {
   const { theme } = useTheme();
+  const refForm = useRef<HTMLFormElement>(null);
+  const [disabled, setDisabled] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
   return (
     <Droppable droppableId={droppabledId}>
@@ -47,7 +52,7 @@ const IssueContainerCard = ({
                   alt="collapse" />
               </Button>
               <h3 className="font-medium text-lg flex items-center">{title}</h3>
-              {isBacklog &&
+              {(isBacklog && title !== "Backlog") &&
                 <>
                   <DatePickerRange />
                   <p>{`(${length} issues)`}</p>
@@ -68,9 +73,30 @@ const IssueContainerCard = ({
                   </Button>
                 </div>
               }
-              <Button variant={"secondary"} size={"iconXs"}>
-                <Icon src={theme === "dark" ? plusIcon : plusDark} alt="plus" width={16} height={16} />
-              </Button>
+              <Modal
+                title="Create Issue"
+                childrenTrigger={
+                  <Button variant={"secondary"} size={"iconXs"}>
+                    <Icon 
+                      src={theme === "dark" ? plusIcon : plusDark} 
+                      alt="plus" 
+                      width={16} 
+                      height={16} />
+                  </Button>}
+                childrenContent={
+                  <CreateIssueForm setDisabled={setDisabled} refForm={refForm} />
+                }
+                childrenFooter={
+                  <DialogClose asChild>
+                    <Button
+                      disabled={disabled}
+                      onClick={() => refForm?.current?.requestSubmit()}
+                      variant={"default"}>
+                      Create Issue
+                    </Button>
+                  </DialogClose>
+                }
+              />
             </div>
           </div>
           {isCollapsed &&

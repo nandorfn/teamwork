@@ -29,7 +29,7 @@ const InputSelect = ({
       render={({ field }) =>
         <Select onValueChange={field.onChange}>
           <SelectTrigger className={className}>
-            <SelectValue placeholder={defaultValue} />
+            <SelectValue placeholder={defaultValue === "" ? "Choose" : defaultValue} />
           </SelectTrigger>
           <SelectContent>
             {isLoading ? (

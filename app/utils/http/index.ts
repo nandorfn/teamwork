@@ -51,6 +51,9 @@ export const api = {
   logout: "/api/logout",
   sprints: "/api/sprints",
   issues: "/api/issues",
+  usersDrop: "/api/users/dropdown",
+  usersList: "/api/users/lists",
+  projects: "/api/projects",
 };
 
 export const ResponseJSON = (data: any, code: number, msg: string) => {

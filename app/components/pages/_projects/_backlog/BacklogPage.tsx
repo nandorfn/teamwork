@@ -6,7 +6,7 @@ import { TDroppable, TIssueItem, TMoveDroppableResult, TMoveFunc } from "@pages/
 import { SprintMapValue } from "@server/types";
 import { useQuery } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 const reorder = (
   list: TIssueItem[],
@@ -47,12 +47,16 @@ const BacklogPage: React.FC = () => {
     data: issues,
     isLoading: isIssueLoading,
   } = useQuery({
-    queryKey: ["issues"],
+    queryKey: ["issues", `${projectId}`],
     queryFn: () => fetchData(`${api.issues}/${projectId}`),
   });
+  console.log(issues);
+    
+  const [schema, setSchema] = useState(issues?.data);  
+  useEffect(() => {
+    setSchema(issues?.data);
+  }, [issues?.data]);
   
-  
-  const [schema, setSchema] = useState(issues?.data);    
   const handleSameListDrop = (
     listId: string,
     startIndex: number,
@@ -116,7 +120,7 @@ const BacklogPage: React.FC = () => {
                 title={item?.title} 
                 isBacklog
                 droppabledId={item?.id}>
-                {item?.data?.map((it, i) => (
+                {item?.data?.length > 0 ? (item?.data?.map((it, i) => (
                   <Draggable
                     key={it.id}
                     draggableId={it.id}
@@ -130,7 +134,11 @@ const BacklogPage: React.FC = () => {
                       />
                     )}
                   </Draggable>
-                ))}
+                ))) : (
+                  <p className="text-center bg-zinc-900 py-4 rounded">
+                      Currently, there are no issues listed in this project. Keep up the great work!
+                  </p>
+                )}
               </IssueContainerCard>
             </Fragment>
           ))
