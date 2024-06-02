@@ -7,7 +7,6 @@ import {
   SelectValue,
 } from "@components/ui/select";
 import { TOptionSelect, TSelect } from "@atoms/types";
-import { Loader } from "@components/molecules";
 
 const InputSelect = ({
   name,
@@ -27,7 +26,10 @@ const InputSelect = ({
       }}
       defaultValue={defaultValue}
       render={({ field }) =>
-        <Select onValueChange={field.onChange}>
+        <Select 
+          defaultValue={defaultValue!} 
+          onValueChange={field.onChange}
+        >
           <SelectTrigger className={className}>
             <SelectValue placeholder={defaultValue === "" ? "Choose" : defaultValue} />
           </SelectTrigger>

@@ -1,5 +1,6 @@
 "use client";
 import { BacklogCard, IssueContainerCard } from "@components/molecules";
+import { en } from "@en";
 import { DragDropContext, Draggable, DropResult } from "@hello-pangea/dnd";
 import { api, fetchData } from "@http";
 import { TDroppable, TIssueItem, TMoveDroppableResult, TMoveFunc } from "@pages/types";
@@ -48,9 +49,9 @@ const BacklogPage: React.FC = () => {
     isLoading: isIssueLoading,
   } = useQuery({
     queryKey: ["issues", `${projectId}`],
+    refetchOnWindowFocus: false,
     queryFn: () => fetchData(`${api.issues}/${projectId}`),
   });
-  console.log(issues);
     
   const [schema, setSchema] = useState(issues?.data);  
   useEffect(() => {
@@ -119,6 +120,7 @@ const BacklogPage: React.FC = () => {
                 length={item?.data?.length}
                 title={item?.title} 
                 isBacklog
+                data={item}
                 droppabledId={item?.id}>
                 {item?.data?.length > 0 ? (item?.data?.map((it, i) => (
                   <Draggable
@@ -135,8 +137,8 @@ const BacklogPage: React.FC = () => {
                     )}
                   </Draggable>
                 ))) : (
-                  <p className="text-center bg-zinc-900 py-4 rounded">
-                      Currently, there are no issues listed in this project. Keep up the great work!
+                  <p className="text-center  text-zinc-300 bg-zinc-900 py-4 rounded">
+                      {en.emptySprint}
                   </p>
                 )}
               </IssueContainerCard>

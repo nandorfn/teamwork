@@ -1,4 +1,5 @@
 import { Input } from "@components/atoms";
+import { cn } from "@func";
 import { TInputLabel } from "@molecules/types";
 
 const InputLabel = ({
@@ -8,14 +9,15 @@ const InputLabel = ({
   control,
   required,
   placeholder,
+  className,
 }: TInputLabel) => {
   return (
-    <div className="flex flex-col gap-1">
+    <div className={cn("flex flex-col gap-1", className)}>
       <label htmlFor={name}>
         {label}
       </label>
       <Input
-        className="border-zinc-800"
+        className={cn("border-zinc-800")}
         name={name}
         control={control}
         required={required}

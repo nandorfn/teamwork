@@ -87,7 +87,10 @@ model Issue {
   sprint          Sprint?   @relation(fields: [sprintId], references: [id])
   assignee        User?     @relation("Assignee", fields: [assigneeId], references: [id])
   reporter        User?     @relation("Reporter", fields: [reporterId], references: [id])
+  parent          Issue?    @relation("IssueParent", fields: [parentId], references: [id])
+  children        Issue[]   @relation("IssueParent")
 }
+
 model Comment {
   id         Int       @id @default(autoincrement())
   text       String
@@ -106,6 +109,7 @@ model Sprint {
   endDate    DateTime?
   projectId  Int
   status     String?
+  goal       String?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   issues     Issue[] 

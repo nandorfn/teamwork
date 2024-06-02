@@ -9,3 +9,4 @@ export * from "./Loader";
 export * from "./TextareaLabel";
 export * from "./LogoutToggle";
 export * from "./SelectLabel";
+export * from "./DatePicker";

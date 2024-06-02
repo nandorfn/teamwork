@@ -11,13 +11,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, fetchData } from "@http";
 import { TOptionSelect } from "@atoms/types";
 
-const CreateIssueForm =  ({
+const CreateIssueForm = ({
   refForm,
-  setDisabled
+  setDisabled,
+  defaultValue,
 }: TCreateIssue) => {
   const path = usePathname();
   const currentProjectId = path.split("/")[2];
-  
+
   const {
     data: workflowDrop,
     isLoading: workflowLoading
@@ -26,17 +27,20 @@ const CreateIssueForm =  ({
     queryFn: () => fetchData(`${api.workflows}/${currentProjectId}`)
   });
   const getTodoWorkflow = workflowDrop?.data?.find((item: TOptionSelect) => item?.label?.toLowerCase() === "todo");
-  
+
   const {
     control,
     handleSubmit,
     watch,
     formState: { isValid, defaultValues: test }
   } = useForm<TIssueForm>({
-    defaultValues: DFIssue,
+    defaultValues: {
+      ...DFIssue,
+      sprint: defaultValue?.sprint
+    },
     resolver: zodResolver(issueSchema)
   });
-  
+
   const issueTypeDropdown = [
     {
       label: "Epic",
@@ -74,11 +78,11 @@ const CreateIssueForm =  ({
     },
 
   ];
-  
+
   useEffect(() => {
     setDisabled(!isValid);
   }, [isValid, setDisabled, test]);
-  
+
 
   const {
     data: issueParent,
@@ -101,16 +105,14 @@ const CreateIssueForm =  ({
     queryKey: ["assigneeDrop"],
     queryFn: () => fetchData(`${api.usersDrop}/${currentProjectId}`)
   });
-  console.log(assigneDrop);
-  
+
   const queryClient = useQueryClient();
-  
   const mutation = useMutation({
     mutationFn: (newIssue: any) => {
       return axios.post(api.issues, newIssue);
     },
     onSuccess: async () => {
-      return await queryClient.invalidateQueries({queryKey: ["issues", `${currentProjectId}`]});
+      return await queryClient.invalidateQueries({ queryKey: ["issues", `${currentProjectId}`] });
     }
   });
 
@@ -119,17 +121,17 @@ const CreateIssueForm =  ({
       ...data,
       projectId: currentProjectId,
     };
-    
+
     mutation.mutate(newData);
   };
-  
+
   return (
-    <form 
+    <form
       ref={refForm}
       className="flex flex-col gap-2"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <InputLabel 
+      <InputLabel
         name="summary"
         label="Summary"
         required
@@ -137,7 +139,7 @@ const CreateIssueForm =  ({
         type="text"
         control={control}
       />
-      
+
       <SelectLabel
         label='Issue Type'
         name={"issueType"}
@@ -147,7 +149,7 @@ const CreateIssueForm =  ({
         datas={issueTypeDropdown}
         defaultValue={watch("issueType")}
       />
-      
+
       <SelectLabel
         label='Status'
         name={"status"}
@@ -158,15 +160,15 @@ const CreateIssueForm =  ({
         datas={workflowDrop?.data}
         defaultValue={watch("status")}
       />
-      
-      <TextareaLabel 
+
+      <TextareaLabel
         label='Description'
         name='description'
         control={control}
         required={false}
         placeholder='Description'
       />
-      
+
       <SelectLabel
         label='Assignee'
         name={"assigneeIssue"}

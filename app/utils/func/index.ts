@@ -16,3 +16,7 @@ export const hashPass = (unHashPass: string) => {
 export const parseNumber = (value: any): number | null => {
   return value ? Number(value) : null;
 };
+
+export   const countFilterArr = (data: any, key: string,  value: string) => {
+  return data?.filter((item: any) => item?.[key]?.toLowerCase() === value?.toLowerCase())?.length;
+};

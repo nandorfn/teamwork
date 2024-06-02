@@ -40,6 +40,7 @@ const Aside = () => {
     isLoading: isProjectLoading,
   } = useQuery({
     queryKey: ["projectMember"],
+    refetchOnWindowFocus: false,
     queryFn: () => fetchData(api.memberships),
   });
 

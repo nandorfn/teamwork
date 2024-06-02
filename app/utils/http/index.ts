@@ -35,7 +35,8 @@ export const httpMetaMessages: Record<HttpStatusCodes, HttpMetaMessage | string>
   200: {
     success: "Request successfully processed.",
     found: "Data successfully found and sent.",
-    operation: "Operation has been successfully completed."
+    operation: "Operation has been successfully completed.",
+    update: "Successfully updated data.",
   },
   201: "Request successful. Data has been successfully created.",
   400: "Invalid request. Please check the data you provided.",

@@ -22,64 +22,118 @@ export const getIssueParentDropdown = async (projectId: number, type: string) =>
     return formatted;
 };
 
-export const getIssueByProjectId = async (projectId: number): Promise<SprintMapValue[]> => {
-    const rawData = await prisma.issue.findMany({
+export const getIssueByProjectId = async (projectId: number, userId: number): Promise<SprintMapValue[]> => {
+    const sprints = await prisma.sprint.findMany({
         where: {
             projectId: projectId,
+            project: {
+                memberships: {
+                    some: {
+                        userId: userId,
+                    }
+                }
+            }
         },
         include: {
-            sprint: {
-                select: {
-                    name: true,
+            issues: {
+                where: {
+                    type: {
+                        not: "Epic"
+                    }
+                },
+                include: {
+                    workflowStatus: true,
+                    parent: {
+                        select: {
+                            summary: true,
+                        }
+                    }
                 }
-            },
-        },
-    });
-    console.log(rawData);
-        
-    if (rawData?.length < 1) return [
-        {
-            id: "backlog",
-            title: "Backlog",
-            data: []
+            }
         }
-    ];
+    });
 
     const sprintMap: Map<string, SprintMapValue> = new Map();
+    sprints.forEach(sprint => {
+        const formattedSprint: SprintMapValue = {
+            id: sprint.id.toString(),
+            title: sprint.name,
+            startDate: sprint.startDate ?? "",
+            endDate: sprint.endDate ?? "",
+            status: sprint.status ?? "",
+            data: sprint.issues.map(issue => ({
+                id: issue.id.toString(),
+                type: issue.type || null,
+                text: issue.summary || null,
+                status: issue.workflowStatus?.name,
+                statusId: String(issue.workflowStatus.id),
+                parent: {
+                    name: issue.parent?.summary ?? "",
+                    color: issue.color || "default"
+                }
+            }))
+        };
 
-    rawData.forEach((item) => {
-        let sprintName: string;
-        let sprintTitle: string;
-
-        if (item.sprint) {
-            sprintName = item.sprint.name.toLowerCase().replace(/\s+/g, "");
-            sprintTitle = item.sprint.name;
-        } else {
-            sprintName = "backlog";
-            sprintTitle = "Backlog";
-        }
-
-        if (!sprintMap.has(sprintName)) {
-            sprintMap.set(sprintName, {
-                id: sprintName,
-                title: sprintTitle,
-                data: []
-            });
-        }
-
-        const sprintData: SprintDataItem[] | undefined = sprintMap.get(sprintName)?.data;
-        sprintData?.push({
-            id: item.id.toString(),
-            type: item.type || null,
-            text: item.summary || null,
-            parent: {
-                name: "Feature 1",
-                color: item.color || "default"
-            }
-        });
+        sprintMap.set(sprint.id.toString(), formattedSprint);
     });
+
+    const backlogIssues = await prisma.issue.findMany({
+        where: {
+            projectId: projectId,
+            sprintId: null,
+            type: {
+                not: "Epic"
+            },
+            project: {
+                memberships: {
+                    some: {
+                        userId: userId,
+                    }
+                }
+            }
+        },
+        include: {
+            workflowStatus: true,
+            parent: {
+                select: {
+                    summary: true,
+                }
+            }
+        }
+    });
+
+    const backlogData = backlogIssues.map(issue => ({
+        id: issue.id.toString(),
+        type: issue.type || null,
+        text: issue.summary || null,
+        status: issue.workflowStatus?.name,
+        statusId: String(issue.workflowStatus.id),
+        parent: {
+            name: issue.parent?.summary ?? "",
+            color: issue.color || "default"
+        }
+    }));
+
+    if (!sprintMap.has("backlog")) {
+        sprintMap.set("backlog", {
+            id: "backlog",
+            title: "Backlog",
+            startDate: "",
+            endDate: "",
+            status: "backlog",
+            data: backlogData
+        });
+    } else {
+        const backlogSprint = sprintMap.get("backlog");
+        if (backlogSprint) {
+            backlogSprint.data.push(...backlogData);
+            sprintMap.set("backlog", backlogSprint);
+        }
+    }
     return Array.from(sprintMap.values());
 };
+
+
 
 export const createIssue = async (data: TIssueServer) => {
     const issueBySprint = await prisma.issue.findMany({

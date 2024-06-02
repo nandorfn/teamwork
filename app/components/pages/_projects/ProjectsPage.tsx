@@ -5,7 +5,6 @@ import { cn } from "@func";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import dummyAvatar from "@assets/dummy/avatar.svg";
 import { Modal } from "@components/molecules";
 import { DialogClose } from "@components/ui/dialog";
 import { CreateIssueForm } from "@components/orgasims";
@@ -39,6 +38,7 @@ const ProjectsPage = ({
     isFetching: projectFetching
   } = useQuery({
     queryKey: ["projectByID",`${path[2]}`],
+    refetchOnWindowFocus: false,
     queryFn: () => fetchData(`${api.projects}/${path[2]}`)
   });
   const {
@@ -47,6 +47,7 @@ const ProjectsPage = ({
     isFetching: memberFetching
   } = useQuery({
     queryKey: ["memberList",`${path[2]}`],
+    refetchOnWindowFocus: false,
     queryFn: () => fetchData(`${api.usersList}/${path[2]}`)
   });
 
@@ -116,7 +117,7 @@ const ProjectsPage = ({
             <Button variant={"primary"}>Add Task</Button>
           }
           childrenContent={
-            <CreateIssueForm setDisabled={setDisabled} refForm={refForm} />
+            <CreateIssueForm defaultValue={{}} setDisabled={setDisabled} refForm={refForm} />
           }
           childrenFooter={
             <DialogClose asChild>

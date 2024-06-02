@@ -20,6 +20,7 @@ export interface SprintDataItem {
   id: string;
   type: string | null;
   text: string | null;
+  status: string | null;
   parent: {
       name: string;
       color: string;
@@ -29,5 +30,16 @@ export interface SprintDataItem {
 export interface SprintMapValue {
   id: string;
   title: string;
+  startDate?: string | Date;
+  endDate?: string | Date;
+  status: string;
   data: SprintDataItem[];
+}
+
+export type TStartSprintServer = {
+  name: string;
+  duration: string;
+  startDate?: string | Date;
+  endDate?: string | Date;
+  goal?: string;
 }

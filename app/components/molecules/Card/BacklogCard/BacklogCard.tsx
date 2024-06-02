@@ -20,8 +20,8 @@ const BacklogCard = ({
     watch
   } = useForm<TBacklogForm>({
     defaultValues: {
-      [data?.id]: "todo",
-    },
+      backlogStatus: data?.statusId,
+    }
   });
   const iconIssue = (type: string) => {
     switch(type?.toLowerCase()) {
@@ -53,13 +53,15 @@ const BacklogCard = ({
     if (selectedColor) {
       setColor(selectedColor.class);
     }
-  }, [watch, data?.id, workflowDrop]);
+  }, [watch, data?.id, workflowDrop]);  
+  const valueOption = workflowDrop?.data?.find((item: any) => item.value === watch("backlogStatus"));
+  console.log(data);
 
   return (
     <div ref={provided.innerRef}
       {...provided.dragHandleProps}
       {...provided.draggableProps}
-      className="flex flex-row justify-between items-center dark:bg-zinc-900 bg-white p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800">
+      className="flex flex-row justify-between items-center dark:bg-zinc-900 bg-white px-2 py-1 hover:bg-zinc-200 dark:hover:bg-zinc-800">
       <div className="flex flex-row gap-3">
         <Icon 
           src={iconIssue(data?.type)} 
@@ -78,14 +80,14 @@ const BacklogCard = ({
           text={data?.parent?.name}
         />
         <InputSelect
-          name={data?.id}
+          name={"backlogStatus"}
           control={control}
           required={false}
           className={`w-32 border-none font-semibold capitalize ${color}`}
           datas={workflowDrop?.data}
-          defaultValue={watch(data?.id)}
+          defaultValue={valueOption?.label}
         />
-        <Avatar src={dummyAvatar} className="z-[1]" />
+        <Avatar alt="" name="" color="" src={dummyAvatar} className="z-[1]" />
       </div>
     </div>
   );

@@ -1,6 +1,8 @@
 import { TInput } from "@atoms/types";
 import { DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
+import { SprintMapValue } from "@server/types";
 import { StaticImageData } from "next/image";
+import { Control } from "react-hook-form";
 
 export type IconTypes = {
   src: StaticImageData,
@@ -30,7 +32,8 @@ export type TTodoCard = {
 
 export type TIssueContainer = {
   length: number,
-  title: string;
+  title: string,
+  data: SprintMapValue,
   children: React.ReactNode,
   droppabledId: string,
   containerClass?: string,
@@ -59,4 +62,13 @@ export type TProjectList = {
   icon?: null | string,
   createdAt: string;
   updatedAt: string;
+}
+
+export type TDatePickerRange = {
+  className?: string;
+  control: Control<any>;
+  name: string;
+  label?: string;
+  defaultValue?: any;
+  disabled: boolean;
 }
