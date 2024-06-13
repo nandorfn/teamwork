@@ -90,10 +90,10 @@ const AuthForm = ({
               </Link>
             </div>
           ) : (
-            <div className=" flex justify-between text">
-              <Link className={"text-base hover:text-black dark:hover:text-white"} href={"/forgot-password"}>
+            <div className=" flex justify-end text">
+              {/* <Link className={"text-base hover:text-black dark:hover:text-white"} href={"/forgot-password"}>
                 Can&apos;t login?
-              </Link>
+              </Link> */}
               <Link className={"text-base hover:text-black dark:hover:text-white"} href={"/register"}>
                 Create an account
               </Link>

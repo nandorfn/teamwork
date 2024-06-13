@@ -17,12 +17,12 @@ export const menus: TMenu[] = [
     iconFill: taskFill,
     iconDark: taskDark,
   },
-  {
-    id: "chats",
-    label: "Chats",
-    href: "/chats",
-    icon: chatIcon,
-    iconFill: chatFill,
-    iconDark: chatDark,
-  },
+  // {
+  //   id: "chats",
+  //   label: "Chats",
+  //   href: "/chats",
+  //   icon: chatIcon,
+  //   iconFill: chatFill,
+  //   iconDark: chatDark,
+  // },
 ];

@@ -36,6 +36,7 @@
       "@mocks/*": ["./app/utils/mock/*"],
       "@db/*": ["./app/db/*"],
       "@en": ["./app/utils/en/index.ts"],
+      "provider/*": ["./app/providers/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "tailwind.config.js"],

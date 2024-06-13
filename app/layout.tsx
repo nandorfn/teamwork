@@ -6,6 +6,7 @@ import { Outfit } from "next/font/google";
 import Layout from "@components/templates/Layout";
 import { ThemeProvider } from "./providers/ThemeProvider";
 import { TanstackQueryProvider } from "./providers/TanstackQueryProvider";
+import { MainStoreContext, MainStoreProvider } from "provider/MainStore";
 
 const outfit = Outfit({ subsets: ["latin"] });
 const ogImg = process.env.OG_IMG ?? "";
@@ -48,16 +49,18 @@ export default function RootLayout({
           "min-h-screen",
           outfit.className
         )}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Layout>
-              {children}
-            </Layout>
-          </ThemeProvider>
+          <MainStoreProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Layout>
+                {children}
+              </Layout>
+            </ThemeProvider>
+          </MainStoreProvider>
         </body>
       </html>
     </TanstackQueryProvider>

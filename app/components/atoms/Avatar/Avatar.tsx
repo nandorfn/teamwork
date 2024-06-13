@@ -10,7 +10,7 @@ const Avatar = ({
 }: {
   className: string,
   src: StaticImageData | string,
-  alt: string,
+  alt: string | null,
   name: string,
   color: string,
 }) => {
@@ -21,7 +21,7 @@ const Avatar = ({
       <div 
         onMouseOver={() => setIsHover(true)} 
         onMouseLeave={() => setIsHover(false)} 
-        className={`flex justify-center items-center text-center text-white w-6 h-6 ${color} rounded-full relative cursor-pointer`}>
+        className={"flex justify-center items-center text-center text-white w-6 h-6 bg-blue-400 rounded-full relative cursor-pointer"}>
         <p>{alt}</p>
         {isHover &&
           <p className="bg-slate-300 absolute text-xs top-4 text-black rounded-sm px-1">{name}</p>

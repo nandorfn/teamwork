@@ -11,7 +11,7 @@ const TodoCard = ({ data, provided, snap }: TTodoCard) => {
     <div ref={provided.innerRef}
       {...provided.dragHandleProps}
       {...provided.draggableProps}
-      className={cn("border rounded-lg p-3 gap-3 flex flex-col bg-dark-grey", snap.isDragging ? "border-white" : "")}
+      className={cn("border rounded-lg p-3 gap-3 flex flex-col bg-white dark:bg-dark-grey", snap.isDragging ? "border-white" : "")}
       style={{
         ...provided.draggableProps.style 
       }}
@@ -20,7 +20,7 @@ const TodoCard = ({ data, provided, snap }: TTodoCard) => {
         {
           badges.map((item, index) => (
             <React.Fragment key={index}>
-              <Badge text={item} />
+              <Badge size={"board"} text={item} />
             </React.Fragment>
           ))
         }

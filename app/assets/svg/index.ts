@@ -28,8 +28,10 @@ import storyIcon from "./story.svg";
 import bugIcon from "./bug.svg";
 import epicIcon from "./epic.svg";
 import taskIcon2 from "./task-icon.svg";
+import userIcon from "./user.svg";
 
 export {
+  userIcon,
   kanbanIcon,
   lightningIcon,
   settingIcon,

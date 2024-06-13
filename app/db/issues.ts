@@ -1,7 +1,7 @@
 import { parseNumber } from "@func";
 import prisma from "@lib/prisma";
 import { TIssueServer } from "@schemas/issueSchemas";
-import { SprintDataItem, SprintMapValue } from "@server/types";
+import { SprintMapValue } from "@server/types";
 
 export const getIssueParentDropdown = async (projectId: number, type: string) => {
     const res = await prisma.issue.findMany({
@@ -47,12 +47,30 @@ export const getIssueByProjectId = async (projectId: number, userId: number): Pr
                         select: {
                             summary: true,
                         }
+                    },
+                    assignee: {
+                        select: {
+                            id: true,
+                            name: true,
+                            avatar: true,
+                            color: true
+                        }
+                    },
+                    reporter: {
+                        select: {
+                            id: true,
+                            name: true,
+                            avatar: true,
+                            color: true
+                        }
                     }
                 }
-            }
+            },
         }
     });
-
+    
+    console.log(sprints);
+    
     const sprintMap: Map<string, SprintMapValue> = new Map();
     sprints.forEach(sprint => {
         const formattedSprint: SprintMapValue = {
@@ -67,6 +85,9 @@ export const getIssueByProjectId = async (projectId: number, userId: number): Pr
                 text: issue.summary || null,
                 status: issue.workflowStatus?.name,
                 statusId: String(issue.workflowStatus.id),
+                description: issue?.description,
+                assignee: issue?.assignee,
+                reporter: issue?.reporter,
                 parent: {
                     name: issue.parent?.summary ?? "",
                     color: issue.color || "default"
@@ -154,6 +175,14 @@ export const createIssue = async (data: TIssueServer) => {
             color: "",
             sprintId: parseNumber(data?.sprint),
             parentId: parseNumber(data?.parent),
+        }
+    });
+};
+
+export const getIssueByAssigneeID = async (userId: number) => {
+    return await prisma.issue.findMany({
+        where: {
+            assigneeId: userId,
         }
     });
 };

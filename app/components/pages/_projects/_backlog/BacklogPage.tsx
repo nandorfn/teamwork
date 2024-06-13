@@ -137,7 +137,7 @@ const BacklogPage: React.FC = () => {
                     )}
                   </Draggable>
                 ))) : (
-                  <p className="text-center  text-zinc-300 bg-zinc-900 py-4 rounded">
+                  <p className="text-center  text-zinc-500 dark:text-zinc-200 bg-zinc-200 dark:bg-zinc-900 py-4 rounded">
                       {en.emptySprint}
                   </p>
                 )}

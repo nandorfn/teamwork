@@ -193,7 +193,7 @@ const IssueContainerCard = ({
             <div className="flex flex-row items-center gap-4">
               {isBacklog &&
                 <div className="flex flex-row gap-4">
-                  <div className="flex flex-row gap-2">
+                  <div className="flex-row gap-2 flex">
                     <Badge className="px-3 bg-zinc-900" text={totalTodo} />
                     <Badge className="px-3 bg-blue-600" text={totalTask} />
                     <Badge className="px-3 bg-red-600" text={totalBug} />
@@ -205,9 +205,19 @@ const IssueContainerCard = ({
                       <>
                         <ButtonStatusComp status={"start"} />
                         <ButtonStatusComp status={"edit"} />
-                        <Button variant={"secondary"} className="bg-none hover:bg-none" size={"iconXs"}>
-                          <XIcon width="16" height="16" fill="dark:fill-secondary-foreground fill-black" />
-                        </Button>
+                        {length > 0 &&
+
+                          <Button
+                            variant={"secondary"}
+                            className="bg-none hover:bg-none"
+                            size={"iconXs"}
+                          >
+                            <XIcon
+                              width="16"
+                              height="16"
+                              fill="dark:fill-secondary-foreground fill-black" />
+                          </Button>
+                        }
                       </>
                     )
                   }

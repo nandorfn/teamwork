@@ -26,6 +26,7 @@ const CreateIssueForm = ({
     queryKey: ["workflowDrop"],
     queryFn: () => fetchData(`${api.workflows}/${currentProjectId}`)
   });
+  console.log(workflowDrop);
   const getTodoWorkflow = workflowDrop?.data?.find((item: TOptionSelect) => item?.label?.toLowerCase() === "todo");
 
   const {

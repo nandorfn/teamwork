@@ -20,3 +20,19 @@ export const parseNumber = (value: any): number | null => {
 export   const countFilterArr = (data: any, key: string,  value: string) => {
   return data?.filter((item: any) => item?.[key]?.toLowerCase() === value?.toLowerCase())?.length;
 };
+
+  
+export const getInitials = (name: string) => {
+  if (!name) return null;
+  const nameParts = name.split(" ");
+
+  if (nameParts.length === 1) {
+    return nameParts[0].charAt(0).toUpperCase();
+  } else if (nameParts.length === 2) {
+    return nameParts[0].charAt(0).toUpperCase() + nameParts[1].charAt(0).toUpperCase();
+  } else {
+    return nameParts[0].charAt(0).toUpperCase() + nameParts[1].charAt(0).toUpperCase() + nameParts[2].charAt(0).toUpperCase();
+  }
+};
+
+

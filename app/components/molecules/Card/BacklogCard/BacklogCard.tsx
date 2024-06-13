@@ -2,13 +2,15 @@
 import { TBacklogForm, TTodoCard } from "@molecules/types";
 import { Avatar, Badge, Icon, InputSelect } from "@components/atoms";
 import dummyAvatar from "@assets/dummy/avatar.svg";
-import { bugIcon, epicIcon, storyIcon, taskIcon2 } from "@assets/svg";
+import { bugIcon, epicIcon, storyIcon, taskIcon2, userIcon } from "@assets/svg";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api, fetchData } from "@http";
 import { usePathname } from "next/navigation";
 import { TOptionSelect } from "@atoms/types";
+import { useMainStore } from "provider/MainStore";
+import { getInitials } from "@func";
 
 const BacklogCard = ({
   data,
@@ -23,6 +25,14 @@ const BacklogCard = ({
       backlogStatus: data?.statusId,
     }
   });
+  
+  const { setModal, setData } = useMainStore((state) => state);
+  
+  const handleClickBacklog = () => {
+    setModal(true);
+    setData(data);
+  };
+  
   const iconIssue = (type: string) => {
     switch(type?.toLowerCase()) {
       case "task":
@@ -55,10 +65,9 @@ const BacklogCard = ({
     }
   }, [watch, data?.id, workflowDrop]);  
   const valueOption = workflowDrop?.data?.find((item: any) => item.value === watch("backlogStatus"));
-  console.log(data);
-
+  
   return (
-    <div ref={provided.innerRef}
+    <div onClick={handleClickBacklog} ref={provided.innerRef}
       {...provided.dragHandleProps}
       {...provided.draggableProps}
       className="flex flex-row justify-between items-center dark:bg-zinc-900 bg-white px-2 py-1 hover:bg-zinc-200 dark:hover:bg-zinc-800">
@@ -72,7 +81,7 @@ const BacklogCard = ({
         <h3>{data?.text}</h3>
       </div>
       
-      <div className="flex flex-row gap-8">
+      <div className="flex flex-row gap-8 items-center">
         <Badge 
           variant={data?.parent?.color} 
           size={"backlog"} 
@@ -87,7 +96,13 @@ const BacklogCard = ({
           datas={workflowDrop?.data}
           defaultValue={valueOption?.label}
         />
-        <Avatar alt="" name="" color="" src={dummyAvatar} className="z-[1]" />
+        <Avatar 
+          name={data?.assignee?.name}
+          alt={getInitials(data?.assignee?.name)}  
+          color={data?.assignee?.color} 
+          src={data?.assignee?.name ? data?.assignee?.avatar : userIcon}
+          className="z-[1]"
+        />
       </div>
     </div>
   );
