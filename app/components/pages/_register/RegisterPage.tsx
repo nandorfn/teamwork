@@ -1,14 +1,14 @@
 "use client";
 import axios from "axios";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { api, getHttpMetaMessage, httpMetaMessages } from "@http";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { hashPass } from "@func";
+import { useRouter } from "next/navigation";
 import { TRegister } from "@organisms/types";
 import { AuthForm } from "@components/orgasims";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "@schemas/authSchemas";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { api, catchErrors, getHttpMetaMessage } from "@http";
 
 const RegisterPage: React.FC = () => {
   const {
@@ -17,7 +17,8 @@ const RegisterPage: React.FC = () => {
     setError,
     formState: { isLoading, errors, isValid }
   } = useForm<TRegister>({
-    resolver: zodResolver(registerSchema)
+    resolver: zodResolver(registerSchema),
+    mode: "onChange"
   });
 
   const [loading, setLoading] = useState(false);
@@ -43,11 +44,12 @@ const RegisterPage: React.FC = () => {
           setError("password", {
             type: "server",
             message,
-          });;
+          });
         }
       })
       .catch(error => {
-        let { errors } = error?.response?.data;
+        let errors  = catchErrors(error);
+        setLoading(false);
         if (errors?.name) {
           setError("name", {
             type: "server",
@@ -70,9 +72,6 @@ const RegisterPage: React.FC = () => {
             message,
           });
         }
-      })
-      .finally(() => {
-        setLoading(false);
       });
 };
 return (

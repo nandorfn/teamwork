@@ -10,6 +10,7 @@ import prisma from "@lib/prisma";
 import { v4 as uuidv4 } from "uuid";
 import { NextResponse } from "next/server";
 import { TRegisterServer } from "@schemas/authSchemas";
+import { randomColors } from "@mocks/mockData";
 
 export const POST = async (req: Request) => {
   const body: unknown = await req.json();
@@ -37,9 +38,9 @@ export const POST = async (req: Request) => {
       email: result.data.email
     }
   });
-  if (existingEmail) return responseError(409, resKey.email);
+  if (existingEmail) return responseError(409, resKey.email, "email");
   
-  const randomColors = ["red", "green", "blue", "yellow", "slate", "orange", "amber", "lime", "emerald", "cyan", "sky", "indigo", "purple", "rose"];
+
 
   const getRandomColor = () => {
     const randomIndex = Math.floor(Math.random() * randomColors.length);
@@ -60,6 +61,7 @@ export const POST = async (req: Request) => {
     });
     return responseOK([], 201);
   } catch (error) {
+    console.log(error);
     return responseError(500);
   }
 };

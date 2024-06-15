@@ -10,7 +10,7 @@ import {
 
 export const menus: TMenu[] = [
   {
-    id: "task",
+    id: "my-task",
     label: "My Task",
     href: "/",
     icon: taskIcon,

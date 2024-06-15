@@ -1,11 +1,12 @@
-import { Button } from "@components/ui/button";
-import { Modal } from "../Modal";
-import { DialogClose } from "@components/ui/dialog";
 import axios from "axios";
-import { Loader } from "../Loader";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { api } from "@http";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@components/ui/button";
+import { DialogClose } from "@components/ui/dialog";
+
+import { Modal } from "../Modal";
+import { Loader } from "../Loader";
 
 const LogoutToggle: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -16,11 +17,12 @@ const LogoutToggle: React.FC = () => {
       .then((res) => {
         if (res.status === 200) {
           router.refresh();
+        } else {
+          throw new Error("Failed to log out");
         }
-      }
-    )
-    .catch((err) => console.error(err))
-    .finally(() => {
+      })
+      .catch((err) => {
+        console.error(err);
         setLoading(false);
       });
   };

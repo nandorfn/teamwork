@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import { TLogin } from "@organisms/types";
 import { useRouter } from "next/navigation";
-import { api, getHttpMetaMessage } from "@http";
+import { api, catchErrors, getHttpMetaMessage } from "@http";
 import { AuthForm } from "@components/orgasims";
 import { loginSchema } from "@schemas/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,6 +22,7 @@ const LoginPage: React.FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const message = getHttpMetaMessage(500, "");
+
   const onSubmit: SubmitHandler<TLogin> = (formData: TLogin) => { 
     setLoading(true);
     axios.post(api.login, formData)
@@ -31,9 +32,9 @@ const LoginPage: React.FC = () => {
         }
       })
       .catch(error => {
-        console.log(error);
         if (error.response) {
-          const { errors } = error?.response?.data;
+          const errors   = catchErrors(error);
+          setLoading(false);
           if (errors?.email) {
             setError("email", {
               type: "server",
@@ -47,15 +48,12 @@ const LoginPage: React.FC = () => {
           } else {
             setError("password", {
               type: "server",
-              message,
+              message: errors?.server,
             });          
           }
         }
-      })
-      .finally(() => {
-        setLoading(false);
       });
-  };
+};
   
   return (
     <AuthForm

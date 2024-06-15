@@ -183,6 +183,19 @@ export const getIssueByAssigneeID = async (userId: number) => {
     return await prisma.issue.findMany({
         where: {
             assigneeId: userId,
+        },
+        include: {
+            project: {
+                select: {
+                    name: true,
+                    key: true,
+                }
+            },
+            workflowStatus: {
+                select: {
+                    name: true,
+                }
+            }
         }
     });
 };

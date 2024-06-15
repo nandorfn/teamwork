@@ -4,3 +4,4 @@ export * from "./Badge";
 export * from "./Avatar";
 export * from "./InputSelect";
 export * from "./Textarea";
+export * from "./Looping";

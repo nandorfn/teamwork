@@ -13,6 +13,7 @@ import { NextResponse } from "next/server";
 
 export const POST = async (req: Request) => {
   const body: unknown = await req.json();
+  console.log(body);
   const result = loginSchema.safeParse(body);
 
   let zodErrors = {};
@@ -38,7 +39,7 @@ export const POST = async (req: Request) => {
     }
   });
 
-  if (!user) return responseError(404, resKey.userNotFound);
+  if (!user) return responseError(404, "userNotFound", "email");
   const checkPass = bcrypt.compareSync(
     result.data.password,
     user.password

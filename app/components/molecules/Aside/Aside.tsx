@@ -30,10 +30,12 @@ const Aside = () => {
   const path = usePathname();
   const { theme } = useTheme();
   const currentProject = path?.split("/")[2];
+  console.log(path?.split("/")[1]);
   
-  const [active, setActive] = useState<string>("task");
+  const [active, setActive] = useState<string>(path?.split("/")[1]);
   const [activeProject, setActiveProject] = useState<number | null>(null);
   const [collapsed, setCollapsed] = useState<boolean>(false);
+  console.log(active);
 
   const {
     data: projects,
@@ -113,14 +115,14 @@ const Aside = () => {
         </ul>
 
         <Link
-          onClick={() => setActive("project")}
+          onClick={() => setActive("projects")}
           href={currentProject ? `/projects/${currentProject}` : "/projects"}
         >
           <Collapsible className="flex flex-col gap-2 cursor-pointer ">
             <div className={cn("flex items-center  gap-1", collapsed && "mx-auto")}>
               <Icon
                 src={
-                  active === "project"
+                  active === "projects"
                     ? theme === "light"
                       ? kanbanDark
                       : kanbanFill
@@ -140,7 +142,7 @@ const Aside = () => {
                       variant={"ghost"}
                     >
                       <p className={cn("text-nowrap text-[#A1A1A1] mr-2 text-base hover:text-black dark:hover:text-white",
-                        active === "project"
+                        active === "projects"
                           ? "dark:text-white text-black font-medium"
                           : ""
                       )}>

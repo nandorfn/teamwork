@@ -43,3 +43,26 @@ export type TStartSprintServer = {
   endDate?: string | Date;
   goal?: string;
 }
+
+export type TIssuesByAssigne = {
+  id: number;
+  summary: string;
+  description: string;
+  statusId: number;
+  assigneeId: number;
+  projectId: number;
+  type: string;
+  color: string;
+  row: number;
+  sprintId: 3;
+  parentId: number | null;
+  createdAt: Date;
+  updatedAt: Date;
+  project: {
+    name: string;
+    key: string;
+  }
+  workflowStatus: {
+    name: string;
+  }
+}

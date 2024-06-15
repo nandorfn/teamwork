@@ -1,4 +1,5 @@
 import { HttpMetaMessage, HttpStatusCodes } from "@server/types";
+import { AxiosError } from "axios";
 import { NextResponse } from "next/server";
 
 export const resKey = {
@@ -55,6 +56,7 @@ export const api = {
   usersDrop: "/api/users/dropdown",
   usersList: "/api/users/lists",
   projects: "/api/projects",
+  issuesUser: "/api/issues/users",
 };
 
 export const ResponseJSON = (data: any, code: number, msg: string) => {
@@ -113,13 +115,22 @@ export const responseOK = (data: any, code: HttpStatusCodes, key?: string) => {
     ), { status: code });
 };
 
-export const responseError = (code: HttpStatusCodes, key?: string) => {
+export const responseError = (code: HttpStatusCodes, key?: string, field?: string,) => {
   const message = getHttpMetaMessage(code, key);
   return NextResponse.json(
     ResponseErrorJSON(
-      { server: httpMetaMessages[code] },
+      field ? {
+        [field]: message
+      } :
+        {
+          server: message
+        },
       code,
       message
     ), { status: code }
   );
+};
+
+export const catchErrors = (error: any) => {
+    return error?.response?.data?.errors;
 };

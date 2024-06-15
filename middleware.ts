@@ -3,6 +3,11 @@ import { verifyAuth } from "./app/utils/auth";
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
+  
+  if (!token) {
+    return NextResponse.rewrite(new URL("/login", req.url));
+  }
+  
   const verifiedToken = token && (await verifyAuth(token));
   const protectedPaths = [
     "/my-task",
