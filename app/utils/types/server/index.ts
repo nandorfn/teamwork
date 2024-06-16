@@ -66,3 +66,10 @@ export type TIssuesByAssigne = {
     name: string;
   }
 }
+
+export type TCreateComment = {
+  userId: number;
+  projectId: number;
+  issueId: number;
+  text: string;
+}

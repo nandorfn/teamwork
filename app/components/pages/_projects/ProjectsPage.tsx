@@ -54,12 +54,6 @@ const ProjectsPage = ({
     queryFn: () => fetchData(`${api.usersList}/${path[2]}`)
   });
 
-  if (!path[2] || path[2] === "undefined") {
-    return (
-      <p className="absolute left-1/2 top-1/2">Your project is empty</p>
-    );
-  }
-
   return (
     <div className="flex flex-col pt-8 w-full">
       {projectLoading || projectFetching &&
@@ -156,7 +150,7 @@ const ProjectsPage = ({
         </ResizablePanel>
         <ResizableHandle />
         {modal &&
-          <ResizablePanel defaultSize={20}>
+          <ResizablePanel minSize={15} defaultSize={20}>
             <div className="p-8">
               <DetailBacklogForm />
             </div>

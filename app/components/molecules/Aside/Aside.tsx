@@ -35,7 +35,6 @@ const Aside = () => {
   const [active, setActive] = useState<string>(path?.split("/")[1]);
   const [activeProject, setActiveProject] = useState<number | null>(null);
   const [collapsed, setCollapsed] = useState<boolean>(false);
-  console.log(active);
 
   const {
     data: projects,
@@ -81,7 +80,10 @@ const Aside = () => {
               <Link
                 key={item?.id}
                 href={item?.href}
-                onClick={() => setActive(item?.id)}
+                onClick={() => {
+                  setActive(item?.id);
+                  setActiveProject(null);
+                }}
               >
                 <li className="flex justify-between cursor-pointer items-center">
                   <div className={cn("flex items-center gap-3", collapsed && "mx-auto")}>
@@ -114,9 +116,8 @@ const Aside = () => {
           }
         </ul>
 
-        <Link
+        <div
           onClick={() => setActive("projects")}
-          href={currentProject ? `/projects/${currentProject}` : "/projects"}
         >
           <Collapsible className="flex flex-col gap-2 cursor-pointer ">
             <div className={cn("flex items-center  gap-1", collapsed && "mx-auto")}>
@@ -192,7 +193,7 @@ const Aside = () => {
               </CollapsibleContent>
             }
           </Collapsible>
-        </Link>
+        </div>
       </div>
 
       <div className="flex flex-col gap-2">
