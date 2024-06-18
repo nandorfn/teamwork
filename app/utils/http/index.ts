@@ -1,5 +1,4 @@
 import { HttpMetaMessage, HttpStatusCodes } from "@server/types";
-import { AxiosError } from "axios";
 import { NextResponse } from "next/server";
 
 export const resKey = {

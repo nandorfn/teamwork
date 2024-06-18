@@ -20,6 +20,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-neutral-200 dark:hover:bg-neutral-900  hover:text-accent-foreground",
         menu: "",
         link: "text-primary underline-offset-4 hover:underline",
+        text: "p-0 text-zinc-400 hover:text-white hover:font-semibold"
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -28,6 +29,7 @@ const buttonVariants = cva(
         lg: "h-10 rounded-md px-8",
         icon: "h-9 w-9",
         iconXs: "h-7 w-7",
+        text: "p-0"
       },
 
     },

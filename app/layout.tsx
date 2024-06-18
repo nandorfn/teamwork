@@ -7,6 +7,7 @@ import Layout from "@components/templates/Layout";
 import { ThemeProvider } from "./providers/ThemeProvider";
 import { TanstackQueryProvider } from "./providers/TanstackQueryProvider";
 import { MainStoreContext, MainStoreProvider } from "provider/MainStore";
+import { Toaster } from "@components/ui/toaster";
 
 const outfit = Outfit({ subsets: ["latin"] });
 const ogImg = process.env.OG_IMG ?? "";
@@ -58,6 +59,7 @@ export default function RootLayout({
             >
               <Layout>
                 {children}
+                <Toaster />
               </Layout>
             </ThemeProvider>
           </MainStoreProvider>

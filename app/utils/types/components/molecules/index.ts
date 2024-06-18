@@ -72,3 +72,9 @@ export type TDatePickerRange = {
   defaultValue?: any;
   disabled: boolean;
 }
+
+export type TDeleteComment = {
+  isDisabled: boolean;
+  issueId: number;
+  commentId: number;
+}

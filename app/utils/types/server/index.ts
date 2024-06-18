@@ -73,3 +73,20 @@ export type TCreateComment = {
   issueId: number;
   text: string;
 }
+
+export type TCommentRes = TCreateComment & {
+  id: number;
+  user: {
+    name: string;
+    avatar: string;
+  }
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type TUpdateComment = {
+  issueId: number;
+  commentId: number;
+  projectId: number;
+  text: string;
+}

@@ -10,3 +10,5 @@ export * from "./TextareaLabel";
 export * from "./LogoutToggle";
 export * from "./SelectLabel";
 export * from "./DatePicker";
+export * from "./Skeleton";
+export * from "./Accordion2";

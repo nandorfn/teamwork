@@ -23,7 +23,7 @@ export   const countFilterArr = (data: any, key: string,  value: string) => {
 
   
 export const getInitials = (name: string) => {
-  if (!name) return null;
+  if (!name) return "";
   const nameParts = name.split(" ");
 
   if (nameParts.length === 1) {
@@ -32,6 +32,31 @@ export const getInitials = (name: string) => {
     return nameParts[0].charAt(0).toUpperCase() + nameParts[1].charAt(0).toUpperCase();
   } else {
     return nameParts[0].charAt(0).toUpperCase() + nameParts[1].charAt(0).toUpperCase() + nameParts[2].charAt(0).toUpperCase();
+  }
+};
+
+export const getTimeAgo = (date: Date) => {
+  const now: Date = new Date();
+  const parsedDate: Date = new Date(date);
+  const diffInMilliseconds: number = now.getTime() - parsedDate.getTime();
+
+  const seconds: number = Math.floor(diffInMilliseconds / 1000);
+  const minutes: number = Math.floor(seconds / 60);
+  const hours: number = Math.floor(minutes / 60);
+  const days: number = Math.floor(hours / 24);
+
+  if (days > 0) {
+      return parsedDate.toLocaleDateString("en-US", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric"
+      });
+  } else if (hours > 0) {
+      return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+  } else if (minutes > 0) {
+      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+  } else {
+      return `${seconds} second${seconds > 1 ? "s" : ""} ago`;
   }
 };
 

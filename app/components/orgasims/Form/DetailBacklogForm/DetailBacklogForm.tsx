@@ -1,25 +1,24 @@
 "use client";
+import { en } from "@en";
+import { api, fetchData } from "@http";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { useMainStore } from "provider/MainStore";
 import XIcon from "@assets/svg-tsx/XIcon";
-import { TOptionSelect } from "@atoms/types";
+
 import { Badge } from "@components/atoms";
-import { InputLabel, SelectLabel, TextareaLabel } from "@components/molecules";
-import { Comment } from "@components/orgasims/Comment";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@components/ui/accordion";
 import { Button } from "@components/ui/button";
 import { Separator } from "@components/ui/separator";
-import { api, fetchData } from "@http";
-import { useQuery } from "@tanstack/react-query";
-import { usePathname } from "next/navigation";
-import { useMainStore } from "provider/MainStore";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Comment } from "@components/orgasims/Comment";
+import { Accordion2, InputLabel, SelectLabel, TextareaLabel } from "@components/molecules";
 
 const DetailBacklogForm: React.FC = () => {
   const { data, setModal } = useMainStore((state) => state);
   const path = usePathname()?.split("/");
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const currentProjectId = path[2];
-  console.log(data);
   const {
     data: workflowDrop,
     isLoading: workflowLoading
@@ -35,7 +34,6 @@ const DetailBacklogForm: React.FC = () => {
     queryKey: ["assigneeDrop"],
     queryFn: () => fetchData(`${api.usersDrop}/${currentProjectId}`)
   });
-  console.log(data);
 
   const {
     control,
@@ -60,8 +58,7 @@ const DetailBacklogForm: React.FC = () => {
   }, [data, reset]);
 
   return (
-    <div className="relative">
-
+    <div className="relative ">
       <h3 className=" text-xl font-semibold">Details</h3>
       <Button
         variant={"outline"}
@@ -78,9 +75,9 @@ const DetailBacklogForm: React.FC = () => {
       >
         <XIcon fill="fill-white" />
       </Button>
+
       {isUpdate ? (
         <form>
-
           <div className="flex flex-col gap-4 mt-4">
             <InputLabel
               label="Summary"
@@ -135,43 +132,40 @@ const DetailBacklogForm: React.FC = () => {
 
           {data?.description &&
             <>
-              <h3 className=" text-xl font-semibold">Description</h3>
-              <p>{data?.description}</p>
+              <Accordion2 title={en.description}>
+                <p>{data?.description}</p>
+              </Accordion2>
             </>
           }
 
-          {(data?.assignee || data?.reporter) &&
-            <Accordion type="single" collapsible>
-              <AccordionItem value="item-1">
-                <AccordionTrigger className="text-lg font-medium">Details</AccordionTrigger>
-                <AccordionContent>
-                  <table className="flex w-full">
-                    <tbody className="border p-2 flex w-full rounded">
-                      {data?.assignee &&
-                        <tr className="flex flex-row gap-[1%] w-full">
-                          <td className="w-[49%]">Assignee</td>
-                          <Separator orientation="vertical" />
-                          <td className="w-[49%]">{data?.assignee?.name}</td>
-                        </tr>
-                      }
-                      {data?.reporter &&
-                        <tr>
-                          <td>Reporter</td>
-                          <td>{data?.reporter?.name}</td>
-                        </tr>
-                      }
-                    </tbody>
-                  </table>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          }
+          {(data?.assignee || data?.reporter) && (
+            <Accordion2 title={en.details}>
+              <table className="flex w-full">
+                <tbody className="border p-2 flex w-full rounded">
+                  {data?.assignee &&
+                    <tr className="flex flex-row gap-[1%] w-full">
+                      <td className="w-[49%]">Assignee</td>
+                      <Separator orientation="vertical" />
+                      <td className="w-[49%]">{data?.assignee?.name}</td>
+                    </tr>
+                  }
+                  {data?.reporter &&
+                    <tr>
+                      <td>Reporter</td>
+                      <td>{data?.reporter?.name}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </Accordion2>
+          )}
+
           <Comment issueId={Number(data?.id)} />
         </section>
       )
       }
 
-    </div>
+    </div >
 
   );
 };

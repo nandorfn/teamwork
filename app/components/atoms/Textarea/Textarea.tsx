@@ -7,7 +7,8 @@ const Textarea = ({
   placeholder,
   name,
   control,
-  required
+  required,
+  defaultValue = "",
 }: TTextarea) => {
     return (
         <Controller
@@ -16,6 +17,7 @@ const Textarea = ({
         rules={{
           required: required,
         }}
+        defaultValue={defaultValue}
         render={({ field }) =>
           <textarea
             {...field}

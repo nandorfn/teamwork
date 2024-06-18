@@ -8,11 +8,11 @@ const Avatar = ({
   name,
   color
 }: {
-  className: string,
+  className?: string,
   src: StaticImageData | string,
   alt: string | null,
   name: string,
-  color: string,
+  color?: string,
 }) => {
   const [isHover, setIsHover] =useState(false);
 

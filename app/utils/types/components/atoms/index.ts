@@ -38,6 +38,7 @@ export type TTextarea = {
   control: Control<any>;
   required: boolean;
   className?: string;
+  defaultValue?: string;
 }
 
 export type TSelectLabel = TSelect & {
