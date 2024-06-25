@@ -57,6 +57,7 @@ export const api = {
   projects: "/api/projects",
   issuesUser: "/api/issues/users",
   comments: "/api/comments",
+  backlogs: "/api/backlogs",
 };
 
 export const ResponseJSON = (data: any, code: number, msg: string) => {

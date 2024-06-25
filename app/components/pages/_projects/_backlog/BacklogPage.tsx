@@ -4,8 +4,9 @@ import { en } from "@en";
 import { DragDropContext, Draggable, DropResult } from "@hello-pangea/dnd";
 import { api, fetchData } from "@http";
 import { TDroppable, TIssueItem, TMoveDroppableResult, TMoveFunc } from "@pages/types";
-import { SprintMapValue } from "@server/types";
-import { useQuery } from "@tanstack/react-query";
+import { SprintMapValue, TDragUpdate } from "@server/types";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { usePathname } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 
@@ -52,6 +53,12 @@ const BacklogPage: React.FC = () => {
     refetchOnWindowFocus: false,
     queryFn: () => fetchData(`${api.issues}/${projectId}`),
   });
+
+  const mutationDifferentList = useMutation({
+    mutationFn: (draggable: TDragUpdate) => {
+      return axios.put(`${api.issues}/${draggable?.id}`, draggable);
+    }
+  });
     
   const [schema, setSchema] = useState(issues?.data);  
   useEffect(() => {
@@ -74,7 +81,8 @@ const BacklogPage: React.FC = () => {
     sourceId: string,
     destId: string,
     source: TDroppable,
-    destination: TDroppable
+    destination: TDroppable,
+    draggableId: string | number,
   ) => {
     const sourceIndex = schema.findIndex((item: SprintMapValue) => item.id === sourceId);
     const destIndex = schema.findIndex((item: SprintMapValue) => item.id === destId);
@@ -84,6 +92,14 @@ const BacklogPage: React.FC = () => {
       droppableSource: source,
       droppableDestination: destination
     });
+
+    const sendData = {
+      id: draggableId,
+      source: sourceId,
+      dest: destId,
+    };
+
+    mutationDifferentList.mutate(sendData);
 
     const newSchema = [...schema];
     newSchema[sourceIndex].data = result[sourceId];
@@ -102,11 +118,12 @@ const BacklogPage: React.FC = () => {
 
     const sourceId = source.droppableId;
     const destId = destination.droppableId;
+    const draggableId = result?.draggableId;
 
     if (sourceId === destId) {
       handleSameListDrop(sourceId, source.index, destination.index);
     } else {
-      handleDifferentListDrop(sourceId, destId, source, destination);
+      handleDifferentListDrop(sourceId, destId, source, destination, draggableId);
     }
   };
   

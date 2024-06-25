@@ -14,6 +14,7 @@ import { Loader } from "@components/molecules";
 import { useMainStore } from "provider/MainStore";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@components/ui/resizable";
 import { Skeleton } from "@components/ui/skeleton";
+import { ModalInviteMember } from "@components/molecules/ModalInviteMember";
 const ProjectsPage = ({
   children
 }: {
@@ -87,7 +88,7 @@ const ProjectsPage = ({
           }
 
           <div className="flex flex-row gap-3">
-            <div className="flex flex-row relative">
+            <div className="flex flex-row relative gap-1">
               {memberList?.data?.map((item: any, index: number) => (
                 <Fragment key={index}>
                   <Avatar src={item?.avatar} name={item?.name} color={item?.color} alt={item?.altAvatar} className="z-[1]" />
@@ -95,7 +96,7 @@ const ProjectsPage = ({
               ))
               }
             </div>
-            <Button variant={"secondary"} size={"xs"}>Invite</Button>
+            <ModalInviteMember/>
           </div>
         </div>
         {projectLoading ? (

@@ -27,7 +27,7 @@ export type TOptionSelect = {
 }
 
 export type TSvg = {
-  fill: string;
+  fill?: string;
   width?: string;
   height?: string;
 }

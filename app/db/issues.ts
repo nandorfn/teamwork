@@ -1,7 +1,7 @@
 import { parseNumber } from "@func";
 import prisma from "@lib/prisma";
-import { TIssueServer } from "@schemas/issueSchemas";
-import { SprintMapValue } from "@server/types";
+import { TEditIssueForm, TIssueServer } from "@schemas/issueSchemas";
+import { SprintMapValue, TDragUpdate, TEditDetail } from "@server/types";
 
 export const getIssueParentDropdown = async (projectId: number, type: string) => {
     const res = await prisma.issue.findMany({
@@ -32,6 +32,9 @@ export const getIssueByProjectId = async (projectId: number, userId: number): Pr
                         userId: userId,
                     }
                 }
+            },
+            status: {
+                not: "complete"
             }
         },
         include: {
@@ -39,6 +42,11 @@ export const getIssueByProjectId = async (projectId: number, userId: number): Pr
                 where: {
                     type: {
                         not: "Epic"
+                    },
+                    sprint: {
+                        status: {
+                            not: "complete"
+                        }
                     }
                 },
                 include: {
@@ -66,11 +74,12 @@ export const getIssueByProjectId = async (projectId: number, userId: number): Pr
                     }
                 }
             },
+        },
+        orderBy: {
+            updatedAt: "desc"
         }
     });
-    
-    console.log(sprints);
-    
+        
     const sprintMap: Map<string, SprintMapValue> = new Map();
     sprints.forEach(sprint => {
         const formattedSprint: SprintMapValue = {
@@ -196,6 +205,51 @@ export const getIssueByAssigneeID = async (userId: number) => {
                     name: true,
                 }
             }
+        }
+    });
+};
+
+export const updateIssueSprintId = async (data: TDragUpdate) => {
+    return await prisma.issue.update({
+        where: {
+            id: Number(data?.id)
+        },
+        data: {
+            sprintId: Number(data?.dest)
+        }
+    });
+};
+
+export const getIssueBySprintID = async (sprintId: number, projectId: number) => {
+    return await prisma.issue.findMany({
+        where: {
+            projectId: projectId,
+            sprintId: sprintId,
+        }
+    });
+};
+
+export const updateIssue = async (id: number, data: TEditDetail) => {
+    return await prisma.issue.update({
+        where: {
+            id: id,
+        },
+        data: {
+            summary: data?.summary,
+            statusId: data?.status,
+            assigneeId: data?.assignee,
+            description: data?.description
+        }
+    });
+};
+
+export const updateStatusIssue = async (id: number, statusId: number) => {
+    return await prisma.issue.update({
+        where: {
+            id: id,
+        },
+        data: {
+            statusId: statusId
         }
     });
 };

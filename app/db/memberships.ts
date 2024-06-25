@@ -51,3 +51,12 @@ export const createProjectDB = async (body: any, verifiedToken: JwtSchema) => {
       return newMember;
     });
 };
+
+export const addNewMember = async (userId: number, projectId: number) => {
+  return await prisma.membership.create({
+    data: {
+      userId: userId,
+      projectId: projectId
+    }
+  });
+};

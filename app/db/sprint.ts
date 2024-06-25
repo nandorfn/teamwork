@@ -1,4 +1,6 @@
 import prisma from "@lib/prisma";
+import { getIssueBySprintID } from "./issues";
+import { TCompleteSprint } from "@server/types";
 
 export const getSprintDropdown = async (projectId: number) => {
   const res = await prisma.sprint.findMany({
@@ -44,4 +46,49 @@ export const createSprint = async (projectId: number, userId: number) => {
       status: defaultValue.status
     }
   });
+};
+
+export const deleteSprint = async (projectId: number, id: number) => {
+  await prisma.$transaction(
+    [
+      prisma.sprint.delete({
+        where: {
+          id: id
+        }
+      }),
+      prisma.issue.updateMany({
+        where: {
+          sprintId: id
+        },
+        data: {
+          sprintId: null
+        }
+      })
+    ]
+  );
+};
+
+export const completeSprint = async (projectId: number, data: TCompleteSprint) => {
+  return await prisma.$transaction(
+    [
+      prisma.issue.updateMany({
+        where: {
+          id: {
+            in: data?.data
+          }
+        },
+        data: {
+          sprintId: null
+        }
+      }),
+      prisma.sprint.update({
+        where: {
+          id: data?.id
+        },
+        data: {
+          status: "complete"
+        }
+      }),
+    ]
+  );
 };

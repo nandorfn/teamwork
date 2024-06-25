@@ -1,33 +1,47 @@
 "use client";
 import { TBacklogForm, TTodoCard } from "@molecules/types";
 import { Avatar, Badge, Icon, InputSelect } from "@components/atoms";
-import dummyAvatar from "@assets/dummy/avatar.svg";
 import { bugIcon, epicIcon, storyIcon, taskIcon2, userIcon } from "@assets/svg";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api, fetchData } from "@http";
 import { usePathname } from "next/navigation";
 import { TOptionSelect } from "@atoms/types";
 import { useMainStore } from "provider/MainStore";
 import { getInitials } from "@func";
+import axios from "axios";
 
 const BacklogCard = ({
   data,
   provided,
-  snap
 }: TTodoCard) => {
   const {
     control,
-    watch
+    watch,
   } = useForm<TBacklogForm>({
     defaultValues: {
       backlogStatus: data?.statusId,
     }
-  });
-  
+  });  
   const { setModal, setData } = useMainStore((state) => state);
   
+  const updateStatus = useCallback(async () => {
+    try {
+      await axios.patch(`${api.backlogs}/${data?.id}`, watch("backlogStatus"));
+    } catch (error) {
+      console.error("Failed to update status:", error);
+      throw error;
+    }
+  }, [data?.id, watch]);
+  
+
+  useEffect(() => {
+    if (watch("backlogStatus") !== data?.statusId) {
+      updateStatus();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.id, data?.statusId, watch("backlogStatus"), updateStatus]);
   const handleClickBacklog = () => {
     setModal(true);
     setData(data);
@@ -92,7 +106,7 @@ const BacklogCard = ({
           name={"backlogStatus"}
           control={control}
           required={false}
-          className={`w-32 border-none font-semibold capitalize ${color}`}
+          className={`w-32 border-none bg-zinc-800 my-1  font-semibold capitalize ${color}`}
           datas={workflowDrop?.data}
           defaultValue={valueOption?.label}
         />

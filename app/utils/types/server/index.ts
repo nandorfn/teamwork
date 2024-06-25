@@ -90,3 +90,21 @@ export type TUpdateComment = {
   projectId: number;
   text: string;
 }
+
+export type TDragUpdate = {
+  id: string | number;
+  source: string | number;
+  dest: string | number;
+}
+
+export type TCompleteSprint = {
+  id: number;
+  data: number[];
+}
+
+export type TEditDetail = {
+  summary: string;
+  status: number;
+  description: string;
+  assignee: number;
+}

@@ -8,8 +8,8 @@ import { Badge, Icon } from "@components/atoms";
 import { caretDown, caretDownDark, caretRight, caretRightDark, plusDark, plusIcon } from "@assets/svg";
 import { useTheme } from "next-themes";
 import { DatePickerRange } from "@components/molecules/DatePickerRange";
-import { Modal } from "@components/molecules/Modal";
-import { CreateIssueForm, StartSprintForm } from "@components/orgasims";
+import { Modal, ModalCompleteSprint } from "@components/molecules/Modal";
+import { CreateIssueForm } from "@components/orgasims";
 import { DialogClose } from "@components/ui/dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -17,8 +17,9 @@ import { api } from "@http";
 import { usePathname } from "next/navigation";
 import { en } from "@en";
 import { useForm } from "react-hook-form";
-import PenIcon from "@assets/svg-tsx/PenIcon";
-import XIcon from "@assets/svg-tsx/XIcon";
+import { sprintStatus } from "@mocks/mockData";
+import ModalDeleteSprint from "@components/molecules/ModalDeleteSprint/ModalDeleteSprint";
+import { ModalSprintForm } from "@components/molecules/ModalSprintForm";
 
 const IssueContainerCard = ({
   children,
@@ -45,7 +46,7 @@ const IssueContainerCard = ({
   const totalBug = countFilterArr(data?.data, "status", "done");
 
   const mutateSprint = useMutation({
-    mutationFn: () => {
+    mutationFn: (status: string) => {
       return axios.post(`${api.sprints}/${currentProjectId}`);
     },
     onSuccess: async () => {
@@ -54,7 +55,7 @@ const IssueContainerCard = ({
   });
 
   const {
-    control, watch, setValue
+    control
   } = useForm({
     defaultValues: {
       dateRange: {
@@ -66,7 +67,7 @@ const IssueContainerCard = ({
 
   const buttonStatus = (status: string) => {
     switch (status) {
-      case "todo":
+      case sprintStatus.todo:
         return en.startSprint;
       case "backlog":
         return en.createSprint;
@@ -80,7 +81,7 @@ const IssueContainerCard = ({
       case "create":
         return (
           <Button
-            onClick={() => mutateSprint.mutate()}
+            onClick={() => mutateSprint.mutate(data?.status)}
             className="font-semibold"
             variant={"secondary"}
             size={"xs"}
@@ -88,64 +89,35 @@ const IssueContainerCard = ({
             {buttonStatus(data?.status)}
           </Button>
         );
+      case sprintStatus.complete:
+        const newData = {
+          id: Number(data?.id),
+          data: data?.data
+        };
+        return (
+          <ModalCompleteSprint
+            data={newData}
+            projectId={Number(currentProjectId)}
+          />
+        );
       case "start":
         return (
-          <Modal
-            title="Start Sprint"
-            childrenTrigger={
-              <Button
-                className="font-semibold"
-                variant={"secondary"}
-                size={"xs"}
-              >
-                {buttonStatus(data?.status)}
-              </Button>
-            }
-            childrenContent={
-              <StartSprintForm
-                refForm={refFormStart}
-                data={data}
-                setDisabled={setDisabled}
-              />
-            }
-            childrenFooter={
-              <DialogClose asChild>
-                <Button
-                  disabled={disabled}
-                  onClick={() => refFormStart?.current?.requestSubmit()}
-                  variant={"default"}>
-                  Start
-                </Button>
-              </DialogClose>
-            }
+          <ModalSprintForm
+            status="start"
+            refFormStart={refFormStart}
+            setDisabled={setDisabled}
+            data={data}
+            disabled={disabled}
           />
         );
       case "edit":
         return (
-          <Modal
-            title="Edit Sprint"
-            childrenTrigger={
-              <Button variant={"secondary"} className="bg-none hover:bg-none" size={"iconXs"}>
-                <PenIcon width="16" height="16" fill="dark:fill-secondary-foreground fill-black" />
-              </Button>
-            }
-            childrenContent={
-              <StartSprintForm
-                refForm={refFormStart}
-                data={data}
-                setDisabled={setDisabled}
-              />
-            }
-            childrenFooter={
-              <DialogClose asChild>
-                <Button
-                  disabled={disabled}
-                  onClick={() => refFormStart?.current?.requestSubmit()}
-                  variant={"default"}>
-                  Edit
-                </Button>
-              </DialogClose>
-            }
+          <ModalSprintForm
+            status="edit"
+            refFormStart={refFormStart}
+            setDisabled={setDisabled}
+            data={data}
+            disabled={disabled}
           />
         );
     }
@@ -203,21 +175,14 @@ const IssueContainerCard = ({
                       <ButtonStatusComp status={"create"} />
                     ) : (
                       <>
-                        <ButtonStatusComp status={"start"} />
+                        <ButtonStatusComp
+                          status={
+                            data?.status === sprintStatus.progress
+                              ? sprintStatus.complete
+                              : "start"
+                          } />
                         <ButtonStatusComp status={"edit"} />
-                        {length > 0 &&
-
-                          <Button
-                            variant={"secondary"}
-                            className="bg-none hover:bg-none"
-                            size={"iconXs"}
-                          >
-                            <XIcon
-                              width="16"
-                              height="16"
-                              fill="dark:fill-secondary-foreground fill-black" />
-                          </Button>
-                        }
+                        <ModalDeleteSprint id={data?.id} projectId={currentProjectId} />
                       </>
                     )
                   }
