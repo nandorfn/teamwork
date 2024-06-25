@@ -1,62 +1,55 @@
-import jwt from 'jsonwebtoken';
-let bcrypt = require('bcryptjs');
-import { cookies } from 'next/headers';
-import { NextResponse } from "next/server";
+import {
+  resKey,
+  responseOK,
+  responseError,
+  getHttpMetaMessage,
+  ResponseErrorJSON,
+} from "@http";
 import prisma from "@lib/prisma";
+let bcrypt = require("bcryptjs");
+import { applyJWT } from "@auth";
 import { loginSchema } from "@schemas/authSchemas";
+import { NextResponse } from "next/server";
 
 export const POST = async (req: Request) => {
-  const JWT_SECRET = process.env.JWT_SECRET_KEY;
   const body: unknown = await req.json();
+  console.log(body);
   const result = loginSchema.safeParse(body);
 
-  let zodErrors = {}
+  let zodErrors = {};
   if (!result.success) {
     result.error.issues.forEach((issue) => {
-      zodErrors = { 
+      zodErrors = {
         ...zodErrors,
         [issue.path[0]]: issue.message
-      }
+      };
     });
-
-    return NextResponse.json({ errors: zodErrors }, { status: 400 });
+    const message = getHttpMetaMessage(400, "");
+    return NextResponse.json(
+      ResponseErrorJSON(
+        zodErrors,
+        400,
+        message
+      ), { status: 400 }
+    );
   }
-
   const user = await prisma.user.findUnique({
     where: {
       email: result.data.email,
     }
   });
 
-  if (!user) {
-    return NextResponse.json({  
-      errors: { 
-        email: "User not found"
-        }
-      }, { status: 404 });
-  } else {
-    const checkPass = bcrypt.compareSync(
-      result.data.password,
-      user.password
-    );
+  if (!user) return responseError(404, "userNotFound", "email");
+  const checkPass = bcrypt.compareSync(
+    result.data.password,
+    user.password
+  );
 
-    if (!checkPass) {
-      return NextResponse.json({ errors: { password: "Invalid password" } }, { status: 401 });
-    } else {
-      const token = jwt.sign({
-        username: user.name,
-        userId: user.userId,
-        id: user.id
-      },
-        JWT_SECRET!, {
-        expiresIn: '30d'
-      });
-      cookies().set('token', token, {
-        secure: process.env.NODE_ENV !== 'development',
-        maxAge: 2592000,
-        sameSite: 'strict'
-      })
-      return NextResponse.json({ status: 200 });
-    }
+  if (!checkPass) return responseError(404, resKey.invalidPass);
+  try {
+    applyJWT(user);
+    return responseOK([], 200, resKey.operation);
+  } catch (error) {
+    return responseError(500);
   }
-}
+};

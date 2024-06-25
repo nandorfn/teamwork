@@ -1,5 +1,6 @@
-import { BaseSyntheticEvent } from "react";
-import { Control, FieldErrors, MultipleFieldErrors, SubmitHandler } from "react-hook-form";
+import { SprintMapValue } from "@server/types";
+import { BaseSyntheticEvent, LegacyRef, MutableRefObject, RefObject } from "react";
+import { Control, FieldErrors, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
 export type TLogin = {
   email: string;
@@ -18,4 +19,16 @@ export type TAuthForm = {
   isRegister: boolean;
   control: Control<any>;
   handleSubmit: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
+}
+
+export type TCreateIssue = {
+  setDisabled: React.Dispatch<React.SetStateAction<boolean>>;
+  refForm: LegacyRef<HTMLFormElement> | null;
+  defaultValue: any;
+}
+
+export type TStartSprintForm = {
+  data: SprintMapValue;
+  refForm: LegacyRef<HTMLFormElement> | null;
+  setDisabled: React.Dispatch<React.SetStateAction<boolean>>;
 }

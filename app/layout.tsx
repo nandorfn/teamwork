@@ -1,23 +1,25 @@
+import "./globals.css";
 import React from "react";
+import { cn } from "./utils/func";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
-import "./globals.css";
 import Layout from "@components/templates/Layout";
-import { cn } from "./utils/func";
 import { ThemeProvider } from "./providers/ThemeProvider";
 import { TanstackQueryProvider } from "./providers/TanstackQueryProvider";
+import { MainStoreContext, MainStoreProvider } from "provider/MainStore";
+import { Toaster } from "@components/ui/toaster";
 
-const outfit = Outfit({ subsets: ['latin'] })
-const ogImg = 'https://ucarecdn.com/a742a730-c718-46cb-b148-e19418c46429/-/preview/1000x525/'
+const outfit = Outfit({ subsets: ["latin"] });
+const ogImg = process.env.OG_IMG ?? "";
 export const metadata: Metadata = {
-  title: 'teamwork',
-  description: 'Project Management',
-  metadataBase: new URL('https://riotgear.vercel.app'),
+  title: "teamwork",
+  description: "Project Management",
+  metadataBase: new URL(process.env.NEXT_BASE_URL ?? ""),
   openGraph: {
-    title: 'teamwork',
-    description: 'Agile Project Management',
-    url: 'https://riotgear.vercel.app',
-    siteName: 'teamwork',
+    title: "teamwork",
+    description: "Agile Project Management",
+    url: process.env.BASE_URL,
+    siteName: "teamwork",
     images: [
       {
         url: ogImg,
@@ -28,13 +30,13 @@ export const metadata: Metadata = {
         url: ogImg,
         width: 1800,
         height: 1600,
-        alt: 'Project Management',
+        alt: "Project Management",
       },
     ],
-    locale: 'id_ID',
-    type: 'website',
+    locale: "id_ID",
+    type: "website",
   },
-}
+};
 
 export default function RootLayout({
   children,
@@ -45,19 +47,22 @@ export default function RootLayout({
     <TanstackQueryProvider>
       <html lang="en">
         <body className={cn(
-          'min-h-screen',
+          "min-h-screen",
           outfit.className
         )}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Layout>
-              {children}
-            </Layout>
-          </ThemeProvider>
+          <MainStoreProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Layout>
+                {children}
+                <Toaster />
+              </Layout>
+            </ThemeProvider>
+          </MainStoreProvider>
         </body>
       </html>
     </TanstackQueryProvider>

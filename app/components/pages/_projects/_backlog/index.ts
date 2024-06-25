@@ -1,3 +1,3 @@
 import BacklogPage from "./BacklogPage";
 
-export { BacklogPage }
+export { BacklogPage };

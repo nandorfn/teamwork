@@ -1,3 +1,3 @@
 import Aside from "./Aside";
 
-export { Aside }
+export { Aside };

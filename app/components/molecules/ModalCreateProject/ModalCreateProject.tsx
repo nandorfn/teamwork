@@ -15,10 +15,10 @@ const ModalCreateProject: React.FC = () => {
       setOpen={setOpen}
       title="Create Project"
       childrenTrigger={
-        <Button variant={'ghost'} size={'xs'} className="w-fit p-1 h-5">
+        <Button variant={"ghost"} size={"xs"} className="w-fit p-1 h-5">
           <Icon
             src={
-              theme === 'light'
+              theme === "light"
                 ? plusDark
                 : plusIcon
             }

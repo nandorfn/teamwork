@@ -1,6 +1,15 @@
-import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
+import {
+  resKey,
+  responseOK,
+  responseError,
+} from "@http";
+import { cookies } from "next/headers";
+
 export const GET = () => {
-  cookies().delete('token');
-  return NextResponse.json('Cookie deleted', { status: 200})  
-}
+  try {
+    cookies().delete("token");
+    return responseOK([], 200, resKey.operation);
+  } catch (error) {
+    return responseError(500);
+  }
+};

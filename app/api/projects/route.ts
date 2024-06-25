@@ -1,9 +1,11 @@
 import prisma from "@lib/prisma";
-import { NextResponse } from "next/server";
-import { v4 as uuidv4 } from 'uuid';
-import { ZodIssue } from "zod";
+import { resKey, responseError, responseOK } from "@http";
 
 export const GET = async () => {
-  const projects = await prisma.project.findMany();
-  return NextResponse.json(projects, { status: 200 })
-}
+  try {
+    const projects = await prisma.project.findMany();
+    return responseOK(projects, 200, resKey.found);
+  } catch (error) {
+    return responseError(500);
+  }
+};

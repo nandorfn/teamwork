@@ -1,31 +1,34 @@
-import { NextResponse } from "next/server";
-import { createProjectDB, getAllProjects } from "../../db/memberships";
-import { verifyCookie } from "../../utils/auth"
-import { ResponseJSON } from "../../utils/http";
-import { TProjectForm, projectSchema } from "@schemas/projectSchemas";
+import {
+  resKey,
+  responseError,
+  responseOK,
+} from "@http";
+import {
+  getAllProjects,
+  createProjectDB,
+} from "@db/memberships";
 import { ZodIssue } from "zod";
+import { verifyCookie } from "@auth";
+import { TProjectForm, projectSchema } from "@schemas/projectSchemas";
 
 export const GET = async (req: Request) => {
   const verifiedToken = await verifyCookie(req);
-  if (!verifiedToken) {
-    return NextResponse.json({ errors: 'Unauthorized' }, { status: 401 });
-  }
-  
-  const result = await getAllProjects(verifiedToken?.id);
-  return NextResponse.json(ResponseJSON(result, 200, 'OK'), { status: 200 });
-}
+  if (!verifiedToken) return responseError(401, resKey.denied);
 
-export const POST = async (req: Request, res: Response) => {
+  try {
+    const result = await getAllProjects(verifiedToken?.id);
+    return responseOK(result, 200, resKey.found);
+  } catch (error) {
+    return responseError(500);
+  }
+};
+
+export const POST = async (req: Request) => {
   const verifiedToken = await verifyCookie(req);
-
-  if (!verifiedToken) {
-    return NextResponse.json({ errors: 'Unauthorized' }, { status: 401 });
-  }
+  if (!verifiedToken) return responseError(401, resKey.denied);
 
   const body: TProjectForm = await req.json();
-  if (!body) {
-    return NextResponse.json({ errors: 'Bad Request' }, { status: 400 });
-  }
+  if (!body) return responseError(400);
 
   const result = projectSchema.safeParse(body);
   if (!result.success) {
@@ -34,15 +37,16 @@ export const POST = async (req: Request, res: Response) => {
       zodErrors = {
         ...zodErrors,
         [issue.path[0]]: issue.message
-      }
+      };
     });
-    return NextResponse.json({ errors: zodErrors }, { status: 400 });
+
+    return responseError(400);
   }
-  
+
   try {
     const data = await createProjectDB(body, verifiedToken);
-    return NextResponse.json(ResponseJSON(data, 201, 'Success created new Project!'), { status: 201})
+    return responseOK(data, 201);
   } catch (error) {
-    return NextResponse.json(ResponseJSON([], 500, 'Something went wrong!'), { status: 500 });
+    return responseError(500);
   }
-}
+};

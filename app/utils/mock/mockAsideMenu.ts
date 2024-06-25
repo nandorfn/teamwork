@@ -10,19 +10,19 @@ import {
 
 export const menus: TMenu[] = [
   {
-    id: 'task',
-    label: 'My Task',
-    href: '/',
+    id: "my-task",
+    label: "My Task",
+    href: "/",
     icon: taskIcon,
     iconFill: taskFill,
     iconDark: taskDark,
   },
-  {
-    id: 'chats',
-    label: 'Chats',
-    href: '/chats',
-    icon: chatIcon,
-    iconFill: chatFill,
-    iconDark: chatDark,
-  },
+  // {
+  //   id: "chats",
+  //   label: "Chats",
+  //   href: "/chats",
+  //   icon: chatIcon,
+  //   iconFill: chatFill,
+  //   iconDark: chatDark,
+  // },
 ];

@@ -21,7 +21,7 @@ const Input = ({
         render={({ field }) =>
           <input
             {...field}
-            className={cn('bg-transparent border rounded-md p-2', className)}
+            className={cn("bg-transparent border rounded-md p-2", className)}
             type={type}
             placeholder={placeholder}
           />

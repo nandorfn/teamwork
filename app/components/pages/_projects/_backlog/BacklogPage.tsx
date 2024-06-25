@@ -1,8 +1,14 @@
-'use client'
+"use client";
 import { BacklogCard, IssueContainerCard } from "@components/molecules";
+import { en } from "@en";
 import { DragDropContext, Draggable, DropResult } from "@hello-pangea/dnd";
+import { api, fetchData } from "@http";
 import { TDroppable, TIssueItem, TMoveDroppableResult, TMoveFunc } from "@pages/types";
-import React, { Fragment, useState } from "react";
+import { SprintMapValue, TDragUpdate } from "@server/types";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { usePathname } from "next/navigation";
+import React, { Fragment, useEffect, useState } from "react";
 
 const reorder = (
   list: TIssueItem[],
@@ -35,100 +41,36 @@ const move = ({
 };
 
 const BacklogPage: React.FC = () => {
-    const [schema, setSchema] = useState([
-      {
-        id: 'sprint1',
-        title: 'Sprint',
-        data: [
-          {
-            id: "123",
-            type: "epic",
-            text: "123-text",
-            parent: {
-              name: "Feature 1",
-              color: "blue",
-            }
-          },
-          {
-            id: "345",
-            type: "story",
-            text: "345-text",
-            parent: {
-              name: "Feature 1",
-              color: "yellow",
-            }
-          },
-          {
-            id: "567",
-            type: "bug",
-            text: "567-text",
-            parent: {
-              name: "Feature 1",
-              color: "blue",
-            }
-          },
-          {
-            id: "789",
-            type: "task",
-            text: "789-text",
-            parent: {
-              name: "Feature 1",
-              color: "purple",
-            }
-          }
-        ]
-      },
-      {
-        id: 'sprint2',
-        title: 'Sprint2',
-        data: [
-          {
-            id: "111",
-            type: "task",
-            text: "123-text",
-            parent: {
-              name: "Feature 1",
-              color: "blue",
-            }
-          },
-          {
-            id: "222",
-            type: "task",
-            text: "345-text",
-            parent: {
-              name: "Feature 1",
-              color: "blue",
-            }
-          },
-          {
-            id: "333",
-            type: "epic",
-            text: "567-text",
-            parent: {
-              name: "Feature 1",
-              color: "blue",
-            }
-          },
-          {
-            id: "444",
-            type: "story",
-            text: "789-text",
-            parent: {
-              name: "Feature 1",
-              color: "blue",
-            }
-          }
-        ]
-      },
-    ]
-    );
+  
+  const path = usePathname();
+  const projectId = path?.split("/")[2];
+  
+  const {
+    data: issues,
+    isLoading: isIssueLoading,
+  } = useQuery({
+    queryKey: ["issues", `${projectId}`],
+    refetchOnWindowFocus: false,
+    queryFn: () => fetchData(`${api.issues}/${projectId}`),
+  });
 
+  const mutationDifferentList = useMutation({
+    mutationFn: (draggable: TDragUpdate) => {
+      return axios.put(`${api.issues}/${draggable?.id}`, draggable);
+    }
+  });
+    
+  const [schema, setSchema] = useState(issues?.data);  
+  useEffect(() => {
+    setSchema(issues?.data);
+  }, [issues?.data]);
+  
   const handleSameListDrop = (
     listId: string,
     startIndex: number,
     endIndex: number
   ) => {
-    const listIndex = schema.findIndex(item => item.id === listId);
+    const listIndex = schema.findIndex((item: SprintMapValue) => item.id === listId);
     const items = reorder(schema[listIndex].data, startIndex, endIndex);
     const newSchema = [...schema];
     newSchema[listIndex].data = items;
@@ -139,16 +81,25 @@ const BacklogPage: React.FC = () => {
     sourceId: string,
     destId: string,
     source: TDroppable,
-    destination: TDroppable
+    destination: TDroppable,
+    draggableId: string | number,
   ) => {
-    const sourceIndex = schema.findIndex(item => item.id === sourceId);
-    const destIndex = schema.findIndex(item => item.id === destId);
+    const sourceIndex = schema.findIndex((item: SprintMapValue) => item.id === sourceId);
+    const destIndex = schema.findIndex((item: SprintMapValue) => item.id === destId);
     const result = move({
       source: schema[sourceIndex].data,
       destination: schema[destIndex].data,
       droppableSource: source,
       droppableDestination: destination
     });
+
+    const sendData = {
+      id: draggableId,
+      source: sourceId,
+      dest: destId,
+    };
+
+    mutationDifferentList.mutate(sendData);
 
     const newSchema = [...schema];
     newSchema[sourceIndex].data = result[sourceId];
@@ -167,11 +118,12 @@ const BacklogPage: React.FC = () => {
 
     const sourceId = source.droppableId;
     const destId = destination.droppableId;
+    const draggableId = result?.draggableId;
 
     if (sourceId === destId) {
       handleSameListDrop(sourceId, source.index, destination.index);
     } else {
-      handleDifferentListDrop(sourceId, destId, source, destination);
+      handleDifferentListDrop(sourceId, destId, source, destination, draggableId);
     }
   };
   
@@ -179,14 +131,15 @@ const BacklogPage: React.FC = () => {
     <>
       <section className="flex flex-col gap-4">
         <DragDropContext onDragEnd={onDragEnd}>
-          {schema?.map((item) => (
+          {schema?.map((item: SprintMapValue) => (
             <Fragment key={item?.id}>
               <IssueContainerCard 
                 length={item?.data?.length}
                 title={item?.title} 
                 isBacklog
+                data={item}
                 droppabledId={item?.id}>
-                {item?.data?.map((it, i) => (
+                {item?.data?.length > 0 ? (item?.data?.map((it, i) => (
                   <Draggable
                     key={it.id}
                     draggableId={it.id}
@@ -200,7 +153,11 @@ const BacklogPage: React.FC = () => {
                       />
                     )}
                   </Draggable>
-                ))}
+                ))) : (
+                  <p className="text-center  text-zinc-500 dark:text-zinc-200 bg-zinc-200 dark:bg-zinc-900 py-4 rounded">
+                      {en.emptySprint}
+                  </p>
+                )}
               </IssueContainerCard>
             </Fragment>
           ))

@@ -7,15 +7,18 @@ import {
   SelectValue,
 } from "@components/ui/select";
 import { TOptionSelect, TSelect } from "@atoms/types";
+import { useState } from "react";
 
-const InputSelect = ({ 
+const InputSelect = ({
   name,
   control,
   required,
-  placeholder,
   className,
   datas,
+  defaultValue,
+  isLoading,
 }: TSelect) => {
+  const [field, setField] = useState(null);
   return (
     <Controller
       name={name}
@@ -23,19 +26,31 @@ const InputSelect = ({
       rules={{
         required: required,
       }}
+      defaultValue={defaultValue}
       render={({ field }) =>
-        <Select onValueChange={field.onChange}>
+        <Select
+          defaultValue={field.value}
+          onValueChange={field.onChange}
+        >
           <SelectTrigger className={className}>
-            <SelectValue placeholder={placeholder} />
+            <SelectValue placeholder={"Choose"} />
           </SelectTrigger>
           <SelectContent>
-            {datas?.map((item: TOptionSelect, index: number) => (
-              <SelectItem 
-                key={index} 
-                value={item?.value}>
-                {item?.label}
-              </SelectItem>
-            ))
+            {isLoading ? (
+              <div className="flex py-4">
+                <div className="loader-sm mx-auto"></div>
+              </div>
+            ) : (
+              datas?.map((item: TOptionSelect, index: number) => {
+                return (
+                  <SelectItem
+                    key={index}
+                    value={item?.value}>
+                    {item?.label}
+                  </SelectItem>
+                );
+              })
+            )
             }
           </SelectContent>
         </Select>

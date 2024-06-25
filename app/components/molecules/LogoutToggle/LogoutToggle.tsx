@@ -1,29 +1,31 @@
-import { Button } from "@components/ui/button";
-import { Modal } from "../Modal";
-import { DialogClose } from "@components/ui/dialog";
 import axios from "axios";
-import { Loader } from "../Loader";
-import { useRouter } from "next/navigation";
+import { api } from "@http";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@components/ui/button";
+import { DialogClose } from "@components/ui/dialog";
+
+import { Modal } from "../Modal";
+import { Loader } from "../Loader";
 
 const LogoutToggle: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const handleLogout = async () => {
     setLoading(true);
-    await axios.get('/api/logout')
+    await axios.get(api.logout)
       .then((res) => {
-        console.log(res)
         if (res.status === 200) {
-          router.refresh()
+          router.refresh();
+        } else {
+          throw new Error("Failed to log out");
         }
-      }
-    )
-    .catch((err) => console.error(err))
-    .finally(() => {
-        setLoading(false);
       })
-  }
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  };
   return (
     <>
       {loading &&
@@ -32,7 +34,7 @@ const LogoutToggle: React.FC = () => {
       <Modal
         title="Logout"
         childrenTrigger={
-          <Button className="w-full" variant={'outline'}>Logout</Button>
+          <Button className="w-full" variant={"outline"}>Logout</Button>
         }
         childrenContent={
           <p>Are you sure you want to log out?</p>
@@ -45,7 +47,7 @@ const LogoutToggle: React.FC = () => {
             <Button
               disabled={loading}
               onClick={handleLogout}
-              variant={'primary'}
+              variant={"primary"}
               className="w-20">
               Yes
             </Button>

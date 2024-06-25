@@ -1,3 +1,4 @@
 import Modal from "./Modal";
+import ModalCompleteSprint from "./ModalCompleteSprint/ModalCompleteSprint";
 
-export { Modal }
+export { Modal, ModalCompleteSprint };

@@ -1,43 +1,67 @@
-import prisma from "@lib/prisma";
-import { TRegisterServer } from "@schemas/authSchemas";
-import { NextResponse } from "next/server";
-import { v4 as uuidv4 } from 'uuid';
+import {
+  resKey,
+  responseOK,
+  responseError,
+  ResponseErrorJSON,
+  getHttpMetaMessage,
+} from "@http";
 import { ZodIssue } from "zod";
+import prisma from "@lib/prisma";
+import { v4 as uuidv4 } from "uuid";
+import { NextResponse } from "next/server";
+import { TRegisterServer } from "@schemas/authSchemas";
+import { randomColors } from "@mocks/mockData";
 
 export const POST = async (req: Request) => {
-  const body: any = await req.json();
+  const body: unknown = await req.json();
   const result = TRegisterServer.safeParse(body);
-  const id = uuidv4()
-  let zodErrors = {}
+  const id = uuidv4();
 
+  let zodErrors = {};
   if (!result.success) {
     result.error.issues.forEach((issue: ZodIssue) => {
-      zodErrors = { ...zodErrors, [issue.path[0]]: issue.message }
+      zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };
     });
 
-    return NextResponse.json({ errors: zodErrors }, { status: 400 })
-  }
+    const message = getHttpMetaMessage(400, "");
+    return NextResponse.json(
+      ResponseErrorJSON(
+        zodErrors,
+        400,
+        message
+      ), { status: 400 }
+    );
+  };
+
   const existingEmail = await prisma.user.findFirst({
     where: {
       email: result.data.email
     }
-  })
+  });
+  if (existingEmail) return responseError(409, resKey.email, "email");
+  
 
-  if (!existingEmail) {
+
+  const getRandomColor = () => {
+    const randomIndex = Math.floor(Math.random() * randomColors.length);
+    return `bg-${randomColors[randomIndex]}-400`;
+  };
+  
+  try {
     await prisma.user.create({
       data: {
         userId: id,
+        color: getRandomColor(),
         name: result.data.name,
-        avatar: '',
+        avatar: "",
         email: result.data.email,
         salt: result.data.salt,
         password: result.data.password,
       }
-    })
-
-    return NextResponse.json({ status: 201 })
+    });
+    return responseOK([], 201);
+  } catch (error) {
+    console.log(error);
+    return responseError(500);
   }
-  else {
-    return NextResponse.json({ errors: { email: 'Email is already registered!' } }, { status: 400 })
-  }
-}
+};

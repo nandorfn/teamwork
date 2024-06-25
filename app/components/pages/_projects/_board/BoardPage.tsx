@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import { IssueContainerCard, TodoCard } from "@components/molecules";
 import { DragDropContext, Draggable, DropResult } from "@hello-pangea/dnd";
@@ -37,8 +37,8 @@ const move = ({
 const BoardPage: React.FC = () => {
   const [schema, setSchema] = useState([
     {
-      id: 'todo1',
-      title: 'To-dos',
+      id: "todo1",
+      title: "To-dos",
       data: [
         {
           id: "123",
@@ -79,8 +79,8 @@ const BoardPage: React.FC = () => {
       ]
     },
     {
-      id: 'onprogress',
-      title: 'On Progress',
+      id: "onprogress",
+      title: "On Progress",
       data: [
         {
           id: "111",

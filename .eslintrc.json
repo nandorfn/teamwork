@@ -4,8 +4,6 @@
     "quotes": ["error", "double"],
     "react/react-in-jsx-scope": 0,
     "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }],
-    "rules": {
-      "semi": ["error", "always"]
-    }
+    "semi": ["error", "always"]
   }
 }
