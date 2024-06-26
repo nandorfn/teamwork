@@ -45,13 +45,19 @@ const MyTask: React.FC = () => {
             <Skeleton className="h-[154px] w-[320px] my-4" />
           </>
         ) : (
-          projects?.data?.map((item: TProjectList) => (
-            <Fragment key={item?.id}>
-              <ProjectCard data={item} />
-            </Fragment>
-          ))
-        )
-        }
+          <>
+            {projects?.data?.length === 0 ? (
+              <p className="mx-auto py-10 bg-zinc-300 dark:bg-zinc-900 w-full text-center rounded-md">Project is empty!</p>
+            ) : (
+              projects?.data?.map((item: TProjectList) => (
+                <Fragment key={item?.id}>
+                  <ProjectCard data={item} />
+                </Fragment>
+              ))
+            )}
+          </>
+        )}
+
       </div>
       <h1 className=" text-2xl">Assigned to me</h1>
       <div className="flex flex-col gap-2 mt-4">
@@ -60,14 +66,20 @@ const MyTask: React.FC = () => {
             <Skeleton className="h-[56px] my-2 w-full" />
           </Looping>
         ) : (
-          issues?.data?.map((item: TIssuesByAssigne, index: number) => (
-            <React.Fragment key={index}>
-              <IssueCard issue={item} />
-            </React.Fragment>
-          ))
-        )
-        }
+          <>
+            {issues?.data?.length === 0 ? (
+              <p className="mx-auto py-10 bg-zinc-300 dark:bg-zinc-900 w-full text-center rounded-md">No Task!</p>
+            ) : (
+              issues?.data?.map((item: TIssuesByAssigne, index: number) => (
+                <React.Fragment key={index}>
+                  <IssueCard issue={item} />
+                </React.Fragment>
+              ))
+            )}
+          </>
+        )}
       </div>
+
     </div>
   );
 };
