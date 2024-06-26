@@ -9,15 +9,15 @@ import { TIssueForm, issueSchema } from "@schemas/issueSchemas";
 import { InputLabel, SelectLabel, TextareaLabel } from "@components/molecules";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, fetchData } from "@http";
-import { TOptionSelect } from "@atoms/types";
 
 const CreateIssueForm = ({
   refForm,
   setDisabled,
   defaultValue,
 }: TCreateIssue) => {
-  const path = usePathname();
-  const currentProjectId = path.split("/")[2];
+  const path = usePathname().split("/");
+  const currentProjectId = path[2];
+  const currentMenu = path[3];
 
   const {
     data: workflowDrop,
@@ -26,8 +26,6 @@ const CreateIssueForm = ({
     queryKey: ["workflowDrop"],
     queryFn: () => fetchData(`${api.workflows}/${currentProjectId}`)
   });
-  console.log(workflowDrop);
-  const getTodoWorkflow = workflowDrop?.data?.find((item: TOptionSelect) => item?.label?.toLowerCase() === "todo");
 
   const {
     control,
@@ -37,7 +35,7 @@ const CreateIssueForm = ({
   } = useForm<TIssueForm>({
     defaultValues: {
       ...DFIssue,
-      sprint: defaultValue?.sprint
+      sprint: currentMenu === "backlog" ? defaultValue?.sprint : null,
     },
     resolver: zodResolver(issueSchema)
   });
@@ -113,6 +111,10 @@ const CreateIssueForm = ({
       return axios.post(api.issues, newIssue);
     },
     onSuccess: async () => {
+      if (currentMenu === "board") {
+        return await queryClient.invalidateQueries({ queryKey: ["board", `${currentProjectId}`] });
+
+      }
       return await queryClient.invalidateQueries({ queryKey: ["issues", `${currentProjectId}`] });
     }
   });

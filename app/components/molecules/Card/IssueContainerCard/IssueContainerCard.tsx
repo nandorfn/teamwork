@@ -166,7 +166,7 @@ const IssueContainerCard = ({
               {isBacklog &&
                 <div className="flex flex-row gap-4">
                   <div className="flex-row gap-2 flex">
-                    <Badge className="px-3 bg-zinc-900" text={totalTodo} />
+                    <Badge className="px-3 bg-zinc-300 dark:bg-zinc-900" text={totalTodo} />
                     <Badge className="px-3 bg-blue-600" text={totalTask} />
                     <Badge className="px-3 bg-red-600" text={totalBug} />
                   </div>

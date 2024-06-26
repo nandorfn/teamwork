@@ -1,5 +1,6 @@
 "use client";
 import { BacklogCard, IssueContainerCard } from "@components/molecules";
+import { toast } from "@components/ui/use-toast";
 import { en } from "@en";
 import { DragDropContext, Draggable, DropResult } from "@hello-pangea/dnd";
 import { api, fetchData } from "@http";
@@ -18,7 +19,6 @@ const reorder = (
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
-  console.log(result);
   return result;
 };
 
@@ -112,7 +112,10 @@ const BacklogPage: React.FC = () => {
     const { source, destination } = result;
 
     if (!destination) {
-      console.log("Item dropped outside the list.");
+      toast({
+        variant: "destructive",
+        description: "Error: item dropped outside the list."
+      });
       return;
     }
 

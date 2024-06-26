@@ -1,18 +1,23 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IssueContainerCard, TodoCard } from "@components/molecules";
 import { DragDropContext, Draggable, DropResult } from "@hello-pangea/dnd";
-import { TDroppable, TIssueItem, TMoveDroppableResult, TMoveFunc } from "@pages/types";
+import { TDroppable, TMoveBoard, TMoveBoardResult } from "@pages/types";
+import { useQuery } from "@tanstack/react-query";
+import { usePathname } from "next/navigation";
+import { api, fetchData } from "@http";
+import axios from "axios";
+import { TAllBoard, TBoardIssue } from "@server/types";
+import { toast } from "@components/ui/use-toast";
 
 const reorder = (
-  list: TIssueItem[],
+  list: TBoardIssue[],
   startIndex: number,
   endIndex: number
-): TIssueItem[] => {
+): TBoardIssue[] => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
-  console.log(result);
   return result;
 };
 
@@ -21,118 +26,54 @@ const move = ({
   destination,
   droppableSource,
   droppableDestination
-}: TMoveFunc): TMoveDroppableResult => {
+}: TMoveBoard) => {
   const sourceClone = Array?.from(source);
   const destClone = Array?.from(destination);
   const [removed] = sourceClone?.splice(droppableSource?.index, 1);
 
   destClone.splice(droppableDestination?.index, 0, removed);
 
-  const result: TMoveDroppableResult = {};
+  const result: TMoveBoardResult = {};
   result[droppableSource?.droppableId] = sourceClone;
   result[droppableDestination?.droppableId] = destClone;
   return result;
 };
 
+
 const BoardPage: React.FC = () => {
-  const [schema, setSchema] = useState([
-    {
-      id: "todo1",
-      title: "To-dos",
-      data: [
-        {
-          id: "123",
-          type: "a",
-          text: "123-text",
-          parent: {
-            name: "Feature 1",
-            color: "yellow",
-          }
-        },
-        {
-          id: "345",
-          type: "b",
-          text: "345-text",
-          parent: {
-            name: "Feature 1",
-            color: "yellow",
-          }
-        },
-        {
-          id: "567",
-          type: "a",
-          text: "567-text",
-          parent: {
-            name: "Feature 1",
-            color: "yellow",
-          }
-        },
-        {
-          id: "789",
-          type: "b",
-          text: "789-text",
-          parent: {
-            name: "Feature 1",
-            color: "yellow",
-          }
-        }
-      ]
-    },
-    {
-      id: "onprogress",
-      title: "On Progress",
-      data: [
-        {
-          id: "111",
-          type: "a",
-          text: "123-text",
-          parent: {
-            name: "Feature 1",
-            color: "yellow",
-          }
-        },
-        {
-          id: "222",
-          type: "b",
-          text: "345-text",
-          parent: {
-            name: "Feature 1",
-            color: "yellow",
-          }
-        },
-        {
-          id: "333",
-          type: "a",
-          text: "567-text",
-          parent: {
-            name: "Feature 1",
-            color: "yellow",
-          }
-        },
-        {
-          id: "444",
-          type: "b",
-          text: "789-text",
-          parent: {
-            name: "Feature 1",
-            color: "yellow",
-          }
-        }
-      ]
-    },
-  ]
-  );
+
+  const path = usePathname()?.split("/");
+  const currentProjectId = path[2];
+  const {
+    data: board,
+    isLoading: isBoardLoading,
+  } = useQuery({
+    queryKey: ["board", `${path}`],
+    refetchOnWindowFocus: false,
+    queryFn: () => axios.get(`${api.workflows}/board/${currentProjectId}`),
+  });
+
+
+  const [schema, setSchema] = useState<TAllBoard[]>(board?.data?.data);
+
+  useEffect(() => {
+    setSchema(board?.data?.data);
+  }, [board?.data?.data]);
 
   const handleSameListDrop = (
     listId: string,
     startIndex: number,
     endIndex: number
   ) => {
-    const listIndex = schema.findIndex(item => item.id === listId);
-    const items = reorder(schema[listIndex].data, startIndex, endIndex);
+    const listIndex = schema.findIndex((item: TAllBoard) => String(item.id) === listId);
+    const items = reorder(schema[listIndex]?.project?.issues, startIndex, endIndex);
     const newSchema = [...schema];
-    newSchema[listIndex].data = items;
-    setSchema(newSchema);
+    if (newSchema[listIndex]) {
+      if (newSchema[listIndex].project) {
+        newSchema[listIndex].project.issues = items;
+        setSchema(newSchema);
+      }
+    }
   };
 
   const handleDifferentListDrop = (
@@ -141,18 +82,18 @@ const BoardPage: React.FC = () => {
     source: TDroppable,
     destination: TDroppable
   ) => {
-    const sourceIndex = schema.findIndex(item => item.id === sourceId);
-    const destIndex = schema.findIndex(item => item.id === destId);
+    const sourceIndex = schema.findIndex((item: TAllBoard) => String(item.id) === sourceId);
+    const destIndex = schema.findIndex((item: TAllBoard) => String(item.id) === destId);
     const result = move({
-      source: schema[sourceIndex].data,
-      destination: schema[destIndex].data,
+      source: schema[sourceIndex].project.issues,
+      destination: schema[destIndex].project.issues,
       droppableSource: source,
       droppableDestination: destination
     });
 
     const newSchema = [...schema];
-    newSchema[sourceIndex].data = result[sourceId];
-    newSchema[destIndex].data = result[destId];
+    newSchema[sourceIndex].project.issues = result[sourceId];
+    newSchema[destIndex].project.issues = result[destId];
 
     setSchema(newSchema);
   };
@@ -161,7 +102,10 @@ const BoardPage: React.FC = () => {
     const { source, destination } = result;
 
     if (!destination) {
-      console.log("Item dropped outside the list.");
+      toast({
+        variant: "destructive",
+        description: "Error: Item dropped outside the list."
+      });
       return;
     }
 
@@ -178,31 +122,34 @@ const BoardPage: React.FC = () => {
     <>
       <section className="flex flex-row gap-5">
         <DragDropContext onDragEnd={onDragEnd}>
-          {schema?.map((item) => (
-            <div className="w-80" key={item?.id}>
-              <IssueContainerCard
-                length={item?.data?.length}
-                containerChildClass="gap-3"
-                title={item?.title} 
-                droppabledId={item?.id}>
-                {item?.data?.map((it, i) => (
-                  <Draggable
-                    key={it.id}
-                    draggableId={it.id}
-                    index={i}
-                  >
-                    {(provided, snap) => (
-                      <TodoCard
-                        data={it}
-                        snap={snap}
-                        provided={provided}
-                      />
-                    )}
-                  </Draggable>
-                ))}
-              </IssueContainerCard>
-            </div>
-          ))
+          {schema?.map((item: TAllBoard) => {
+            return (
+              <div className="w-80" key={item?.id}>
+                <IssueContainerCard
+                  length={item?.project?.issues?.length}
+                  containerChildClass="gap-3"
+                  data={item?.project?.issues}
+                  title={item?.name}
+                  droppabledId={String(item?.id)}>
+                  {item?.project?.issues?.map((it, i) => (
+                    <Draggable
+                      key={it.id}
+                      draggableId={String(it.id)}
+                      index={i}
+                    >
+                      {(provided, snap) => (
+                        <TodoCard
+                          data={it}
+                          snap={snap}
+                          provided={provided}
+                        />
+                      )}
+                    </Draggable>
+                  ))}
+                </IssueContainerCard>
+              </div>
+            );
+          })
           }
         </DragDropContext>
       </section>

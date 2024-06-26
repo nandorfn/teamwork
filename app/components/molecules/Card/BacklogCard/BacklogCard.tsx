@@ -1,5 +1,5 @@
 "use client";
-import { TBacklogForm, TTodoCard } from "@molecules/types";
+import { TBacklogCard, TBacklogForm, TTodoCard } from "@molecules/types";
 import { Avatar, Badge, Icon, InputSelect } from "@components/atoms";
 import { bugIcon, epicIcon, storyIcon, taskIcon2, userIcon } from "@assets/svg";
 import { useForm } from "react-hook-form";
@@ -15,7 +15,7 @@ import axios from "axios";
 const BacklogCard = ({
   data,
   provided,
-}: TTodoCard) => {
+}: TBacklogCard) => {
   const {
     control,
     watch,
@@ -78,7 +78,7 @@ const BacklogCard = ({
       setColor(selectedColor.class);
     }
   }, [watch, data?.id, workflowDrop]);  
-  const valueOption = workflowDrop?.data?.find((item: any) => item.value === watch("backlogStatus"));
+  const valueOption = workflowDrop?.data?.find((item: TOptionSelect) => item.value === watch("backlogStatus"));
   
   return (
     <div onClick={handleClickBacklog} ref={provided.innerRef}
@@ -97,7 +97,7 @@ const BacklogCard = ({
       
       <div className="flex flex-row gap-8 items-center">
         <Badge 
-          variant={data?.parent?.color} 
+          variant={"purple"} 
           size={"backlog"} 
           className=" font-medium" 
           text={data?.parent?.name}
@@ -106,7 +106,7 @@ const BacklogCard = ({
           name={"backlogStatus"}
           control={control}
           required={false}
-          className={`w-32 border-none bg-zinc-800 my-1  font-semibold capitalize ${color}`}
+          className={`w-32 border-none bg-zinc-300 dark:bg-zinc-800 my-1  font-semibold capitalize ${color}`}
           datas={workflowDrop?.data}
           defaultValue={valueOption?.label}
         />
