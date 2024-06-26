@@ -1,7 +1,7 @@
 import { verifyCookie } from "@auth";
 import { updateIssue, updateStatusIssue } from "@db/issues";
 import { resKey, responseError, responseOK } from "@http";
-import { TEditIssueForm } from "@schemas/issueSchemas";
+import { TEditDetail } from "@server/types";
 
 export const PATCH = async (req: Request, { params }: { params: { id: string }}) => {
   const verifiedToken = await verifyCookie(req);
@@ -21,7 +21,7 @@ export const PUT = async (req: Request, { params }: { params: { id: string }}) =
   const verifiedToken = await verifyCookie(req);
   if (!verifiedToken) return responseError(401, resKey.denied);
   
-  const body: TEditIssueForm = await req.json();
+  const body: TEditDetail = await req.json();
   if (!body) return responseError(400);
   
   try {

@@ -1,6 +1,6 @@
 import { TInput } from "@atoms/types";
 import { DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
-import { SprintMapValue } from "@server/types";
+import { SprintMapValue, TBoardIssue } from "@server/types";
 import { StaticImageData } from "next/image";
 import { Control } from "react-hook-form";
 
@@ -25,7 +25,7 @@ export type TInputLabel = TInput & {
 } 
 
 export type TTodoCard = {
-  data: any,
+  data: TBoardIssue,
   provided: DraggableProvided,
   snap: DraggableStateSnapshot
 }
@@ -33,7 +33,7 @@ export type TTodoCard = {
 export type TIssueContainer = {
   length: number,
   title: string,
-  data: SprintMapValue,
+  data: any,
   children: React.ReactNode,
   droppabledId: string,
   containerClass?: string,

@@ -5,7 +5,7 @@ import {
 } from "@http";
 import { ZodIssue } from "zod";
 import { verifyCookie } from "@auth";
-import { createIssue, getIssueByAssigneeID } from "@db/issues";
+import { createIssue } from "@db/issues";
 import { issueServer } from "@schemas/issueSchemas";
 
 export const POST = async (req: Request) => {

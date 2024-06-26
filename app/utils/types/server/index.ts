@@ -1,3 +1,5 @@
+import { StaticImageData } from "next/image";
+
 export type HttpStatusCodes = 200 | 201 | 400 | 401 | 403 | 404 | 409 | 500;
 
 export interface HttpMetaMessage {
@@ -22,8 +24,8 @@ export interface SprintDataItem {
   text: string | null;
   status: string | null;
   parent: {
-      name: string;
-      color: string;
+    name: string;
+    color: string;
   };
 }
 
@@ -107,4 +109,37 @@ export type TEditDetail = {
   status: number;
   description: string;
   assignee: number;
+}
+
+export type TAllBoard = {
+  id: number;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  project: {
+    issues: TBoardIssue[];
+  }
+}
+
+export type TBoardIssue = {
+  id: number;
+  summary: string;
+  description: string;
+  statusId: number;
+  assigneeId: number | null;
+  assignee: {
+    id: number;
+    name: string;
+    avatar: string | StaticImageData;
+    color?: string;
+  } | null;
+  reporterId: number | null;
+  projectId: number | null;
+  type: string;
+  color: string;
+  row: number;
+  sprintId: number | null;
+  parentId: number | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
