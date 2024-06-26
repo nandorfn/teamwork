@@ -78,7 +78,7 @@ const BacklogCard = ({
       setColor(selectedColor.class);
     }
   }, [watch, data?.id, workflowDrop]);  
-  const valueOption = workflowDrop?.data?.find((item: any) => item.value === watch("backlogStatus"));
+  const valueOption = workflowDrop?.data?.find((item: TOptionSelect) => item.value === watch("backlogStatus"));
   
   return (
     <div onClick={handleClickBacklog} ref={provided.innerRef}
