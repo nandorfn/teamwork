@@ -4,7 +4,6 @@ import { TTodoCard } from "@molecules/types";
 import { cn, getInitials } from "@func";
 
 const TodoCard = ({ data, provided, snap }: TTodoCard) => {
-  console.log(data);
   const badges = ["Slicing", "UI/UX"];
   return (
     <div ref={provided.innerRef}

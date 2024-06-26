@@ -12,7 +12,6 @@ const StartSprintForm = ({
   setDisabled,
   data
 }: TStartSprintForm) => {
-  console.log(data);
   const {
     control, watch, setValue, handleSubmit
   } = useForm<TStartSprint>({

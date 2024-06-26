@@ -29,8 +29,6 @@ import { kanbanDark, kanbanFill, kanbanIcon } from "@assets/svg";
 const Aside = () => {
   const path = usePathname();
   const { theme } = useTheme();
-  const currentProject = path?.split("/")[2];
-  console.log(path?.split("/")[1]);
   
   const [active, setActive] = useState<string>(path?.split("/")[1]);
   const [activeProject, setActiveProject] = useState<number | null>(null);

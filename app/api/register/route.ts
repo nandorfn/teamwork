@@ -61,7 +61,6 @@ export const POST = async (req: Request) => {
     });
     return responseOK([], 201);
   } catch (error) {
-    console.log(error);
     return responseError(500);
   }
 };

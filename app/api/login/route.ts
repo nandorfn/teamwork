@@ -13,7 +13,6 @@ import { NextResponse } from "next/server";
 
 export const POST = async (req: Request) => {
   const body: unknown = await req.json();
-  console.log(body);
   const result = loginSchema.safeParse(body);
 
   let zodErrors = {};
