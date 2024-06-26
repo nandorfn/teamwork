@@ -6,7 +6,7 @@ import { DFIssue } from "@defaultValues";
 import { TCreateIssue } from "@organisms/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TIssueForm, issueSchema } from "@schemas/issueSchemas";
-import { InputLabel, SelectLabel, TextareaLabel } from "@components/molecules";
+import { InputLabel, SelectLabel, TextareaLabel, Loader } from "@components/molecules";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, fetchData } from "@http";
 
@@ -129,6 +129,11 @@ const CreateIssueForm = ({
   };
 
   return (
+    <>
+    {mutation.isPending && (
+      <Loader />
+    )
+    }
     <form
       ref={refForm}
       className="flex flex-col gap-2"
@@ -209,6 +214,8 @@ const CreateIssueForm = ({
         defaultValue={watch("reporter")}
       />
     </form>
+    </>
+
   );
 };
 
