@@ -121,7 +121,7 @@ const ProjectsPage = ({
             ))
             }
           </div>
-          <Modal
+          {/* <Modal
             title="Create Issue"
             childrenTrigger={
               <Button variant={"primary"}>Add Task</Button>
@@ -143,7 +143,7 @@ const ProjectsPage = ({
                 </Button>
               </DialogClose>
             }
-          />
+          /> */}
 
         </div>
       </div>
