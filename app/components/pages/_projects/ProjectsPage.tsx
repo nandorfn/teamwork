@@ -1,13 +1,10 @@
 "use client";
 import { Avatar } from "@components/atoms";
-import { Button } from "@components/ui/button";
 import { cn } from "@func";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import { Modal } from "@components/molecules";
-import { DialogClose } from "@components/ui/dialog";
-import { CreateIssueForm, DetailBacklogForm } from "@components/orgasims";
+import { DetailBacklogForm } from "@components/orgasims";
 import { useQuery } from "@tanstack/react-query";
 import { api, fetchData } from "@http";
 import { Loader } from "@components/molecules";
@@ -22,6 +19,23 @@ const ProjectsPage = ({
 }) => {
   const path = usePathname()?.split("/");
   const router = useRouter();
+
+  const {
+    data: user,
+    isLoading: userLoading,
+  } = useQuery({
+    queryKey: ["user"],
+    refetchOnWindowFocus: false,
+    queryFn: () => fetchData(`${api.usersInfo}`)
+  });
+
+  const { setUser } = useMainStore((state) => state);
+
+  useEffect(() => {
+    if (user?.data) {
+      setUser(user?.data);
+    }
+  }, [user, setUser]);
 
   const currentPath = path[3];
   const refForm = useRef<HTMLFormElement>(null);
