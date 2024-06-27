@@ -4,7 +4,7 @@ import { Avatar, Badge, Icon, InputSelect } from "@components/atoms";
 import { bugIcon, epicIcon, storyIcon, taskIcon2, userIcon } from "@assets/svg";
 import { useForm } from "react-hook-form";
 import { useCallback, useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, fetchData } from "@http";
 import { usePathname } from "next/navigation";
 import { TOptionSelect } from "@atoms/types";
@@ -24,16 +24,22 @@ const BacklogCard = ({
       backlogStatus: data?.statusId,
     }
   });  
+
   const { setModal, setData } = useMainStore((state) => state);
+  const queryClient = useQueryClient();
+  const path = usePathname()?.split("/");
+  const currentProjectId = path[2];
   
   const updateStatus = useCallback(async () => {
     try {
-      await axios.patch(`${api.backlogs}/${data?.id}`, watch("backlogStatus"));
+      await axios.patch(`${api.backlogs}/${data?.id}`, watch("backlogStatus")).then(() => {
+        queryClient.invalidateQueries({ queryKey: ["issues", currentProjectId]});
+      });
     } catch (error) {
       console.error("Failed to update status:", error);
       throw error;
     }
-  }, [data?.id, watch]);
+  }, [data?.id, watch, currentProjectId, queryClient]);
   
 
   useEffect(() => {
@@ -61,8 +67,7 @@ const BacklogCard = ({
         return taskIcon2;
     }
   };
-  const path = usePathname()?.split("/");
-  const currentProjectId = path[2];
+
   const {
     data: workflowDrop,
     isLoading: workflowLoading

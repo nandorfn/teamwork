@@ -11,6 +11,7 @@ const SelectLabel = ({
   watch,
   defaultValue,
   isLoading,
+  placeholder
 }: TSelectLabel) => {
     return (
         <div className='flex flex-col gap-1'>
@@ -23,6 +24,7 @@ const SelectLabel = ({
             className={className}
             datas={datas}
             watch={watch}
+            placeholder={placeholder}
             isLoading={isLoading}
           />
         </div>

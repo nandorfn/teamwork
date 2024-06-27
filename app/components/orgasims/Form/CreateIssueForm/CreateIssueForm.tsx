@@ -9,6 +9,7 @@ import { TIssueForm, issueSchema } from "@schemas/issueSchemas";
 import { InputLabel, SelectLabel, TextareaLabel, Loader } from "@components/molecules";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, fetchData } from "@http";
+import { useMainStore } from "provider/MainStore";
 
 const CreateIssueForm = ({
   refForm,
@@ -27,6 +28,8 @@ const CreateIssueForm = ({
     queryFn: () => fetchData(`${api.workflows}/${currentProjectId}`)
   });
 
+  const { user } = useMainStore((state) => state);
+
   const {
     control,
     handleSubmit,
@@ -35,6 +38,7 @@ const CreateIssueForm = ({
   } = useForm<TIssueForm>({
     defaultValues: {
       ...DFIssue,
+      reporter: user ? String(user.id) : null,
       sprint: currentMenu === "backlog" ? defaultValue?.sprint : null,
     },
     resolver: zodResolver(issueSchema)
@@ -210,7 +214,7 @@ const CreateIssueForm = ({
         control={control}
         required
         className={" border-zinc-800 h-[42px]"}
-        datas={parentDropdown}
+        datas={assigneDrop?.data}
         defaultValue={watch("reporter")}
       />
     </form>

@@ -43,7 +43,7 @@ const IssueContainerCard = ({
 
   const totalTodo = countFilterArr(data?.data, "status", "todo");
   const totalTask = countFilterArr(data?.data, "status", "in progress");
-  const totalBug = countFilterArr(data?.data, "status", "done");
+  const totalDone = countFilterArr(data?.data, "status", "done");
 
   const mutateSprint = useMutation({
     mutationFn: (status: string) => {
@@ -168,7 +168,7 @@ const IssueContainerCard = ({
                   <div className="flex-row gap-2 flex">
                     <Badge className="px-3 bg-zinc-300 dark:bg-zinc-900" text={totalTodo} />
                     <Badge className="px-3 bg-blue-600" text={totalTask} />
-                    <Badge className="px-3 bg-red-600" text={totalBug} />
+                    <Badge className="px-3 bg-green-600" text={totalDone} />
                   </div>
                   {droppabledId === "backlog"
                     ? (

@@ -54,6 +54,7 @@ export const api = {
   issues: "/api/issues",
   usersDrop: "/api/users/dropdown",
   usersList: "/api/users/lists",
+  usersInfo: "/api/users/info",
   projects: "/api/projects",
   issuesUser: "/api/issues/users",
   comments: "/api/comments",

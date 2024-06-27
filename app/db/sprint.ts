@@ -1,11 +1,13 @@
 import prisma from "@lib/prisma";
-import { getIssueBySprintID } from "./issues";
 import { TCompleteSprint } from "@server/types";
 
 export const getSprintDropdown = async (projectId: number) => {
   const res = await prisma.sprint.findMany({
     where: {
-      projectId: projectId
+      projectId: projectId,
+      status: {
+        not: "complete"
+      },
     }
   });
 

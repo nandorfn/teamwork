@@ -17,6 +17,7 @@ export type TSelect = {
   datas: any;
   defaultValue?: string | null;
   isLoading?: boolean;
+  placeholder?: string;
   watch?: UseFormWatch<any>;
 }
 

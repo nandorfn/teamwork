@@ -79,7 +79,6 @@ export const getIssueByProjectId = async (projectId: number, userId: number): Pr
             updatedAt: "desc"
         }
     });
-        
     const sprintMap: Map<string, SprintMapValue> = new Map();
     sprints.forEach(sprint => {
         const formattedSprint: SprintMapValue = {
@@ -128,6 +127,22 @@ export const getIssueByProjectId = async (projectId: number, userId: number): Pr
                 select: {
                     summary: true,
                 }
+            },
+            assignee: {
+                select: {
+                    id: true,
+                    name: true,
+                    avatar: true,
+                    color: true
+                }
+            },
+            reporter: {
+                select: {
+                    id: true,
+                    name: true,
+                    avatar: true,
+                    color: true
+                }
             }
         }
     });
@@ -138,6 +153,9 @@ export const getIssueByProjectId = async (projectId: number, userId: number): Pr
         text: issue.summary || null,
         status: issue.workflowStatus?.name,
         statusId: String(issue.workflowStatus.id),
+        description: issue?.description,
+        assignee: issue?.assignee,
+        reporter: issue?.reporter,
         parent: {
             name: issue.parent?.summary ?? "",
             color: issue.color || "default"

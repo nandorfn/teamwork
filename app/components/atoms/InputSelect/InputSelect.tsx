@@ -17,6 +17,7 @@ const InputSelect = ({
   datas,
   defaultValue,
   isLoading,
+  placeholder = "Choose"
 }: TSelect) => {
   const [field, setField] = useState(null);
   return (
@@ -33,7 +34,7 @@ const InputSelect = ({
           onValueChange={field.onChange}
         >
           <SelectTrigger className={className}>
-            <SelectValue placeholder={"Choose"} />
+            <SelectValue placeholder={placeholder} />
           </SelectTrigger>
           <SelectContent>
             {isLoading ? (

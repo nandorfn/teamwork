@@ -9,6 +9,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Looping } from "@components/atoms";
 import { Skeleton } from "@components/ui/skeleton";
 import { IssueCard, ProjectCard } from "@components/molecules";
+import { useMainStore } from "provider/MainStore";
 
 const MyTask: React.FC = () => {
   const router = useRouter();
@@ -17,6 +18,23 @@ const MyTask: React.FC = () => {
   useEffect(() => {
     if (path === "/") router.replace("/my-task");
   }, [path, router]);
+
+  const {
+    data: user,
+    isLoading: userLoading,
+  } = useQuery({
+    queryKey: ["user"],
+    refetchOnWindowFocus: false,
+    queryFn: () => fetchData(`${api.usersInfo}`)
+  });
+
+  const { setUser } = useMainStore((state) => state);
+
+  useEffect(() => {
+    if (user?.data) {
+      setUser(user?.data);
+    }
+  }, [user, setUser]);
 
   const {
     data: projects,

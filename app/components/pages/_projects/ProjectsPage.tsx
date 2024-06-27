@@ -45,6 +45,7 @@ const ProjectsPage = ({
     refetchOnWindowFocus: false,
     queryFn: () => fetchData(`${api.projects}/${path[2]}`)
   });
+
   const {
     data: memberList,
     isLoading: memberLoading,
@@ -63,8 +64,8 @@ const ProjectsPage = ({
       <div className="flex flex-col gap-8">
         <div className="px-8 flex flex-row justify-between items-center">
           {projectLoading ? (
-              <Skeleton className="h-4 w-[250px]" />          
-            ) : (
+            <Skeleton className="h-4 w-[250px]" />
+          ) : (
             <div>
               <Link href={"/projects"}>Projects</Link>
               {currentPath &&
@@ -96,7 +97,7 @@ const ProjectsPage = ({
               ))
               }
             </div>
-            <ModalInviteMember/>
+            <ModalInviteMember />
           </div>
         </div>
         {projectLoading ? (
@@ -126,7 +127,11 @@ const ProjectsPage = ({
               <Button variant={"primary"}>Add Task</Button>
             }
             childrenContent={
-              <CreateIssueForm defaultValue={{}} setDisabled={setDisabled} refForm={refForm} />
+              <CreateIssueForm 
+                defaultValue={{}} 
+                setDisabled={setDisabled} 
+                refForm={refForm}
+              />
             }
             childrenFooter={
               <DialogClose asChild>
