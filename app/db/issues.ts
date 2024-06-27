@@ -271,3 +271,11 @@ export const updateStatusIssue = async (id: number, statusId: number) => {
         }
     });
 };
+
+export const deleteIssue = async (id: number) => {
+    return await prisma.issue.delete({
+        where: {
+            id: id,
+        }
+    });
+};

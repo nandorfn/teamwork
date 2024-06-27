@@ -9,6 +9,8 @@ export const en = {
   deleteCommentErr: "Failed to delete comment!",
   deleteSprintOk: "Successfully delete sprint!",
   deleteSprintErr: "Failed to delete sprint!",
+  deleteIssueOk: "Successfully delete issue!",
+  deleteIssueErr: "Failed to delete issue!",
   editIssueOk: "Successfully edit issue!",
   editIssueErr: "Failed to edit issue!",
   addMemberOk: "Successfully add new member!",
@@ -27,4 +29,5 @@ export const en = {
   description: "Descriptions",
   details: "Details",
   deleteSprint: "Delete Sprint",
+  deleteIssue: "Delete Issue",
 };

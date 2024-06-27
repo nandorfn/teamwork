@@ -1,33 +1,33 @@
-import { en } from "@en";
-import axios from "axios";
-import { api } from "@http";
-import { useState } from "react";
-import Modal from "../Modal/Modal";
 import { Button } from "@components/ui/button";
-import XIcon from "@assets/svg-tsx/XIcon";
-import { DialogClose } from "@components/ui/dialog";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "@components/ui/use-toast";
+import { en } from "@en";
+import { DialogClose } from "@radix-ui/react-dialog";
+import Modal from "../Modal/Modal";
 import CircleNotchIcon from "@assets/svg-tsx/CircleNotchIcon";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import axios from "axios";
+import { toast } from "@components/ui/use-toast";
+import { api } from "@http";
+import TrashIcon from "@assets/svg-tsx/TrashIcon";
 
-const ModalDeleteSprint = ({ id, projectId }: { id: string | number, projectId: string | number }) => {
+const ModalDeleteIssue = ({ projectId, id }: { projectId: string, id: string}) => {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: () => {
-      return axios.delete(`${api.sprints}/${projectId}/${id}`);
+      return axios.delete(`${api.issues}/${id}`);
     },
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["issues", `${projectId}`]});
       toast({
         variant: "success",
-        description: en.deleteSprintOk
+        description: en.deleteIssueOk
       });
     },
     onError() {
       toast({
         variant: "success",
-        description: en.deleteSprintErr
+        description: en.deleteIssueErr
       });
     },
     onSettled() {
@@ -39,18 +39,14 @@ const ModalDeleteSprint = ({ id, projectId }: { id: string | number, projectId: 
     <Modal
       open={open}
       setOpen={setOpen}
-      title={en.deleteSprint}
+      title={en.deleteIssue}
       childrenTrigger={
         <Button
-          variant={"secondary"}
-          className="bg-none hover:bg-none"
-          size={"iconXs"}
+        variant={"outline"}
+        size={"iconXs"}
         >
-          <XIcon
-            width="16"
-            height="16"
-            fill="dark:fill-secondary-foreground fill-black" />
-        </Button>
+        <TrashIcon fill="fill-black dark:fill-white" />
+      </Button>
       }
       childrenContent={en.confirmDelete}
       childrenFooter={
@@ -76,4 +72,4 @@ const ModalDeleteSprint = ({ id, projectId }: { id: string | number, projectId: 
   );
 };
 
-export default ModalDeleteSprint;
+export default ModalDeleteIssue;

@@ -4,7 +4,7 @@ import {
   responseError,
 } from "@http";
 import { verifyCookie } from "@auth";
-import { getIssueByProjectId, updateIssueSprintId } from "@db/issues";
+import { deleteIssue, getIssueByProjectId, updateIssueSprintId } from "@db/issues";
 import { TDragUpdate } from "@server/types";
 
 export const GET = async (req: Request, { params }: {
@@ -20,6 +20,22 @@ export const GET = async (req: Request, { params }: {
   } catch (error) {
     return responseError(500);
   }
+};
+
+export const DELETE = async (req: Request, { params }: {
+  params: {
+    id: number,
+  }}) => {
+  const verifiedToken = await verifyCookie(req);
+  if (!verifiedToken) return responseError(401, resKey.denied);
+
+  try {
+    const res = await deleteIssue(Number(params?.id));
+    return responseOK(res, 200, resKey.operation);
+  } catch (error) {
+    return responseError(500);
+  }
+
 };
 
 

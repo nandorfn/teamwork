@@ -14,9 +14,12 @@ import { Button } from "@components/ui/button";
 import { toast } from "@components/ui/use-toast";
 import { Separator } from "@components/ui/separator";
 import { Comment } from "@components/orgasims/Comment";
-import { Accordion2, InputLabel, SelectLabel, TextareaLabel, Loader} from "@components/molecules";
+import { Accordion2, InputLabel, SelectLabel, TextareaLabel, Loader } from "@components/molecules";
 import { TEditIssueForm } from "@schemas/issueSchemas";
 import { TEditDetail } from "@server/types";
+import PenIcon from "@assets/svg-tsx/PenIcon";
+import ModalDeleteIssue from "@components/molecules/ModalDeleteIssue/ModalDeleteIssue";
+import { Skeleton } from "@components/ui/skeleton";
 
 const DetailBacklogForm: React.FC = () => {
   const path = usePathname()?.split("/");
@@ -95,16 +98,18 @@ const DetailBacklogForm: React.FC = () => {
 
   return (
     <>
-    {mutation.isPending && (<Loader />)}
+      {mutation.isPending && (<Loader />)}
       <div className="relative ">
         <h3 className=" text-xl font-semibold">Details</h3>
-        <Button
-          variant={"outline"}
-          size={"xs"}
-          className="absolute right-8 top-0"
-          onClick={() => setIsUpdate(!isUpdate)}>
-          Update
-        </Button>
+        <div className="flex flex-row gap-2 absolute right-8 top-0">
+          <Button
+            variant={"outline"}
+            size={"iconXs"}
+            onClick={() => setIsUpdate(!isUpdate)}>
+            <PenIcon fill="fill-black dark:fill-white" />
+          </Button>
+          <ModalDeleteIssue projectId={currentProjectId} id={data?.id} />
+        </div>
         <Button
           onClick={() => setModal(false)}
           className="absolute right-0 top-0"
@@ -126,23 +131,33 @@ const DetailBacklogForm: React.FC = () => {
                 type="text"
                 control={control}
               />
-              <SelectLabel
-                label="Status"
-                name="status"
-                control={control}
-                defaultValue={data?.statusId}
-                datas={workflowDrop?.data}
-                isLoading={workflowLoading}
-                required={false}
-              />
-              <SelectLabel
-                label="Assignee"
-                name="assignee"
-                control={control}
-                datas={assigneDrop?.data}
-                isLoading={assigneeLoading}
-                required={false}
-              />
+              {workflowLoading ? (
+                <Skeleton className="w-full h-8" />
+              ) : (
+                <SelectLabel
+                  label="Status"
+                  name="status"
+                  control={control}
+                  defaultValue={data?.statusId}
+                  datas={workflowDrop?.data}
+                  isLoading={workflowLoading}
+                  required={false}
+                />
+              )
+              }
+              {assigneeLoading ? (
+                <Skeleton className="w-full h-8" />
+              ) : (
+                <SelectLabel
+                  label="Assignee"
+                  name="assignee"
+                  control={control}
+                  datas={assigneDrop?.data}
+                  isLoading={assigneeLoading}
+                  required={false}
+                />
+              )
+              }
               <TextareaLabel
                 name="description"
                 required={false}
